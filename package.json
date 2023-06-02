@@ -1,6 +1,6 @@
 {
   "name": "sgr-service",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "",
   "scripts": {
     "build": "npm run barrels && tsc --project tsconfig.compile.json",
@@ -17,8 +17,7 @@
   "devDependencies": {
     "@tsed/cli-plugin-eslint": "4.5.2",
     "@tsed/cli-plugin-jest": "4.5.2",
-    "@tsed/cli-plugin-typeorm": "4.5.2",
-    "@types/method-override": "0.0.32"
+    "@tsed/cli-plugin-typeorm": "4.5.2"
   },
   "tsed": {
     "convention": "default",
