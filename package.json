@@ -7,17 +7,15 @@
     "barrels": "barrelsby --config .barrelsby.json",
     "start": "npm run barrels && tsnd --inspect --exit-child --cls --ignore-watch node_modules --respawn --transpile-only -r tsconfig-paths/register src/index.ts",
     "start:prod": "cross-env NODE_ENV=production node dist/index.js",
-    "typeorm": "typeorm-ts-node-commonjs",
     "test:lint": "eslint '**/*.{ts,js}'",
     "test:lint:fix": "eslint '**/*.{ts,js}' --fix",
-    "prettier": "prettier '**/*.{ts,js,json,md,yml,yaml}' --write",
     "prepare": "is-ci || husky install"
   },
   "dependencies": {},
   "devDependencies": {
     "@tsed/cli-plugin-eslint": "4.5.2",
     "@tsed/cli-plugin-jest": "4.5.2",
-    "@tsed/cli-plugin-typeorm": "4.5.2"
+    "@types/method-override": "0.0.32"
   },
   "tsed": {
     "convention": "default",
