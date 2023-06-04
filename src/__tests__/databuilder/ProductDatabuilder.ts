@@ -5,8 +5,8 @@ import { Categoria } from "../../gerencial/core/domain/Categoria";
 import { Produto } from "../../gerencial/core/domain/Produto";
 
 export const anyProduto = factory.Sync.makeFactory<Produto>({
-    id: 15,
-    valor: 55,
+    id: faker.datatype.number(),
+    valor: faker.datatype.number(),
     nome: faker.random.alpha(),
     categoria: Categoria.ACOMPANHAMENTO,
 });

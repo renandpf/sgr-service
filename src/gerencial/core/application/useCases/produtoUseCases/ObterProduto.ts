@@ -1,7 +1,12 @@
-export class ObterProduto {
+import { Inject } from "@tsed/common";
+import { IProdutoRepositoryGateway } from "../../ports/ProdutoRepositoryGateway";
+import { Produto } from "src/gerencial/core/domain/Produto";
 
-    public obterPorId(id: number) {
+export class ObterProdutoUseCase {
+    constructor( @Inject() private produtoRepositoryGateway: IProdutoRepositoryGateway ){}
 
+    public async obterPorId(id: number): Promise<Produto> {
+        return this.produtoRepositoryGateway.obterById(id);
     }
 
 }
