@@ -3,7 +3,7 @@ import { mock } from "jest-mock-extended";
 import { IProdutoRepositoryGateway } from "../../ports/ProdutoRepositoryGateway";
 import { anyProduto } from "../../../../../__tests__/databuilder/ProductDatabuilder";
 import { anyNumber } from "../../../../../__tests__/databuilder/PrimitiveDatabuilder";
-import { ObterProdutoUseCase } from "./ObterProduto";
+import { ObterProdutoUseCase } from "./ObterProdutoUseCase";
 import { Categoria } from "../../../domain/Categoria";
 
 describe("Testes de ObterProduto", () => {

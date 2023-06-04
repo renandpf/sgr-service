@@ -2,7 +2,7 @@ import { PlatformTest } from "@tsed/common";
 import { mock } from "jest-mock-extended";
 import { IProdutoRepositoryGateway } from "../../ports/ProdutoRepositoryGateway";
 import { anyProduto } from "../../../../../__tests__/databuilder/ProductDatabuilder";
-import { CriarProdutoUseCase } from "./CriarProduto";
+import { CriarProdutoUseCase } from "./CriarProdutoUseCase";
 
 describe("Testes de CriarProduto", () => {
   beforeEach(PlatformTest.create);
