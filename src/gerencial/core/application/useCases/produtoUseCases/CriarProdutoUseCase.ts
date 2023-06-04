@@ -1,12 +1,12 @@
 import { Inject } from "@tsed/common";
 import { IProdutoRepositoryGateway } from "../../ports/ProdutoRepositoryGateway";
-import { Produto } from "src/gerencial/core/domain/Produto";
+import { Produto } from "../../../domain/Produto";
 
-export class ObterProdutoUseCase {
+
+export class CriarProdutoUseCase {
     constructor( @Inject() private produtoRepositoryGateway: IProdutoRepositoryGateway ){}
 
-    public async obterPorId(id: number): Promise<Produto> {
-        return this.produtoRepositoryGateway.obterById(id);
+    public async criar(produto: Produto): Promise<number> {
+        return this.produtoRepositoryGateway.criar(produto);
     }
-
 }
