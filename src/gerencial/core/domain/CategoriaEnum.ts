@@ -1,4 +1,4 @@
-export enum Categoria {
+export enum CategoriaEnum {
     LANCHE,
     ACOMPANHAMENTO,
     BEBIDA,

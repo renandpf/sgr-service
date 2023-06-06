@@ -1,10 +1,10 @@
 import { PlatformTest } from "@tsed/common";
 import { mock } from "jest-mock-extended";
-import { IProdutoRepositoryGateway } from "../../ports/ProdutoRepositoryGateway";
+import { IProdutoRepositoryGateway } from "../../ports";
 import { anyProduto } from "../../../../../__tests__/databuilder/ProductDatabuilder";
 import { anyNumber } from "../../../../../__tests__/databuilder/PrimitiveDatabuilder";
 import { ObterProdutoUseCase } from "./ObterProdutoUseCase";
-import { Categoria } from "../../../domain/Categoria";
+import { CategoriaEnum } from "../../../domain";
 
 describe("Testes de ObterProduto", () => {
   beforeEach(PlatformTest.create);
@@ -15,7 +15,7 @@ describe("Testes de ObterProduto", () => {
     const anyProductId: number = anyNumber.build();
     const produtoExpected = anyProduto.build();
     const mockedProdutoRepositoryGateway = mock<IProdutoRepositoryGateway>();
-    mockedProdutoRepositoryGateway.obterById.calledWith(anyProductId).mockResolvedValue(produtoExpected);
+    mockedProdutoRepositoryGateway.obterPorId.calledWith(anyProductId).mockResolvedValue(produtoExpected);
 
     const obterProdutoUseCase = new ObterProdutoUseCase(mockedProdutoRepositoryGateway);
 
@@ -25,13 +25,13 @@ describe("Testes de ObterProduto", () => {
   });
 
   it("deve obter todos produtos a partir de uma categoria", async () => {
-    const anyCategoria = Categoria.ACOMPANHAMENTO;
+    const anyCategoria = CategoriaEnum.ACOMPANHAMENTO;
     const anyProdutoA = anyProduto.build();
     const anyProdutoB = anyProduto.build();
     const produtosExistents = [anyProdutoA, anyProdutoB];
 
     const mockedProdutoRepositoryGateway = mock<IProdutoRepositoryGateway>();
-    mockedProdutoRepositoryGateway.obterByCategoria.calledWith(anyCategoria).mockResolvedValue(produtosExistents);
+    mockedProdutoRepositoryGateway.obterPorCategoria.calledWith(anyCategoria).mockResolvedValue(produtosExistents);
 
     const obterProdutoUseCase = new ObterProdutoUseCase(mockedProdutoRepositoryGateway);
 

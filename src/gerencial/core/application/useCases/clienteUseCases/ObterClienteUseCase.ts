@@ -1,26 +1,25 @@
-import { Inject } from "@tsed/common";
-import { IClienteRepositoryGateway } from "../../ports/ClienteRepositoryGateway";
-import { Cliente } from "src/gerencial/core/domain/Cliente";
-import { ObterCLienteDTOResult } from "./dtos/results/ObterClienteDTOResult";
-import { CLienteDTOResult } from "./dtos/results/ClienteDTOResult";
+import { Inject, Service } from "@tsed/common";
+import { IClienteRepositoryGateway } from "../../ports";
+import { ObterCLienteDTOResult } from "./dtos";
+import { Cliente } from "../../../domain";
+import { ClienteRepositoryGateway } from "../../../../adapter";
 
+@Service()
 export class ObterClienteUseCase {
-
-    constructor( @Inject() private clienteRepositoryGateway: IClienteRepositoryGateway ){}
+    constructor( @Inject(ClienteRepositoryGateway) private clienteRepositoryGateway: IClienteRepositoryGateway ){}
     async obterById(id: number): Promise<ObterCLienteDTOResult> {
-        const cliente = await this.clienteRepositoryGateway.obterById(id);
-        const result = new CLienteDTOResult(cliente);
-        return result;
+        const cliente: Cliente = await this.clienteRepositoryGateway.obterPorId(id);
+        return new ObterCLienteDTOResult(cliente);
     }
-    async obterByCpf(cpf: string): Promise<ObterCLienteDTOResult> {
-        const cliente = await this.clienteRepositoryGateway.obterByCpf(cpf);
-        const result = new CLienteDTOResult(cliente);
-        return result;
+    async obterPorCpf(cpf: string): Promise<ObterCLienteDTOResult> {
+        const cliente = await this.clienteRepositoryGateway.obterPorCpf(cpf);
+        if(!cliente) {
+            throw new Error("TODO: Exceptions");
+        }
+        return new ObterCLienteDTOResult(cliente);
     }
     async obterByEmail(email: string): Promise<ObterCLienteDTOResult> {
-        const cliente = await this.clienteRepositoryGateway.obterByEmail(email);
-        const result = new CLienteDTOResult(cliente);
-        return result;
+        const cliente = await this.clienteRepositoryGateway.obterPorEmail(email);
+        return new ObterCLienteDTOResult(cliente);
     }
-
 }

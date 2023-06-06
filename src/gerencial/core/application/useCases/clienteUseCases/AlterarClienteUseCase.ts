@@ -1,14 +1,15 @@
 import { Inject } from "@tsed/di";
-import { IClienteRepositoryGateway } from "../../ports/ClienteRepositoryGateway";
-import { AlterarCLienteDTO } from "./dtos/AlterarClienteDTO";
-import { Cliente } from "src/gerencial/core/domain/Cliente";
-import { AlterarCLienteDTOResult } from "./dtos/results/AlterarClienteDTOResult";
+import { IClienteRepositoryGateway } from "../../ports";
+import { AlterarCLienteDTO, AlterarCLienteDTOResult } from "./dtos";
+import { Service } from "@tsed/common";
+import { ClienteRepositoryGateway } from "../../../../adapter";
 
+@Service()
 export class AlterarClienteUseCase {
 
-    constructor( @Inject() private clienteRepositoryGateway: IClienteRepositoryGateway ){}
+    constructor( @Inject(ClienteRepositoryGateway) private clienteRepositoryGateway: IClienteRepositoryGateway ){}
     async alterar(clienteDTO: AlterarCLienteDTO): Promise<AlterarCLienteDTOResult> {
-        const cliente = await this.clienteRepositoryGateway.obterByCpf(clienteDTO.cpf);
+        const cliente = await this.clienteRepositoryGateway.obterPorCpf(clienteDTO.cpf);
 
         if (!cliente) {
             throw new Error('TODO: Exceptions');

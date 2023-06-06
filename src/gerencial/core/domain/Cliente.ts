@@ -1,4 +1,4 @@
-import { AlterarCLienteDTO } from "../application/useCases/clienteUseCases/dtos/AlterarClienteDTO";
+import { AlterarCLienteDTO } from "../application";
 
 export class Cliente {
     constructor(

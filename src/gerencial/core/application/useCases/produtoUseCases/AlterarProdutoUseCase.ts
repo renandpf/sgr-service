@@ -1,6 +1,6 @@
 import { Inject } from "@tsed/common";
-import { IProdutoRepositoryGateway } from "../../ports/ProdutoRepositoryGateway";
-import { Produto } from "../../../domain/Produto";
+import { IProdutoRepositoryGateway } from "../../ports";
+import { Produto } from "../../../domain";
 
 export class AlterarProdutoUseCase {
     constructor( @Inject() private produtoRepositoryGateway: IProdutoRepositoryGateway ){}

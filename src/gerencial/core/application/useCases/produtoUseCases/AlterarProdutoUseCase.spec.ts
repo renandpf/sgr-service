@@ -1,6 +1,6 @@
 import { PlatformTest } from "@tsed/common";
 import { mock } from "jest-mock-extended";
-import { IProdutoRepositoryGateway } from "../../ports/ProdutoRepositoryGateway";
+import { IProdutoRepositoryGateway } from "../../ports";
 import { anyProduto } from "../../../../../__tests__/databuilder/ProductDatabuilder";
 import { AlterarProdutoUseCase } from "./AlterarProdutoUseCase";
 

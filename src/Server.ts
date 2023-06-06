@@ -5,8 +5,7 @@ import "@tsed/platform-express"; // /!\ keep this import
 import "@tsed/ajv";
 import "@tsed/swagger";
 import {config} from "./config/index";
-import * as rest from "./controllers/rest/index";
-import * as pages from "./controllers/pages/index";
+import * as gerencial from "./gerencial/adapter/driver/controllers";
 
 @Configuration({
   ...config,
@@ -15,11 +14,8 @@ import * as pages from "./controllers/pages/index";
   httpsPort: false, // CHANGE
   disableComponentsScan: true,
   mount: {
-    "/rest": [
-      ...Object.values(rest)
-    ],
-    "/": [
-      ...Object.values(pages)
+    "/gerencial": [
+      ...Object.values(gerencial)
     ]
   },
   swagger: [
