@@ -8,7 +8,7 @@ import { CriarProdutoUseCase } from "src/gerencial/core/application/useCases/pro
 import { ProdutoJson } from "./json/ProdutoJson";
 import { AlterarProdutoUseCase } from "src/gerencial/core/application/useCases/produtoUseCases/AlterarProdutoUseCase";
 
-@Controller("sgr")
+@Controller("")
 export class ProdutoController {
 
   constructor(
@@ -17,14 +17,14 @@ export class ProdutoController {
     @Inject() private alterarProdutoUseCase: AlterarProdutoUseCase,
   ) {
   }
-  @Get("categorias/{categoria}/produtos")
+  @Get("/categorias/:categoria/produtos")
   @Returns(200, Array<ProdutoJson>)
   async obterPorCategoria(@PathParams("categoria") categoria: CategoriaEnum): Promise<ProdutoJson[]> {//TODO: testar se enum funciona aqui
    const produtos = await this.obterProdutoUseCase.obterPorCategoria(categoria);
    return produtos.map(p => new ProdutoJson(p));
   }
 
-  @Get("produtos/{id}")
+  @Get("/produtos/:id")
   @Returns(200, ProdutoJson)
   async obter(@PathParams("id") id: number): Promise<ProdutoJson> {
    const produto = await this.obterProdutoUseCase.obterPorId(id);
@@ -38,7 +38,7 @@ export class ProdutoController {
     return await this.criarProdutoUseCase.criar(produtoJson.getDomain());
   }
 
-  @Put("/produtos/{id}")
+  @Put("/produtos/:id")
   @Returns(200).Description("Nenhuma resposta")
   async alterar(@PathParams() id: number, @BodyParams() produtoJson: ProdutoJson): Promise<void>{
     return await this.alterarProdutoUseCase.alterar(produtoJson.getDomain(id));
