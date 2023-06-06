@@ -4,7 +4,9 @@ import { IProdutoRepositoryGateway } from "../../ports";
 import { anyProduto } from "../../../../../__tests__/databuilder/ProductDatabuilder";
 import { anyNumber } from "../../../../../__tests__/databuilder/PrimitiveDatabuilder";
 import { ObterProdutoUseCase } from "./ObterProdutoUseCase";
-import { CategoriaEnum } from "../../../domain";
+import { CategoriaEnum, Produto } from "../../../domain";
+import { Optional } from "typescript-optional";
+import { ProdutoNotFoundException } from "../../exception/ProdutoNotFoundException";
 
 describe("Testes de ObterProduto", () => {
   beforeEach(PlatformTest.create);
@@ -13,16 +15,41 @@ describe("Testes de ObterProduto", () => {
   
   it("deve obter um produto pelo id", async () => {
     const anyProductId: number = anyNumber.build();
-    const produtoExpected = anyProduto.build();
+    const produtoExpectedOp = Optional.of(anyProduto.build());
     const mockedProdutoRepositoryGateway = mock<IProdutoRepositoryGateway>();
-    mockedProdutoRepositoryGateway.obterPorId.calledWith(anyProductId).mockResolvedValue(produtoExpected);
+    mockedProdutoRepositoryGateway.obterPorId.calledWith(anyProductId).mockResolvedValue(produtoExpectedOp);
 
     const obterProdutoUseCase = new ObterProdutoUseCase(mockedProdutoRepositoryGateway);
 
     const produtoFound = await obterProdutoUseCase.obterPorId(anyProductId);
 
-    expect(produtoExpected).toEqual(produtoFound);
+    expect(produtoExpectedOp.get()).toEqual(produtoFound);
   });
+
+  it("deve receber erro ao buscar um produto pelo id que não existe", async () => {
+    const anyProductId: number = anyNumber.build();
+    const produtoExpectedOp: Optional<Produto> = Optional.empty();
+    const mockedProdutoRepositoryGateway = mock<IProdutoRepositoryGateway>();
+    mockedProdutoRepositoryGateway.obterPorId.calledWith(anyProductId).mockResolvedValue(produtoExpectedOp);
+
+    const obterProdutoUseCase = new ObterProdutoUseCase(mockedProdutoRepositoryGateway);
+
+    try {
+      await obterProdutoUseCase.obterPorId(anyProductId);
+      expect(false).toEqual(true);//Se chegar aqui é pq tem um bug 
+    } catch (e) {
+      //console.log(e);
+      expect(e.code).toEqual("sgr.produtoNotFound");
+    }
+    
+    //FIXME: essa é maneira correta de testar
+    // const t = () => {
+    //   throw obterProdutoUseCase.obterPorId(anyProductId);
+    // };
+    //expect(t).toThrow(Promise);
+    //expect(t).toThrow(ProdutoNotFoundException);
+  });
+
 
   it("deve obter todos produtos a partir de uma categoria", async () => {
     const anyCategoria = CategoriaEnum.ACOMPANHAMENTO;
