@@ -5,11 +5,11 @@ import { Service } from "@tsed/common";
 @Service()
 export class ClienteRepositoryGateway implements IClienteRepositoryGateway{
   alterar(cliente: Cliente): Promise<Cliente> {
-    return Promise.resolve(null);
+    return Promise.resolve(cliente);
   }
 
   criar(cliente: Cliente): Promise<Cliente> {
-    return Promise.resolve(null);
+    return Promise.resolve(cliente);
   }
 
   obterPorCpf(cpf: string): Promise<Cliente | null> {
