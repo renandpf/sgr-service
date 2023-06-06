@@ -1,11 +1,11 @@
-import { Inject, Service } from "@tsed/common";
+import { Inject } from "@tsed/common";
 import { IProdutoRepositoryGateway } from "../../ports";
 import { Produto } from "src/gerencial/core/domain/Produto";
 import { CategoriaEnum } from "src/gerencial/core/domain/CategoriaEnum";
 import { ProdutoNotFoundException } from "../../exception/ProdutoNotFoundException";
 import { Optional } from "typescript-optional";
 
-@Service()
+//@Service()
 export class ObterProdutoUseCase {
     constructor( @Inject() private produtoRepositoryGateway: IProdutoRepositoryGateway ){}
 
@@ -22,5 +22,4 @@ export class ObterProdutoUseCase {
     public async obterPorCategoria(categoria:  CategoriaEnum): Promise<Produto[]> {
         return this.produtoRepositoryGateway.obterPorCategoria(categoria);
     }
-
 }

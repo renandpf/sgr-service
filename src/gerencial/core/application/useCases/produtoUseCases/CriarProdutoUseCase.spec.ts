@@ -12,7 +12,9 @@ describe("Testes de CriarProduto", () => {
   it("deve criar um novo produto", async () => {
     const newProduto = anyProduto.build();
     const mockedProdutoRepositoryGateway = mock<IProdutoRepositoryGateway>();
-    mockedProdutoRepositoryGateway.criar.calledWith(newProduto).mockResolvedValue(newProduto.id);
+
+    const productId = newProduto.id === undefined ? 1 : newProduto.id;
+    mockedProdutoRepositoryGateway.criar.calledWith(newProduto).mockResolvedValue(productId);
 
     const criarProdutoUseCase = new CriarProdutoUseCase(mockedProdutoRepositoryGateway);
 

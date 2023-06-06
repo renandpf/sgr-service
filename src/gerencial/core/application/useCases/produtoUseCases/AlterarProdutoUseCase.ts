@@ -1,8 +1,8 @@
-import { Inject, Service } from "@tsed/common";
+import { Inject } from "@tsed/common";
 import { IProdutoRepositoryGateway } from "../../ports";
 import { Produto } from "../../../domain";
 
-@Service()
+//@Service()
 export class AlterarProdutoUseCase {
     constructor( @Inject() private produtoRepositoryGateway: IProdutoRepositoryGateway ){}
 
