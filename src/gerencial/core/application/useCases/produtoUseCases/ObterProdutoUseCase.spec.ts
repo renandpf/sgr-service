@@ -6,7 +6,6 @@ import { anyNumber } from "../../../../../__tests__/databuilder/PrimitiveDatabui
 import { ObterProdutoUseCase } from "./ObterProdutoUseCase";
 import { CategoriaEnum, Produto } from "../../../domain";
 import { Optional } from "typescript-optional";
-import { ProdutoNotFoundException } from "../../exception/ProdutoNotFoundException";
 
 describe("Testes de ObterProduto", () => {
   beforeEach(PlatformTest.create);
