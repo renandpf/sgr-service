@@ -1,5 +1,4 @@
-import { CategoriaEnum } from "src/gerencial/core/domain";
-import { Produto } from "src/gerencial/core/domain";
+import { CategoriaEnum, Produto } from "../../../../../core/domain";
 
 export class ProdutoJson {
     public readonly id?: number;

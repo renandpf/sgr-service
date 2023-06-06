@@ -1,7 +1,7 @@
 import { Inject, Service } from "@tsed/common";
 import { IProdutoRepositoryGateway } from "../../ports";
 import { Produto } from "../../../domain";
-import { ProdutoMySqlRepositoryGateway } from "src/gerencial/adapter/driven/repositories/ProdutoMySqlRepositoryGateway";
+import { ProdutoMySqlRepositoryGateway } from "../../../../adapter/driven/repositories/ProdutoMySqlRepositoryGateway";
 
 @Service()
 export class CriarProdutoUseCase {

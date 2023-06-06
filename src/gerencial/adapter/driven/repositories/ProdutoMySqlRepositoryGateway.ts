@@ -1,6 +1,6 @@
 import { Service } from "@tsed/di";
-import { IProdutoRepositoryGateway } from "src/gerencial/core/application/ports";
-import { Produto, CategoriaEnum } from "src/gerencial/core/domain";
+import { IProdutoRepositoryGateway } from "../../../core/application/ports/IProdutoRepositoryGateway";
+import { Produto, CategoriaEnum } from "../../../core/domain";
 import { Optional } from "typescript-optional";
 
 @Service()

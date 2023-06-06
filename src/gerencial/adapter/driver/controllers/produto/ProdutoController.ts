@@ -2,11 +2,11 @@ import { Controller } from "@tsed/di";
 import { Get, Post, Put, Returns } from "@tsed/schema";
 import { BodyParams, Inject, PathParams } from "@tsed/common";
 
-import { CategoriaEnum } from "src/gerencial/core/domain";
-import { ObterProdutoUseCase } from "src/gerencial/core/application/useCases/produtoUseCases/ObterProdutoUseCase";
-import { CriarProdutoUseCase } from "src/gerencial/core/application/useCases/produtoUseCases/CriarProdutoUseCase";
+import { CategoriaEnum } from "../../../../core/domain/CategoriaEnum";
+import { ObterProdutoUseCase } from "../../../../core/application/useCases/produtoUseCases/ObterProdutoUseCase";
+import { AlterarProdutoUseCase } from "../../../../core/application/useCases/produtoUseCases/AlterarProdutoUseCase";
+import { CriarProdutoUseCase } from "../../../../core/application/useCases/produtoUseCases/CriarProdutoUseCase";
 import { ProdutoJson } from "./json/ProdutoJson";
-import { AlterarProdutoUseCase } from "src/gerencial/core/application/useCases/produtoUseCases/AlterarProdutoUseCase";
 
 @Controller("")
 export class ProdutoController {

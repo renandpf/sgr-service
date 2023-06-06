@@ -1,10 +1,9 @@
 import { Inject, Service } from "@tsed/common";
 import { IProdutoRepositoryGateway } from "../../ports";
-import { Produto } from "src/gerencial/core/domain/Produto";
-import { CategoriaEnum } from "src/gerencial/core/domain/CategoriaEnum";
+import { Produto, CategoriaEnum } from "../../../domain";
 import { ProdutoNotFoundException } from "../../exception/ProdutoNotFoundException";
 import { Optional } from "typescript-optional";
-import { ProdutoMySqlRepositoryGateway } from "src/gerencial/adapter/driven/repositories/ProdutoMySqlRepositoryGateway";
+import { ProdutoMySqlRepositoryGateway } from "../../../../adapter/driven/repositories/ProdutoMySqlRepositoryGateway";
 
 @Service()
 export class ObterProdutoUseCase {

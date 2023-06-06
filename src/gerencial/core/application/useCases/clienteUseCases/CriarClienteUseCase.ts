@@ -1,7 +1,7 @@
 import { Inject } from "@tsed/di";
 import { IClienteRepositoryGateway } from "../../ports";
 import { CriarCLienteDTO, CriarClienteDTOResult } from "./dtos";
-import { Cliente } from "src/gerencial/core/domain/Cliente";
+import { Cliente } from "../../../domain/Cliente";
 import { Service } from "@tsed/common";
 import { ClienteRepositoryGateway } from "../../../../adapter";
 

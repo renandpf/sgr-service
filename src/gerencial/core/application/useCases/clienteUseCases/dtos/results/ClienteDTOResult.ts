@@ -1,4 +1,4 @@
-import { Cliente } from "src/gerencial/core/domain/Cliente";
+import { Cliente } from "../../../../../domain/Cliente";
 import { Description, Example, Property } from "@tsed/schema";
 
 export class CLienteDTOResult {

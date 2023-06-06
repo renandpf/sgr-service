@@ -1,6 +1,4 @@
 import { PlatformTest } from "@tsed/common";
-import { MysqlDataSource } from "./MysqlDatasource";
-
 
 describe("MysqlDatasource", () => {
   beforeEach(PlatformTest.create);
