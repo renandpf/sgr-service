@@ -6,4 +6,5 @@ export interface IProdutoRepositoryGateway {
     obterPorCategoria(categoria: CategoriaEnum): Promise<Produto[]>;
     criar(produto: Produto): Promise<number>;
     alterar(produto: Produto): Promise<void>;
+    excluir(produto: Produto): Promise<void>;
 }
