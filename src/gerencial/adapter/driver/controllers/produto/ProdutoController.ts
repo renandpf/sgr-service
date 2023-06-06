@@ -2,7 +2,7 @@ import { Controller } from "@tsed/di";
 import { Get, Post, Put, Returns } from "@tsed/schema";
 import { BodyParams, Inject, PathParams } from "@tsed/common";
 
-import { CategoriaEnum, Produto } from "src/gerencial/core/domain";
+import { CategoriaEnum } from "src/gerencial/core/domain";
 import { ObterProdutoUseCase } from "src/gerencial/core/application/useCases/produtoUseCases/ObterProdutoUseCase";
 import { CriarProdutoUseCase } from "src/gerencial/core/application/useCases/produtoUseCases/CriarProdutoUseCase";
 import { ProdutoJson } from "./json/ProdutoJson";
