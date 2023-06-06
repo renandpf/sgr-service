@@ -18,15 +18,23 @@ export class ProdutoController {
   ) {
   }
   @Get("categorias/{categoria}/produtos")
-  @Returns(200, Array<Produto>)
+  @Returns(200, Array<ProdutoJson>)
   async obterPorCategoria(@PathParams("categoria") categoria: CategoriaEnum): Promise<ProdutoJson[]> {//TODO: testar se enum funciona aqui
    const produtos = await this.obterProdutoUseCase.obterPorCategoria(categoria);
-   return Promise.resolve(produtos.map(p => new ProdutoJson(p)));
+   return produtos.map(p => new ProdutoJson(p));
   }
+
+  @Get("produtos/{id}")
+  @Returns(200, ProdutoJson)
+  async obter(@PathParams("id") id: number): Promise<ProdutoJson> {
+   const produto = await this.obterProdutoUseCase.obterPorId(id);
+   return new ProdutoJson(produto);
+  }
+
 
   @Post("/produtos")
   @Returns(200).Description("ID do produto criado")
-  async criar(@BodyParams() produtoJson: ProdutoJson){
+  async criar(@BodyParams() produtoJson: ProdutoJson): Promise<number>{
     return await this.criarProdutoUseCase.criar(produtoJson.getDomain());
   }
 
@@ -35,6 +43,4 @@ export class ProdutoController {
   async alterar(@PathParams() id: number, @BodyParams() produtoJson: ProdutoJson): Promise<void>{
     return await this.alterarProdutoUseCase.alterar(produtoJson.getDomain(id));
   }
-
-
 }
