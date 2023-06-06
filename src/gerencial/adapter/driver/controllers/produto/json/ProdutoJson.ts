@@ -13,8 +13,11 @@ export class ProdutoJson {
         this.valor = produto.valor;
         this.categoria = produto.categoria;
     }
-
-    public getDomain(): Produto{
+    
+    public getDomain(id?: number): Produto{
+        if(id){
+            return new Produto(this.nome, this.valor, this.categoria, id);
+        } 
         return new Produto(this.nome, this.valor, this.categoria, this.id);
-    }
+    }    
 }
