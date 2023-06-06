@@ -1,13 +1,14 @@
-import { Inject } from "@tsed/common";
+import { Inject, Service } from "@tsed/common";
 import { IProdutoRepositoryGateway } from "../../ports";
 import { Produto } from "src/gerencial/core/domain/Produto";
 import { CategoriaEnum } from "src/gerencial/core/domain/CategoriaEnum";
 import { ProdutoNotFoundException } from "../../exception/ProdutoNotFoundException";
 import { Optional } from "typescript-optional";
+import { ProdutoMySqlRepositoryGateway } from "src/gerencial/adapter/driven/repositories/ProdutoMySqlRepositoryGateway";
 
-//@Service()
+@Service()
 export class ObterProdutoUseCase {
-    constructor( @Inject() private produtoRepositoryGateway: IProdutoRepositoryGateway ){}
+    constructor( @Inject(ProdutoMySqlRepositoryGateway) private produtoRepositoryGateway: IProdutoRepositoryGateway ){}
 
     public async obterPorId(id: number): Promise<Produto> {
 
