@@ -5,6 +5,9 @@ import { Optional } from "typescript-optional";
 
 @Service()
 export class ProdutoMySqlRepositoryGateway implements IProdutoRepositoryGateway {
+    excluir(produto: Produto): Promise<void> {
+        throw new Error("Method not implemented.");
+    }
     obterPorId(id: number): Promise<Optional<Produto>> {
         throw new Error("Method not implemented.");
     }
