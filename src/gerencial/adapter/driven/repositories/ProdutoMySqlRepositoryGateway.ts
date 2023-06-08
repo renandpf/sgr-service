@@ -4,7 +4,7 @@ import { Produto, CategoriaEnum } from "../../../core/domain";
 import { Optional } from "typescript-optional";
 import {MYSQL_DATA_SOURCE} from "../../../../config/database/MysqlDataSource";
 import { DataSource, In } from "typeorm";
-import { ProdutoEntity } from "./entity/ProdutoEntity";
+import { ProdutoEntity } from "../../../../common/database/entity/ProdutoEntity";
 
 @Service()
 export class ProdutoMySqlRepositoryGateway implements IProdutoRepositoryGateway {
