@@ -3,7 +3,7 @@ import { IProdutoRepositoryGateway } from "../../ports";
 import { Produto, CategoriaEnum } from "../../../domain";
 import { ProdutoNotFoundException } from "../../exception/ProdutoNotFoundException";
 import { Optional } from "typescript-optional";
-import { ProdutoMySqlRepositoryGateway } from "../../../../adapter/driven/repositories/ProdutoMySqlRepositoryGateway";
+import { ProdutoMySqlRepositoryGateway } from "../../../../adapter";
 
 @Service()
 export class ObterProdutoUseCase {

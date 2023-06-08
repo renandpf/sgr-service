@@ -1,30 +1,30 @@
 import { Inject, Service } from "@tsed/common";
 import { IClienteRepositoryGateway } from "../../ports";
-import { ObterCLienteDTOResult } from "./dtos";
-import { ClienteRepositoryGateway } from "../../../../adapter";
+import { ClienteMySqlRepositoryGateway } from "../../../../adapter";
+import { Cliente } from "../../../domain";
 
 @Service()
 export class ObterClienteUseCase {
-    constructor( @Inject(ClienteRepositoryGateway) private clienteRepositoryGateway: IClienteRepositoryGateway ){}
-    async obterById(id: number): Promise<ObterCLienteDTOResult> {
-        const cliente = await this.clienteRepositoryGateway.obterPorId(id);
-        if(!cliente) {
+    constructor( @Inject(ClienteMySqlRepositoryGateway) private clienteRepositoryGateway: IClienteRepositoryGateway ){}
+    async obterById(id: number): Promise<Cliente> {
+        const clienteOp = await this.clienteRepositoryGateway.obterPorId(id);
+        if(clienteOp.isEmpty()) {
             throw new Error("TODO: Exceptions");
         }
-        return new ObterCLienteDTOResult(cliente);
+        return clienteOp.get();
     }
-    async obterPorCpf(cpf: string): Promise<ObterCLienteDTOResult> {
-        const cliente = await this.clienteRepositoryGateway.obterPorCpf(cpf);
-        if(!cliente) {
+    async obterPorCpf(cpf: string): Promise<Cliente> {
+        const clienteOp = await this.clienteRepositoryGateway.obterPorCpf(cpf);
+        if(clienteOp.isEmpty()) {
             throw new Error("TODO: Exceptions");
         }
-        return new ObterCLienteDTOResult(cliente);
+        return clienteOp.get();
     }
-    async obterByEmail(email: string): Promise<ObterCLienteDTOResult> {
-        const cliente = await this.clienteRepositoryGateway.obterPorEmail(email);
-        if(!cliente) {
+    async obterByEmail(email: string): Promise<Cliente> {
+        const clienteOp = await this.clienteRepositoryGateway.obterPorEmail(email);
+        if(clienteOp.isEmpty()) {
             throw new Error("TODO: Exceptions");
         }
-        return new ObterCLienteDTOResult(cliente);
+        return clienteOp.get();
     }
 }

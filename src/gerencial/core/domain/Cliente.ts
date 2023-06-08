@@ -1,14 +1,13 @@
-import { AlterarCLienteDTO } from "../application";
 
 export class Cliente {
     constructor(
-        readonly id: number,
-        readonly nome: string, 
+        readonly nome: string,
         readonly cpf: string,
-        readonly email: string
+        readonly email: string,
+        readonly id?: number
     ){}
 
-    set(cliente: AlterarCLienteDTO) {
-        return new Cliente(this.id, cliente.nome, this.cpf, cliente.email)
+    set(clienteAlt: Cliente) {
+        return new Cliente(clienteAlt.nome, this.cpf, clienteAlt.email, this.id)
     }
 }

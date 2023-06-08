@@ -1,10 +1,10 @@
 import { Inject, Service } from "@tsed/di";
-import { IProdutoRepositoryGateway } from "../../../core/application/ports/IProdutoRepositoryGateway";
+import { IProdutoRepositoryGateway } from "../../../core/application/ports";
 import { Produto, CategoriaEnum } from "../../../core/domain";
 import { Optional } from "typescript-optional";
-import {MYSQL_DATA_SOURCE} from "../../../../config/database/MysqlDataSource";
+import { MYSQL_DATA_SOURCE } from "../../../../config/database/MysqlDataSource";
 import { DataSource, In } from "typeorm";
-import { ProdutoEntity } from "./entity/ProdutoEntity";
+import { ProdutoEntity } from "../entities";
 
 @Service()
 export class ProdutoMySqlRepositoryGateway implements IProdutoRepositoryGateway {

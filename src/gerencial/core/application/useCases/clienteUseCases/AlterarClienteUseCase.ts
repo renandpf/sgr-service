@@ -1,24 +1,24 @@
 import { Inject } from "@tsed/di";
 import { IClienteRepositoryGateway } from "../../ports";
-import { AlterarCLienteDTO, AlterarCLienteDTOResult } from "./dtos";
 import { Service } from "@tsed/common";
-import { ClienteRepositoryGateway } from "../../../../adapter";
+import { ClienteMySqlRepositoryGateway } from "../../../../adapter";
+import { Cliente } from "../../../domain";
 
 @Service()
 export class AlterarClienteUseCase {
 
-    constructor( @Inject(ClienteRepositoryGateway) private clienteRepositoryGateway: IClienteRepositoryGateway ){}
-    async alterar(clienteDTO: AlterarCLienteDTO): Promise<AlterarCLienteDTOResult> {
-        const cliente = await this.clienteRepositoryGateway.obterPorCpf(clienteDTO.cpf);
+    constructor( @Inject(ClienteMySqlRepositoryGateway) private clienteRepositoryGateway: IClienteRepositoryGateway ){}
+    async alterar(clienteReq: Cliente): Promise<Cliente> {
+        const clienteOp = await this.clienteRepositoryGateway.obterPorCpf(clienteReq.cpf);
 
-        if (!cliente) {
+        if (clienteOp.isEmpty()) {
             throw new Error('TODO: Exceptions');
         }
 
-        const clienteAlterado = cliente.set(clienteDTO);
+        const clienteAlterado = clienteOp.get().set(clienteReq);
 
         // TODO: Implementar validações de negócio
 
-        return new AlterarCLienteDTOResult(await this.clienteRepositoryGateway.alterar(clienteAlterado));
+        return await this.clienteRepositoryGateway.alterar(clienteAlterado);
     }
 }

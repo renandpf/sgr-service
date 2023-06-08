@@ -1,11 +1,11 @@
-import { Cliente } from "../../../../../domain/Cliente";
+import { Cliente } from "../../../../../core/domain";
 import { Description, Example, Property } from "@tsed/schema";
 
-export class CLienteDTOResult {
-    @Description("Identificador interno d cliente")
+export class ClienteJson {
+    @Description("Identificador")
     @Example("123456")
     @Property()
-    public id: number;
+    public readonly id?: number;
 
     @Description("Nome do cliente")
     @Example("Cliente teste")
@@ -21,11 +21,18 @@ export class CLienteDTOResult {
     @Example("cliente@teste.com.br")
     @Property()
     public readonly email: string;
-
-    constructor (cliente: Cliente){
+    
+    public constructor(cliente: Cliente){
         this.id = cliente.id;
         this.nome = cliente.nome;
-        this.email = cliente.email;
         this.cpf = cliente.cpf;
+        this.email = cliente.email;
     }
+    
+    public getDomain(id?: number): Cliente{
+        if(id){
+            return new Cliente(this.nome, this.cpf, this.email, id);
+        } 
+        return new Cliente(this.nome, this.cpf, this.email, this.id);
+    }    
 }

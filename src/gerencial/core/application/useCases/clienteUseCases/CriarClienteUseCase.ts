@@ -1,26 +1,23 @@
 import { Inject } from "@tsed/di";
 import { IClienteRepositoryGateway } from "../../ports";
-import { CriarCLienteDTO, CriarClienteDTOResult } from "./dtos";
-import { Cliente } from "../../../domain/Cliente";
+import { Cliente } from "../../../domain";
 import { Service } from "@tsed/common";
-import { ClienteRepositoryGateway } from "../../../../adapter";
+import { ClienteMySqlRepositoryGateway } from "../../../../adapter";
 
 @Service()
 export class CriarClienteUseCase {
 
-    constructor( @Inject(ClienteRepositoryGateway) private clienteRepositoryGateway: IClienteRepositoryGateway ){}
-    async criar(clienteDTO: CriarCLienteDTO): Promise<CriarClienteDTOResult> {
-        const cliente = await this.clienteRepositoryGateway.obterPorCpf(clienteDTO.cpf);
+    constructor( @Inject(ClienteMySqlRepositoryGateway) private clienteRepositoryGateway: IClienteRepositoryGateway ){}
+    async criar(clienteReq: Cliente): Promise<Cliente> {
+        const clienteOp = await this.clienteRepositoryGateway.obterPorCpf(clienteReq.cpf);
 
-        if (cliente) {
+        if (!clienteOp.isEmpty()) {
             throw new Error('TODO: Exceptions');
         }
 
-        const clienteDomain = new Cliente(-1, clienteDTO.nome, clienteDTO.cpf, clienteDTO.email);
-
         // TODO: Implementar validações de negócio
 
-        return new CriarClienteDTOResult(await this.clienteRepositoryGateway.criar(clienteDomain));
+        return await this.clienteRepositoryGateway.criar(clienteReq);
     }
 
 }

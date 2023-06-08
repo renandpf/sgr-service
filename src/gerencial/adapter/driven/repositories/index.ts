@@ -1,2 +1,2 @@
-export * from './ClienteRepositoryGateway'
+export * from './ClienteMySqlRepositoryGateway'
 export * from './ProdutoMySqlRepositoryGateway'

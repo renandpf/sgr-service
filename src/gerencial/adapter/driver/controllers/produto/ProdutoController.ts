@@ -1,8 +1,7 @@
 import { Controller } from "@tsed/di";
 import { Delete, Get, Post, Put, Returns } from "@tsed/schema";
 import { BodyParams, Inject, PathParams } from "@tsed/common";
-
-import { CategoriaEnum } from "../../../../core/domain/CategoriaEnum";
+import { CategoriaEnum } from "../../../../core/domain";
 import { ObterProdutoUseCase } from "../../../../core/application/useCases/produtoUseCases/ObterProdutoUseCase";
 import { AlterarProdutoUseCase } from "../../../../core/application/useCases/produtoUseCases/AlterarProdutoUseCase";
 import { CriarProdutoUseCase } from "../../../../core/application/useCases/produtoUseCases/CriarProdutoUseCase";
