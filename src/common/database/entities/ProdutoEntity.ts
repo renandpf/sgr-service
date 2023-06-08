@@ -1,5 +1,5 @@
 import {Maximum, MaxLength, Minimum, Property, Required} from "@tsed/schema";
-import { Produto } from "../../../core/domain";
+import { Produto } from "../../../gerencial";
 import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
 
 @Entity("Produto")

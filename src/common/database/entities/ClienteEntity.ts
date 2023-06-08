@@ -1,6 +1,6 @@
 import { Maximum, MaxLength, Property, Required } from "@tsed/schema";
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
-import { Cliente } from "../../../core/domain";
+import { Cliente } from "../../../gerencial";
 
 @Entity("Cliente")
 export class ClienteEntity {
