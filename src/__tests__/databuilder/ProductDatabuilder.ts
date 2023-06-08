@@ -1,12 +1,10 @@
 import * as factory from "factory.ts";
-
-import faker from "faker";
-import { CategoriaEnum } from "../../gerencial/core/domain/CategoriaEnum";
-import { Produto } from "../../gerencial/core/domain/Produto";
+import { faker } from "@faker-js/faker";
+import { CategoriaEnum, Produto } from "../../gerencial";
 
 export const anyProduto = factory.Sync.makeFactory<Produto>({
-    id: faker.datatype.number(),
-    valor: faker.datatype.number(),
-    nome: faker.random.alpha(),
+    id: faker.number.int(),
+    valor: faker.number.float(),
+    nome: faker.string.alpha(),
     categoria: CategoriaEnum.ACOMPANHAMENTO,
 });
