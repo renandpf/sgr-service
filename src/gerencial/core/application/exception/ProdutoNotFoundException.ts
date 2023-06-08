@@ -1,4 +1,4 @@
-import { SystemBaseException } from "./SystemBaseException";
+import { SystemBaseException } from "../../../../common/exception/SystemBaseException";
 
 export class ProdutoNotFoundException extends SystemBaseException {
     public readonly code = "sgr.produtoNotFound";

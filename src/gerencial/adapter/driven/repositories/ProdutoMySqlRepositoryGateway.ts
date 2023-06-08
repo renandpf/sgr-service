@@ -5,6 +5,7 @@ import { Optional } from "typescript-optional";
 import {MYSQL_DATA_SOURCE} from "../../../../config/database/MysqlDataSource";
 import { DataSource, In } from "typeorm";
 import { ProdutoEntity } from "../../../../common/database/entity/ProdutoEntity";
+import { ErrorToAccessDatabaseException } from "../../exception/ErrorToAccessDatabaseException";
 
 @Service()
 export class ProdutoMySqlRepositoryGateway implements IProdutoRepositoryGateway {
@@ -21,10 +22,13 @@ export class ProdutoMySqlRepositoryGateway implements IProdutoRepositoryGateway 
         throw new Error("Method not implemented.");
     }
     async obterPorCategoria(categoria: CategoriaEnum): Promise<Produto[]> {
-        const produtosEntities = await this.mysqlDataSource.manager.find(ProdutoEntity);
-        const produtos = produtosEntities.map(pe => pe.getDomain());
-
-        return produtos;
+        try {
+            const produtosEntities = await this.mysqlDataSource.manager.find(ProdutoEntity);//FIXME: filtrar pela categoria
+            return produtosEntities.map(pe => pe.getDomain());
+        } catch(e){
+            //TODO: logar
+            throw new ErrorToAccessDatabaseException();
+        }
     }
     criar(produto: Produto): Promise<number> {
         throw new Error("Method not implemented.");
