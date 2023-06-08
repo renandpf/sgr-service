@@ -12,7 +12,8 @@ export const MysqlDataSource = new DataSource({
   port: 3306,
   username: "root",
   password: "senha",
-  database: "sgr_database"
+  database: "sgr_database",
+  synchronize: true,
 });
 
 registerProvider<DataSource>({
