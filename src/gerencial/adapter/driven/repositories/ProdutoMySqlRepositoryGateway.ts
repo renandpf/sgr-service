@@ -14,9 +14,16 @@ export class ProdutoMySqlRepositoryGateway implements IProdutoRepositoryGateway 
     @Inject(PRODUTO_DATABASE_REPOSITORY)
     protected produtoRepository: PRODUTO_DATABASE_REPOSITORY;
 
-    excluir(id: number): Promise<void> {
-        throw new Error("Method not implemented.");
+    async excluir(id: number): Promise<void> {
+        try {
+            await this.produtoRepository.delete(id);
+        }
+        catch (e) {
+            //TODO: logar
+            throw new ErrorToAccessDatabaseException();
+        }
     }
+
     obterPorId(id: number): Promise<Optional<Produto>> {
         //this.mysqlDataSource.manager.findBy({id: In([id])});
 
@@ -27,7 +34,7 @@ export class ProdutoMySqlRepositoryGateway implements IProdutoRepositoryGateway 
             const produtosEntities = await this.produtoRepository.find();//FIXME: filtrar pela categoria
             return produtosEntities.map(pe => pe.getDomain());
 
-        } catch(e){
+        } catch (e) {
             //TODO: logar
             throw new ErrorToAccessDatabaseException();
         }
