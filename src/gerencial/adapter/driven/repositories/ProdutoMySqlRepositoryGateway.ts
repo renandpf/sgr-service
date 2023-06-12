@@ -37,6 +37,7 @@ export class ProdutoMySqlRepositoryGateway implements IProdutoRepositoryGateway 
 
         throw new Error("Method not implemented.");
     }
+    
     async obterPorCategoria(categoria: CategoriaEnum): Promise<Produto[]> {
         try {
             this.logger.trace("Start categoria={}", categoria)
