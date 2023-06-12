@@ -7,6 +7,7 @@ import { PRODUTO_DATABASE_REPOSITORY } from "../../../../config/database/reposit
 
 import { Logger } from "@tsed/common";
 import { Equal } from "typeorm";
+import { ProdutoEntity } from "src/common";
 
 @Service()
 export class ProdutoMySqlRepositoryGateway implements IProdutoRepositoryGateway {
@@ -65,8 +66,19 @@ export class ProdutoMySqlRepositoryGateway implements IProdutoRepositoryGateway 
             throw new ErrorToAccessDatabaseException();
         }
     }
-    criar(produto: Produto): Promise<number> {
-        throw new Error("Method not implemented.");
+    async criar(produto: Produto): Promise<number> {
+        try {
+            this.logger.trace("Start produto={}", produto)
+            const produtoSavedEntities = await this.produtoRepository.save(new ProdutoEntity(produto));
+            const idProdutoCreated = produtoSavedEntities.id;
+            this.logger.trace("End idProdutoCreated={}", idProdutoCreated)
+            return idProdutoCreated;
+
+        } catch (e) {
+            this.logger.error(e);
+            throw new ErrorToAccessDatabaseException();
+        }
+
     }
     alterar(produto: Produto): Promise<void> {
         throw new Error("Method not implemented.");
