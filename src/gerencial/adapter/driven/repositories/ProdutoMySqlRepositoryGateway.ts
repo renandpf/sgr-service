@@ -8,19 +8,26 @@ import { ProdutoEntity } from "../../../../common";
 import { ErrorToAccessDatabaseException } from "../../exception/ErrorToAccessDatabaseException";
 import { PRODUTO_DATABASE_REPOSITORY } from "../../../../config/database/repository/repository-register.provider";
 import { equal } from "assert";
+import { Logger } from "@tsed/common";
 
 @Service()
 export class ProdutoMySqlRepositoryGateway implements IProdutoRepositoryGateway {
+
+    @Inject()
+    logger: Logger;
 
     @Inject(PRODUTO_DATABASE_REPOSITORY)
     protected produtoRepository: PRODUTO_DATABASE_REPOSITORY;
 
     async excluir(id: number): Promise<void> {
         try {
+            this.logger.trace("Start id={}", id)
+
             await this.produtoRepository.delete(id);
+            this.logger.trace("End")
         }
         catch (e) {
-            //TODO: logar
+            this.logger.error(e);
             throw new ErrorToAccessDatabaseException();
         }
     }
@@ -32,12 +39,16 @@ export class ProdutoMySqlRepositoryGateway implements IProdutoRepositoryGateway 
     }
     async obterPorCategoria(categoria: CategoriaEnum): Promise<Produto[]> {
         try {
+            this.logger.trace("Start categoria={}", categoria)
             const position = (CategoriaEnum as never)[categoria] + 1;
             const produtosEntities = await this.produtoRepository.findBy({categoriaId: Equal(position)});
-            return produtosEntities.map(pe => pe.getDomain());
+            const produtos = produtosEntities.map(pe => pe.getDomain());
+
+            this.logger.trace("End produtos={}", produtos)
+            return produtos;
 
         } catch (e) {
-            //TODO: logar
+            this.logger.error(e);
             throw new ErrorToAccessDatabaseException();
         }
     }
