@@ -2,13 +2,11 @@ import { Inject, Service } from "@tsed/di";
 import { IProdutoRepositoryGateway } from "../../../core/application/ports";
 import { Produto, CategoriaEnum } from "../../../core/domain";
 import { Optional } from "typescript-optional";
-import { MYSQL_DATA_SOURCE } from "../../../../config/database/MysqlDataSource";
-import { DataSource, Equal, In } from "typeorm";
-import { ProdutoEntity } from "../../../../common";
 import { ErrorToAccessDatabaseException } from "../../exception/ErrorToAccessDatabaseException";
 import { PRODUTO_DATABASE_REPOSITORY } from "../../../../config/database/repository/repository-register.provider";
-import { equal } from "assert";
+
 import { Logger } from "@tsed/common";
+import { Equal } from "typeorm";
 
 @Service()
 export class ProdutoMySqlRepositoryGateway implements IProdutoRepositoryGateway {
@@ -32,12 +30,26 @@ export class ProdutoMySqlRepositoryGateway implements IProdutoRepositoryGateway 
         }
     }
 
-    obterPorId(id: number): Promise<Optional<Produto>> {
-        //this.mysqlDataSource.manager.findBy({id: In([id])});
+    async obterPorId(id: number): Promise<Optional<Produto>> {
+        try {
+            this.logger.trace("Start id={}", id)
+            const produtoEntity = await this.produtoRepository.findOneBy({id: Equal(id)});
 
-        throw new Error("Method not implemented.");
+
+            let produtoOp: Optional<Produto> = Optional.empty();
+            if(produtoEntity !== null){
+                produtoOp = Optional.of(produtoEntity.getDomain());
+            }
+
+            this.logger.trace("End produtoOp={}", produtoOp)
+            return produtoOp;
+
+        } catch (e) {
+            this.logger.error(e);
+            throw new ErrorToAccessDatabaseException();
+        }
     }
-    
+
     async obterPorCategoria(categoria: CategoriaEnum): Promise<Produto[]> {
         try {
             this.logger.trace("Start categoria={}", categoria)
