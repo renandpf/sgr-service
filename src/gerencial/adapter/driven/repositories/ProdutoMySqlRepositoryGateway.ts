@@ -69,9 +69,9 @@ export class ProdutoMySqlRepositoryGateway implements IProdutoRepositoryGateway 
     async criar(produto: Produto): Promise<number> {
         try {
             this.logger.trace("Start produto={}", produto)
-            const produtoSavedEntities = await this.produtoRepository.save(new ProdutoEntity(produto));
-            const idProdutoCreated = produtoSavedEntities.id;
-            this.logger.trace("End idProdutoCreated={}", idProdutoCreated)
+            const produtoSavedEntity = await this.produtoRepository.save(new ProdutoEntity(produto));
+            const idProdutoCreated = produtoSavedEntity.id;
+            this.logger.trace("End idProdutoCreated={}", idProdutoCreated);
             return idProdutoCreated;
 
         } catch (e) {
@@ -80,8 +80,17 @@ export class ProdutoMySqlRepositoryGateway implements IProdutoRepositoryGateway 
         }
 
     }
-    alterar(produto: Produto): Promise<void> {
-        throw new Error("Method not implemented.");
+    async alterar(produto: Produto): Promise<void> {
+        try {
+            this.logger.trace("Start produto={}", produto)
+            await this.produtoRepository.save(new ProdutoEntity(produto));
+            this.logger.trace("End");
+
+        } catch (e) {
+            this.logger.error(e);
+            throw new ErrorToAccessDatabaseException();
+        }
+
     }
 
 }
