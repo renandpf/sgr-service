@@ -7,11 +7,10 @@ import { PRODUTO_DATABASE_REPOSITORY } from "../../../../config/database/reposit
 
 import { Logger } from "@tsed/common";
 import { Equal } from "typeorm";
-import { ProdutoEntity } from "src/common";
+import { ProdutoEntity } from "../../../../common/database/entities/ProdutoEntity";
 
 @Service()
 export class ProdutoMySqlRepositoryGateway implements IProdutoRepositoryGateway {
-
     @Inject()
     logger: Logger;
 
@@ -93,4 +92,11 @@ export class ProdutoMySqlRepositoryGateway implements IProdutoRepositoryGateway 
 
     }
 
+    async existePedidoByProdutoId(produtoId: number): Promise<boolean> {
+        this.logger.trace("Start produtoId={}", produtoId)
+        this.logger.warn("**** method not implemented! ****")
+        const existsPedido = false;
+        this.logger.trace("End existsPedido={}", existsPedido)
+        return existsPedido;
+    }
 }

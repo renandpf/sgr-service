@@ -2,9 +2,10 @@ import { Optional } from "typescript-optional";
 import { CategoriaEnum, Produto } from "../../domain";
 
 export interface IProdutoRepositoryGateway {
-    obterPorId(id: number): Promise<Optional<Produto>>;
+    obterPorId(produtoId: number): Promise<Optional<Produto>>;
     obterPorCategoria(categoria: CategoriaEnum): Promise<Produto[]>;
     criar(produto: Produto): Promise<number>;
     alterar(produto: Produto): Promise<void>;
-    excluir(id: number): Promise<void>;
+    excluir(produtoId: number): Promise<void>;
+    existePedidoByProdutoId(produtoId: number): Promise<boolean>;
 }
