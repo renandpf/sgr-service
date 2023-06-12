@@ -12,7 +12,6 @@ export class ExcluirProdutoUseCase {
 
     public async excluir(id: number): Promise<void> {
         this.logger.trace("Start id={}", id);
-        //TODO: adicionar a regra: caso o produto esteja associado a pelo menos 1 pedido, não deve ser excluído.
         const existePedido = await this.produtoRepositoryGateway.existePedidoByProdutoId(id);
         if(existePedido){
             this.logger.warn("Product is associated with at least 1 order");
