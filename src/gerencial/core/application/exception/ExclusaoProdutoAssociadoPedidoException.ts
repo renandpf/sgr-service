@@ -1,4 +1,4 @@
-import { SystemBaseException } from "../../../../common";
+import { SystemBaseException } from "../../../../common/exception/SystemBaseException";
 
 export class ExclusaoProdutoAssociadoPedidoException extends SystemBaseException {
     public readonly code = "sgr.exclusionProductAssociatedWithOrder";
