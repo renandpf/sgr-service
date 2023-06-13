@@ -6,11 +6,9 @@ import { Logger } from "@tsed/common";
 
 @Service()
 export class AlterarProdutoUseCase {
-    constructor( @Inject(ProdutoMySqlRepositoryGateway) private produtoRepositoryGateway: IProdutoRepositoryGateway ){}
-
-    @Inject()
-    logger: Logger;
-
+    constructor( 
+        @Inject(ProdutoMySqlRepositoryGateway) private produtoRepositoryGateway: IProdutoRepositoryGateway,
+        @Inject() private logger: Logger){}
 
     public async alterar(produto: Produto): Promise<void> {
         //TODO: validar se id foi informado

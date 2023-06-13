@@ -1,8 +1,10 @@
-import { PlatformTest } from "@tsed/common";
+import { PlatformTest, Logger } from "@tsed/common";
 import { mock } from "jest-mock-extended";
 import { IProdutoRepositoryGateway } from "../../ports";
 import { anyProduto } from "../../../../../__tests__/databuilder/ProductDatabuilder";
 import { AlterarProdutoUseCase } from "./AlterarProdutoUseCase";
+
+const mockedLogger = mock<Logger>();
 
 describe("Testes de Alterar Produto", () => {
   beforeEach(PlatformTest.create);
@@ -14,7 +16,7 @@ describe("Testes de Alterar Produto", () => {
     const mockedProdutoRepositoryGateway = mock<IProdutoRepositoryGateway>();
     mockedProdutoRepositoryGateway.alterar.calledWith(changedProduto).mockResolvedValue();
     
-    const alterarProdutoUseCase = new AlterarProdutoUseCase(mockedProdutoRepositoryGateway);
+    const alterarProdutoUseCase = new AlterarProdutoUseCase(mockedProdutoRepositoryGateway, mockedLogger);
 
     await alterarProdutoUseCase.alterar(changedProduto);
     

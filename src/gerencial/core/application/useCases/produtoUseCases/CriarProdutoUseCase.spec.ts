@@ -1,8 +1,10 @@
-import { PlatformTest } from "@tsed/common";
+import { PlatformTest, Logger } from "@tsed/common";
 import { mock } from "jest-mock-extended";
 import { IProdutoRepositoryGateway } from "../../ports";
 import { anyProduto } from "../../../../../__tests__/databuilder/ProductDatabuilder";
 import { CriarProdutoUseCase } from "./CriarProdutoUseCase";
+
+const mockedLogger = mock<Logger>();
 
 describe("Testes de CriarProduto", () => {
   beforeEach(PlatformTest.create);
@@ -16,7 +18,7 @@ describe("Testes de CriarProduto", () => {
     const productId = newProduto.id === undefined ? 1 : newProduto.id;
     mockedProdutoRepositoryGateway.criar.calledWith(newProduto).mockResolvedValue(productId);
 
-    const criarProdutoUseCase = new CriarProdutoUseCase(mockedProdutoRepositoryGateway);
+    const criarProdutoUseCase = new CriarProdutoUseCase(mockedProdutoRepositoryGateway, mockedLogger);
 
     const newProdutoId = await criarProdutoUseCase.criar(newProduto);
     expect(newProduto.id).toEqual(newProdutoId);

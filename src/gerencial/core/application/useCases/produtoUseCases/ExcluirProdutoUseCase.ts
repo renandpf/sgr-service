@@ -5,10 +5,11 @@ import { Logger } from "@tsed/common";
 import { ExclusaoProdutoAssociadoPedidoException } from "../../exception/ExclusaoProdutoAssociadoPedidoException";
 
 export class ExcluirProdutoUseCase {
-    constructor(@Inject(ProdutoMySqlRepositoryGateway) private produtoRepositoryGateway: IProdutoRepositoryGateway) { }
+    constructor(
+        @Inject(ProdutoMySqlRepositoryGateway) private produtoRepositoryGateway: IProdutoRepositoryGateway,
+        @Inject() private logger: Logger,
+    ) { }
 
-    @Inject()
-    logger: Logger;
 
     public async excluir(id: number): Promise<void> {
         this.logger.trace("Start id={}", id);

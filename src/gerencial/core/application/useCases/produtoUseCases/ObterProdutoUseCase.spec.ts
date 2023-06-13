@@ -1,4 +1,4 @@
-import { PlatformTest } from "@tsed/common";
+import { Logger, PlatformTest } from "@tsed/common";
 import { mock } from "jest-mock-extended";
 import { IProdutoRepositoryGateway } from "../../ports";
 import { anyProduto } from "../../../../../__tests__/databuilder/ProductDatabuilder";
@@ -6,6 +6,8 @@ import { anyNumber } from "../../../../../__tests__/databuilder/PrimitiveDatabui
 import { ObterProdutoUseCase } from "./ObterProdutoUseCase";
 import { CategoriaEnum, Produto } from "../../../domain";
 import { Optional } from "typescript-optional";
+
+const mockedLogger = mock<Logger>();
 
 describe("Testes de ObterProduto", () => {
   beforeEach(PlatformTest.create);
@@ -18,7 +20,7 @@ describe("Testes de ObterProduto", () => {
     const mockedProdutoRepositoryGateway = mock<IProdutoRepositoryGateway>();
     mockedProdutoRepositoryGateway.obterPorId.calledWith(anyProductId).mockResolvedValue(produtoExpectedOp);
 
-    const obterProdutoUseCase = new ObterProdutoUseCase(mockedProdutoRepositoryGateway);
+    const obterProdutoUseCase = new ObterProdutoUseCase(mockedProdutoRepositoryGateway, mockedLogger);
 
     const produtoFound = await obterProdutoUseCase.obterPorId(anyProductId);
 
@@ -31,7 +33,7 @@ describe("Testes de ObterProduto", () => {
     const mockedProdutoRepositoryGateway = mock<IProdutoRepositoryGateway>();
     mockedProdutoRepositoryGateway.obterPorId.calledWith(anyProductId).mockResolvedValue(produtoExpectedOp);
 
-    const obterProdutoUseCase = new ObterProdutoUseCase(mockedProdutoRepositoryGateway);
+    const obterProdutoUseCase = new ObterProdutoUseCase(mockedProdutoRepositoryGateway, mockedLogger);
 
     try {
       await obterProdutoUseCase.obterPorId(anyProductId);
@@ -59,7 +61,7 @@ describe("Testes de ObterProduto", () => {
     const mockedProdutoRepositoryGateway = mock<IProdutoRepositoryGateway>();
     mockedProdutoRepositoryGateway.obterPorCategoria.calledWith(anyCategoria).mockResolvedValue(produtosExistents);
 
-    const obterProdutoUseCase = new ObterProdutoUseCase(mockedProdutoRepositoryGateway);
+    const obterProdutoUseCase = new ObterProdutoUseCase(mockedProdutoRepositoryGateway, mockedLogger);
 
     const produtosFound = await obterProdutoUseCase.obterPorCategoria(anyCategoria);
 

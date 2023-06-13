@@ -9,11 +9,10 @@ import { Logger } from "@tsed/common";
 @Service()
 export class ObterProdutoUseCase {
 
-    @Inject()
-    logger: Logger;
-
-
-    constructor( @Inject(ProdutoMySqlRepositoryGateway) private produtoRepositoryGateway: IProdutoRepositoryGateway ){}
+    constructor( 
+        @Inject(ProdutoMySqlRepositoryGateway) private produtoRepositoryGateway: IProdutoRepositoryGateway,
+        @Inject() private logger: Logger
+    ){}
 
     public async obterPorId(id: number): Promise<Produto> {
         this.logger.trace("Start id={}", id);
