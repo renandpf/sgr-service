@@ -1,14 +1,14 @@
-import { PlatformTest, Logger } from "@tsed/common";
+import { Logger } from "@tsed/common";
 import { mock } from "jest-mock-extended";
-import { IProdutoRepositoryGateway } from "../../ports";
+import { IProdutoRepositoryGateway } from "../../ports/IProdutoRepositoryGateway";
 import { ExcluirProdutoUseCase } from "./ExcluirProdutoUseCase";
 import { anyNumber } from "../../../../../__tests__/databuilder/PrimitiveDatabuilder";
 
 const mockedLogger = mock<Logger>();
 
 describe("Testes de Excluir Produto", () => {
-  beforeEach(PlatformTest.create);
-  afterEach(PlatformTest.reset);
+  // beforeEach(PlatformTest.create);
+  // afterEach(PlatformTest.reset);
 
 
   it("deve excluir um produto existente", async () => {
@@ -16,7 +16,7 @@ describe("Testes de Excluir Produto", () => {
     const mockedProdutoRepositoryGateway = mock<IProdutoRepositoryGateway>();
     mockedProdutoRepositoryGateway.existePedidoByProdutoId.calledWith(anyProdutoId).mockResolvedValue(false);
 
-    const excluirProdutoUseCase = new ExcluirProdutoUseCase(mockedProdutoRepositoryGateway, mockedLogger);
+    const excluirProdutoUseCase: ExcluirProdutoUseCase = new ExcluirProdutoUseCase(mockedProdutoRepositoryGateway, mockedLogger);
 
     await excluirProdutoUseCase.excluir(anyProdutoId);
 

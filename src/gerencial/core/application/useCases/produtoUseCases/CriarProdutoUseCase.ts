@@ -1,7 +1,7 @@
 import { Inject, Service } from "@tsed/common";
-import { IProdutoRepositoryGateway } from "../../ports";
+import { IProdutoRepositoryGateway } from "../../ports/IProdutoRepositoryGateway";
 import { Produto } from "../../../domain";
-import { ProdutoMySqlRepositoryGateway } from "../../../../adapter";
+import { ProdutoMySqlRepositoryGateway } from "../../../../adapter/driven/repositories/ProdutoMySqlRepositoryGateway";
 import { Logger } from "@tsed/common";
 
 @Service()
