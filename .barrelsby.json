@@ -1,5 +1,7 @@
 {
-  "directory": ["./src/gerencial"],
+  "directory": [
+    "./src/gerencial", 
+    "./src/pedido"],
   "exclude": [
     "__mock__",
     "__mocks__",

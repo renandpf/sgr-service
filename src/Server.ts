@@ -6,6 +6,7 @@ import "@tsed/ajv";
 import "@tsed/swagger";
 import {config} from "./config";
 import * as gerencial from "./gerencial/adapter/driver/controllers";
+import * as pedido from "./pedido/adapter/driver/controllers";
 
 @Configuration({
   ...config,
@@ -16,7 +17,10 @@ import * as gerencial from "./gerencial/adapter/driver/controllers";
   mount: {
     "/gerencial": [
       ...Object.values(gerencial)
-    ]
+    ],
+    "/pedido": [
+      ...Object.values(pedido)
+    ],
   },
   swagger: [
     {
