@@ -1,7 +1,7 @@
 import {registerProvider} from "@tsed/di";
 import {DataSource} from "typeorm";
 import {Logger} from "@tsed/logger";
-import { ClienteEntity, ProdutoEntity } from "../../common";
+import { ClienteEntity, ProdutoEntity } from "../../gerencial/adapter/driven/repositories/entity";
 
 export const MYSQL_DATA_SOURCE = Symbol.for("MySqlDataSource");
 export const MysqlDataSource = new DataSource({

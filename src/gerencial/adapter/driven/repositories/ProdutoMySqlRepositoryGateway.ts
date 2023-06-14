@@ -7,7 +7,7 @@ import { PRODUTO_DATABASE_REPOSITORY } from "../../../../config/database/reposit
 
 import { Logger } from "@tsed/common";
 import { Equal } from "typeorm";
-import { ProdutoEntity } from "../../../../common/database/entities/ProdutoEntity";
+import { ProdutoEntity } from "./entity/ProdutoEntity";
 
 @Service()
 export class ProdutoMySqlRepositoryGateway implements IProdutoRepositoryGateway {

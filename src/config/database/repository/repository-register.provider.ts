@@ -1,6 +1,6 @@
 import {registerProvider} from "@tsed/di";
 import {MysqlDataSource} from "../MysqlDataSource";
-import {ProdutoEntity} from "../../../common/database/entities/ProdutoEntity";
+import {ProdutoEntity} from "../../../gerencial/adapter/driven/repositories/entity/ProdutoEntity";
 
 export const ProdutoDatabaseRepository = MysqlDataSource.getRepository(ProdutoEntity);
 export const PRODUTO_DATABASE_REPOSITORY = Symbol.for("ProdutoDatabaseRepository");
