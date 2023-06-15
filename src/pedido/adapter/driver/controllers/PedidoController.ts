@@ -1,15 +1,15 @@
-import { BodyParams, Inject, Logger } from "@tsed/common";
-import { Post, Returns  } from "@tsed/schema";
+import { BodyParams, Inject, Logger, PathParams } from "@tsed/common";
+import { Post, Put, Returns } from "@tsed/schema";
 import { Controller } from "@tsed/di";
 import { CriarPedidoUseCase } from "../../../core/application/useCases/CriarPedidoUseCase";
 import { PedidoJson } from "./json/PedidoJson";
 
 @Controller("")
-export class PedidoController{
+export class PedidoController {
 
     constructor(
         @Inject() private criarPedidoUseCase: CriarPedidoUseCase,
-        @Inject() private logger: Logger){
+        @Inject() private logger: Logger) {
     }
 
 
@@ -19,7 +19,15 @@ export class PedidoController{
         this.logger.info("Start pedidoJson={}", pedidoJson);
         const pedidoId = await this.criarPedidoUseCase.criar(pedidoJson.getDomain());
         this.logger.trace("End pedidoId={}", pedidoId);
-      return `${pedidoId}`;
+        return `${pedidoId}`;
     }
-  
+
+    @Put("/pedidos/:id")
+    @Returns(200).Description("Nenhuma resposta")
+    async atualizar(@PathParams("id") id: number): Promise<void> {
+        //TODO implementar
+        Promise.resolve(15);
+        //await this.atualizarStatusPedidoUseCase.atualizarStatusPreparando(id);
+    }
+
 }
