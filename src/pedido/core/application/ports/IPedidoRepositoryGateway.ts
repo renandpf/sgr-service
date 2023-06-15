@@ -1,3 +1,5 @@
+import { Pedido } from "../../domain/Pedido";
+
 export interface IPedidoRepositoryGateway {
-    //TODO: implementar
+    criar(pedido: Pedido): Promise<number | undefined>;
 }

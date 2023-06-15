@@ -2,7 +2,7 @@ import { Inject, Service } from "@tsed/di";
 import { IProdutoRepositoryGateway } from "../../../core/application/ports";
 import { Produto, CategoriaEnum } from "../../../core/domain";
 import { Optional } from "typescript-optional";
-import { ErrorToAccessDatabaseException } from "../../exception/ErrorToAccessDatabaseException";
+import { ErrorToAccessDatabaseException } from "../../../../common/exception/ErrorToAccessDatabaseException";
 import { PRODUTO_DATABASE_REPOSITORY } from "../../../../config/database/repository/repository-register.provider";
 
 import { Logger } from "@tsed/common";
