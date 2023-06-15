@@ -17,32 +17,12 @@ export class PedidoJson {
     public readonly pagamento: PagamentoJson;
 
     public getDomain(): Pedido {
-        let lanches:Produto[] = [];
-        let acompanhamentos:Produto[] = [];
-        let bebidas:Produto[] = [];
-        let sobremesas:Produto[] = [];
+        const lanches:Produto[] = this.mapIdToProduto(this.idsRefeicao, CategoriaEnum.LANCHE);
+        const acompanhamentos:Produto[] = this.mapIdToProduto(this.idsAcompanhamento, CategoriaEnum.ACOMPANHAMENTO);
+        const bebidas:Produto[] = this.mapIdToProduto(this.idsBebida, CategoriaEnum.BEBIDA);
+        const sobremesas:Produto[] = this.mapIdToProduto(this.idsSobremesa, CategoriaEnum.SOBREMESA);
 
-        if(this.idsRefeicao) {
-            lanches = this.idsRefeicao.map(id => new Produto(id, undefined, undefined, CategoriaEnum.LANCHE));
-        }
-
-        if(this.idsAcompanhamento) {
-            acompanhamentos = this.idsRefeicao.map(id => new Produto(id, undefined, undefined, CategoriaEnum.ACOMPANHAMENTO));
-        }
-        
-        if(this.idsBebida) {
-            bebidas = this.idsRefeicao.map(id => new Produto(id, undefined, undefined, CategoriaEnum.BEBIDA));
-        }
-
-        if(this.idsSobremesa) {
-            sobremesas = this.idsRefeicao.map(id => new Produto(id, undefined, undefined, CategoriaEnum.SOBREMESA));
-        }
-
-        const itens: Item[] = [];
-        lanches.map(p => new Item(undefined, p)).forEach(i => itens.push(i));
-        acompanhamentos.map(p => new Item(undefined, p)).forEach(i => itens.push(i));
-        bebidas.map(p => new Item(undefined, p)).forEach(i => itens.push(i));
-        sobremesas.map(p => new Item(undefined, p)).forEach(i => itens.push(i));
+        const itens: Item[] = this.getItens(lanches, acompanhamentos, bebidas, sobremesas);
 
         const cliente = new Cliente(this.clienteId, undefined, undefined);
 
@@ -51,4 +31,19 @@ export class PedidoJson {
         return new Pedido(undefined, itens, cliente, pagamentos, this.observacao);
     }
 
+    private getItens(lanches: Produto[], acompanhamentos: Produto[], bebidas: Produto[], sobremesas: Produto[]) {
+        const itens: Item[] = [];
+        lanches.map(p => new Item(undefined, p)).forEach(i => itens.push(i));
+        acompanhamentos.map(p => new Item(undefined, p)).forEach(i => itens.push(i));
+        bebidas.map(p => new Item(undefined, p)).forEach(i => itens.push(i));
+        sobremesas.map(p => new Item(undefined, p)).forEach(i => itens.push(i));
+        return itens;
+    }
+
+    private mapIdToProduto(ids: number[], categoria: CategoriaEnum): Produto[]{
+        if(ids === undefined){
+            return [];
+        }
+        return ids.map(id => new Produto(id, undefined, undefined, categoria));
+    }
 }
