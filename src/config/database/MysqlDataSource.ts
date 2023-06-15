@@ -2,12 +2,13 @@ import {registerProvider} from "@tsed/di";
 import {DataSource} from "typeorm";
 import {Logger} from "@tsed/logger";
 import { ClienteEntity, ProdutoEntity } from "../../gerencial/adapter/driven/repositories/entity";
+import { ItemEntity, PedidoEntity } from "../../pedido/adapter/driven/repositories/entities";
 
 export const MYSQL_DATA_SOURCE = Symbol.for("MySqlDataSource");
 export const MysqlDataSource = new DataSource({
   // name: "default",  if you come from v0.2.x
   type: "mysql",
-  entities: [ProdutoEntity, ClienteEntity], // add this to discover typeorm model
+  entities: [ProdutoEntity, ClienteEntity, PedidoEntity, ItemEntity], // add this to discover typeorm model
   host: "localhost",
   port: 3306,
   username: "root",
