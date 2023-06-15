@@ -1,6 +1,7 @@
-import {Maximum, MaxLength, Minimum, Property, Required} from "@tsed/schema";
-import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
+import {Property} from "@tsed/schema";
+import { Entity, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
 import { PedidoEntity } from "./PedidoEntity";
+import { Item } from "src/pedido/core/domain/Item";
 
 @Entity("Item")
 export class ItemEntity {
@@ -9,5 +10,11 @@ export class ItemEntity {
   id?: number;
 
   @ManyToOne(() => PedidoEntity, (pedido) => pedido.itens)
-  pedido: PedidoEntity;
+  pedido?: PedidoEntity;
+
+  constructor(item?: Item, pedidoEntity?: PedidoEntity){
+    this.id = item?.id;
+    this.pedido = pedidoEntity;
+  }
+
 }

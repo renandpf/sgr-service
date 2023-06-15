@@ -6,6 +6,7 @@ import { AlteracaoStatusNovoPedidoException } from "src/gerencial/core/applicati
 
 export class Pedido {
     constructor(
+        public readonly id?: number,
         private status?: StatusPedido,
         public readonly itens?: Item[],
         public readonly cliente?: Cliente,

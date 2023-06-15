@@ -3,6 +3,7 @@ import { CategoriaEnum, Cliente, Produto } from "../../../../../gerencial/core/d
 import { Item } from "src/pedido/core/domain/Item";
 
 export class PedidoJson {
+    public readonly id: number;
     public readonly idsRefeicao: number[];
     public readonly idsAcompanhamento: number[];
     public readonly idsBebida: number[];
@@ -21,15 +22,15 @@ export class PedidoJson {
 
         const cliente = new Cliente(this.clienteId, undefined, undefined);
 
-        return new Pedido(undefined, itens, cliente, undefined, this.observacao);
+        return new Pedido(this.id, undefined, itens, cliente, undefined, this.observacao);
     }
 
     private getItens(lanches: Produto[], acompanhamentos: Produto[], bebidas: Produto[], sobremesas: Produto[]) {
         const itens: Item[] = [];
-        lanches.map(p => new Item(undefined, p)).forEach(i => itens.push(i));
-        acompanhamentos.map(p => new Item(undefined, p)).forEach(i => itens.push(i));
-        bebidas.map(p => new Item(undefined, p)).forEach(i => itens.push(i));
-        sobremesas.map(p => new Item(undefined, p)).forEach(i => itens.push(i));
+        lanches.map(p => new Item(p.id, undefined, p)).forEach(i => itens.push(i));
+        acompanhamentos.map(p => new Item(p.id, undefined, p)).forEach(i => itens.push(i));
+        bebidas.map(p => new Item(p.id, undefined, p)).forEach(i => itens.push(i));
+        sobremesas.map(p => new Item(p.id, undefined, p)).forEach(i => itens.push(i));
         return itens;
     }
 

@@ -7,24 +7,31 @@ import { PedidoEntity } from "../../../../../pedido/adapter/driven/repositories/
 export class ClienteEntity {
     @PrimaryGeneratedColumn()
     @Property()
-    id: number;
+    id?: number;
 
     @Column()
     @MaxLength(100)
     @Required()
-    nome: string;
+    nome?: string;
 
     @Column()
     @MaxLength(11)
     @Required()
-    cpf: string;
+    cpf?: string;
 
     @Column()
     @Maximum(100)
-    email: string;
+    email?: string;
 
     @OneToMany(() => PedidoEntity, (pedido) => pedido.cliente)
-    pedidos: PedidoEntity[];
+    pedidos?: PedidoEntity[];
+
+    constructor(cliente?: Cliente){
+        this.id = cliente?.id;
+        this.nome = cliente?.nome;
+        this.cpf = cliente?.cpf;
+        this.email = cliente?.email
+    }
 
     public getDomain(): Cliente{
         return new Cliente(this.id, this.nome, this.cpf, this.email, undefined, undefined);
