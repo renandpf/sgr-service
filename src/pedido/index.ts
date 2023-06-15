@@ -4,6 +4,7 @@
 
 export * from "./adapter/driven/repositories/PedidoMySqlRepositoryGateway";
 export * from "./adapter/driver/controllers/index";
+export * from "./core/application/exceptions/PedidoNotFoundException";
 export * from "./core/application/ports/IPedidoRepositoryGateway";
 export * from "./core/application/useCases/AtualizarStatusPedidoUseCase";
 export * from "./core/application/useCases/CriarPedidoUseCase";
