@@ -23,6 +23,6 @@ export class ClienteEntity {
     email: string;
 
     public getDomain(): Cliente{
-        return new Cliente(this.nome, this.cpf, this.email, this.id);
+        return new Cliente(this.id, this.nome, this.cpf, this.email, undefined, undefined);
     }
 }

@@ -65,7 +65,7 @@ export class ProdutoMySqlRepositoryGateway implements IProdutoRepositoryGateway 
             throw new ErrorToAccessDatabaseException();
         }
     }
-    async criar(produto: Produto): Promise<number> {
+    async criar(produto: Produto): Promise<number | undefined> {
         try {
             this.logger.trace("Start produto={}", produto)
             const produtoSavedEntity = await this.produtoRepository.save(new ProdutoEntity(produto));

@@ -6,22 +6,22 @@ import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
 export class ProdutoEntity {
   @PrimaryGeneratedColumn()
   @Property()
-  id: number;
+  id?: number;
 
   @Column()
   @MaxLength(100)
   @Required()
-  nome: string;
+  nome?: string;
 
   @Column()
   @MaxLength(100)
   @Required()
-  valor: number;
+  valor?: number;
 
   @Column()
   @Minimum(0)
   @Maximum(100)
-  categoriaId: number;
+  categoriaId?: number;
 
   constructor(produto?: Produto){
     if(produto){
@@ -30,11 +30,13 @@ export class ProdutoEntity {
       }
       this.nome = produto.nome;
       this.valor = produto.valor;
-      this.categoriaId = (CategoriaEnum as never)[produto.categoria] + 1;
+      if(produto.categoria !== undefined){
+        this.categoriaId = (CategoriaEnum as never)[produto.categoria] + 1;
+      }
     }
   }
 
   public getDomain(): Produto{
-    return new Produto(this.nome, this.valor, 1, this.id);
+    return new Produto(this.id, this.nome, this.valor);//FIXME: setar a categoria
   }
 }

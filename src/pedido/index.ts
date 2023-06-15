@@ -3,10 +3,8 @@
  */
 
 export * from "./adapter/driver/controllers/index";
-export * from "./core/application/dto/CriarPedidoDto";
 export * from "./core/application/ports/IPedidoRepositoryGateway";
 export * from "./core/application/useCases/CriarPedidoUseCase";
-export * from "./core/domain/Cliente";
 export * from "./core/domain/Item";
 export * from "./core/domain/Pedido";
 export * from "./core/domain/StatusPedido";

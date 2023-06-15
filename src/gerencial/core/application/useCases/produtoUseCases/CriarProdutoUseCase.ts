@@ -11,7 +11,7 @@ export class CriarProdutoUseCase {
         @Inject() private logger: Logger,
      ){}
 
-    public async criar(produto: Produto): Promise<number> {
+    public async criar(produto: Produto): Promise<number | undefined> {
         //TODO: validar se id NÃO foi informado
         this.logger.trace("Start produto={}", produto);
         const id = this.produtoRepositoryGateway.criar(produto);

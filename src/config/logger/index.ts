@@ -4,7 +4,7 @@ import {isProduction} from "../envs/index";
 if (isProduction) {
   $log.appenders.set("stdout", {
     type: "stdout",
-    levels: ["info", "debug"],
+    levels: ["trace", "info", "debug"],
     layout: {
       type: "json"
     }

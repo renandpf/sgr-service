@@ -4,8 +4,12 @@ import { StatusPedido } from "./StatusPedido";
 import { Pagamento } from "../../../pagamento/core/domain/Pagamento";
 
 export class Pedido {
-    public readonly status: StatusPedido;
-    public readonly itens: Item[];
-    public readonly cliente: Cliente;
-    public readonly pagamentos: Pagamento[];
+    constructor(
+        public readonly status?: StatusPedido,
+        public readonly itens?: Item[],
+        public readonly cliente?: Cliente,
+        public readonly pagamentos?: Pagamento[],
+        public readonly observacao?: string,
+    ){}
+
 }

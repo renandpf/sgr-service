@@ -16,8 +16,8 @@ export class PedidoController{
     @Post("/pedidos")
     @Returns(201).Description("ID do pedido criado")
     async criar(@BodyParams() pedidoJson: PedidoJson): Promise<string> {
-        this.logger.trace("Start pedidoJson={}", pedidoJson);
-        const pedidoId = await this.criarPedidoUseCase.criar(pedidoJson.getCriarPedidoDto());
+        this.logger.info("Start pedidoJson={}", pedidoJson);
+        const pedidoId = await this.criarPedidoUseCase.criar(pedidoJson.getDomain());
         this.logger.trace("End pedidoId={}", pedidoId);
       return `${pedidoId}`;
     }

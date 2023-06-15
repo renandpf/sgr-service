@@ -10,17 +10,17 @@ export class ClienteJson {
     @Description("Nome do cliente")
     @Example("Cliente teste")
     @Property()
-    public readonly nome: string;
+    public readonly nome?: string;
 
     @Description("CPF")
     @Example("12345678909")
     @Property()
-    public readonly cpf: string;
+    public readonly cpf?: string;
 
     @Description("E-mail")
     @Example("cliente@teste.com.br")
     @Property()
-    public readonly email: string;
+    public readonly email?: string;
     
     public constructor(cliente: Cliente){
         this.id = cliente.id;
@@ -31,8 +31,8 @@ export class ClienteJson {
     
     public getDomain(id?: number): Cliente{
         if(id){
-            return new Cliente(this.nome, this.cpf, this.email, id);
+            return new Cliente(id, this.nome, this.cpf, this.email);
         } 
-        return new Cliente(this.nome, this.cpf, this.email, this.id);
+        return new Cliente(this.id, this.nome, this.cpf, this.email);
     }    
 }

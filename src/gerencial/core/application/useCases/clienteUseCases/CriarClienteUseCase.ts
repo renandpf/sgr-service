@@ -3,13 +3,19 @@ import { IClienteRepositoryGateway } from "../../ports";
 import { Cliente } from "../../../domain";
 import { Service } from "@tsed/common";
 import { ClienteMySqlRepositoryGateway } from "../../../../adapter";
+import { Optional } from "typescript-optional";
 
 @Service()
 export class CriarClienteUseCase {
 
     constructor( @Inject(ClienteMySqlRepositoryGateway) private clienteRepositoryGateway: IClienteRepositoryGateway ){}
     async criar(clienteReq: Cliente): Promise<Cliente> {
-        const clienteOp = await this.clienteRepositoryGateway.obterPorCpf(clienteReq.cpf);
+
+        let clienteOp: Optional<Cliente> = Optional.empty();
+        
+        if(clienteReq.cpf !== undefined){
+            clienteOp = await this.clienteRepositoryGateway.obterPorCpf(clienteReq.cpf);
+        }
 
         if (!clienteOp.isEmpty()) {
             throw new Error('TODO: Exceptions');
