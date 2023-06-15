@@ -13,8 +13,6 @@ export class CriarPedidoUseCase {
     async criar(pedido: Pedido): Promise<number | undefined> {
         this.logger.trace("Start pedido={}", pedido);
 
-        //TODO: chamar sistema de pagamento!!
-
         const id = await this.pedidoRepositoryGateway.criar(pedido);
 
         this.logger.trace("End id={}", id);

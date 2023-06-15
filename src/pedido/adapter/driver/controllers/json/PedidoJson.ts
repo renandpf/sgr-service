@@ -1,9 +1,6 @@
-import { PagamentoJson } from "./PagamentoJson";
 import { Pedido } from "../../../../core/domain/Pedido";
 import { CategoriaEnum, Cliente, Produto } from "../../../../../gerencial/core/domain";
 import { Item } from "src/pedido/core/domain/Item";
-
-import { Pagamento } from "src/pagamento/core/domain/Pagamento";
 
 export class PedidoJson {
     public readonly idsRefeicao: number[];
@@ -13,8 +10,6 @@ export class PedidoJson {
     public readonly observacao: string;
 
     public readonly clienteId: number;
-
-    public readonly pagamento: PagamentoJson;
 
     public getDomain(): Pedido {
         const lanches:Produto[] = this.mapIdToProduto(this.idsRefeicao, CategoriaEnum.LANCHE);
@@ -26,9 +21,7 @@ export class PedidoJson {
 
         const cliente = new Cliente(this.clienteId, undefined, undefined);
 
-        const pagamentos = this.pagamento.cartoesCreditos.map(cc => new Pagamento(cc.numero, cc.cvv, cc.nome, cc.cpf));
-
-        return new Pedido(undefined, itens, cliente, pagamentos, this.observacao);
+        return new Pedido(undefined, itens, cliente, undefined, this.observacao);
     }
 
     private getItens(lanches: Produto[], acompanhamentos: Produto[], bebidas: Produto[], sobremesas: Produto[]) {
