@@ -26,9 +26,7 @@ export class PedidoEntity {
     this.itens = pedido?.itens?.map(i => new ItemEntity(i, this));
     this.statusId = StatusPedidoMapper.mapper(pedido?.getStatus());
     
-    console.log('A');
     if(pedido?.temCliente()){
-      console.log('B');
       this.cliente = new ClienteEntity(pedido?.cliente);
     }
   }

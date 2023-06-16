@@ -13,6 +13,8 @@ export class CriarPedidoUseCase {
     async criar(pedido: Pedido): Promise<number | undefined> {
         this.logger.trace("Start pedido={}", pedido);
 
+
+        //TODO: adicionar validações se existe os produtos cadastrados e se existe o user (caso não tenha, salvar pedido sem cliente)
         pedido.setStatusNovo();
         const id = await this.pedidoRepositoryGateway.criar(pedido);
 
