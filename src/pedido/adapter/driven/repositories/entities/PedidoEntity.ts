@@ -4,6 +4,7 @@ import {Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "type
 import { ItemEntity } from "./ItemEntity";
 import { Pedido } from "src/pedido/core/domain/Pedido";
 import { StatusPedido } from "src/pedido/core/domain/StatusPedido";
+import { StatusPedidoMapper } from "./StatusMapper";
 
 @Entity("Pedido")
 export class PedidoEntity {
@@ -12,8 +13,7 @@ export class PedidoEntity {
   id?: number;
 
   @Column()
-  statusId: number;
-
+  statusId?: number;
 
   @ManyToOne(() => ClienteEntity, (cliente) => cliente.pedidos)
   cliente?: ClienteEntity;
@@ -26,10 +26,8 @@ export class PedidoEntity {
     
     this.itens = pedido?.itens?.map(i => new ItemEntity(i, this));
     this.cliente = new ClienteEntity(pedido?.cliente);
-    const status = pedido?.getStatus();
-    this.statusId = (StatusPedido as never)[status] + 1;
+    this.statusId = StatusPedidoMapper.mapper(pedido?.getStatus());
     
-
   }
 
 }

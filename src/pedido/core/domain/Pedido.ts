@@ -23,7 +23,7 @@ export class Pedido {
         throw new AlteracaoStatusNovoPedidoException();
     }
 
-    public getStatus(): StatusPedido | undefined{
+    public getStatus(): StatusPedido | undefined {
         return this.status;
     }
 
