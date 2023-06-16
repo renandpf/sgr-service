@@ -15,12 +15,7 @@ export class CriarPedidoUseCase {
     async criar(pedido: Pedido): Promise<number | undefined> {
         this.logger.trace("Start pedido={}", pedido);
 
-        pedido.itens?.map(i => i.produto)
-            .forEach(p => {
-                if(p?.id !== undefined){
-                    this.obterProdutoUsecase.obterPorId(p.id);
-                }
-            });
+        this.verificaExistenciaProduto(pedido);
         
         //TODO: adicionar validações se existe os produtos cadastrados e se existe o user (caso não tenha, salvar pedido sem cliente)
         pedido.setStatusNovo();
@@ -28,5 +23,14 @@ export class CriarPedidoUseCase {
 
         this.logger.trace("End id={}", id);
         return id;
+    }
+
+    private verificaExistenciaProduto(pedido: Pedido) {
+        pedido.itens?.map(i => i.produto)
+            .forEach(p => {
+                if (p?.id !== undefined) {
+                    this.obterProdutoUsecase.obterPorId(p.id);
+                }
+            });
     }
 }
