@@ -14,6 +14,10 @@ export class Pedido {
         public readonly observacao?: string,
     ){}
 
+    temCliente(): boolean{
+        return this.cliente !== undefined;
+    }
+
     setStatusNovo(){
         if(this.status === undefined || this.status === StatusPedido.AGUARDANDO_PAGAMENTO){
             this.status = StatusPedido.AGUARDANDO_PAGAMENTO;

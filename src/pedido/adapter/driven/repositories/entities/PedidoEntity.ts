@@ -3,7 +3,6 @@ import { ClienteEntity } from "src/gerencial/adapter/driven/repositories/entity"
 import {Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";
 import { ItemEntity } from "./ItemEntity";
 import { Pedido } from "src/pedido/core/domain/Pedido";
-import { StatusPedido } from "src/pedido/core/domain/StatusPedido";
 import { StatusPedidoMapper } from "./StatusMapper";
 
 @Entity("Pedido")
@@ -15,7 +14,7 @@ export class PedidoEntity {
   @Column()
   statusId?: number;
 
-  @ManyToOne(() => ClienteEntity, (cliente) => cliente.pedidos)
+  @ManyToOne(() => ClienteEntity, (cliente) => cliente.pedidos, {nullable: true})
   cliente?: ClienteEntity;
   
   @OneToMany(() => ItemEntity, (item) => item.pedido)
@@ -25,9 +24,13 @@ export class PedidoEntity {
     this.id = pedido?.id;
     
     this.itens = pedido?.itens?.map(i => new ItemEntity(i, this));
-    this.cliente = new ClienteEntity(pedido?.cliente);
     this.statusId = StatusPedidoMapper.mapper(pedido?.getStatus());
     
+    console.log('A');
+    if(pedido?.temCliente()){
+      console.log('B');
+      this.cliente = new ClienteEntity(pedido?.cliente);
+    }
   }
 
 }

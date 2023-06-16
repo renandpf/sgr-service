@@ -20,7 +20,10 @@ export class PedidoJson {
 
         const itens: Item[] = this.getItens(lanches, acompanhamentos, bebidas, sobremesas);
 
-        const cliente = new Cliente(this.clienteId, undefined, undefined);
+        let cliente = undefined;
+        if(this.clienteId){
+            cliente = new Cliente(this.clienteId, undefined, undefined);
+        }
 
         return new Pedido(this.id, undefined, itens, cliente, undefined, this.observacao);
     }
