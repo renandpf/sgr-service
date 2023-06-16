@@ -11,14 +11,16 @@ export class AtualizarStatusPedidoUseCase {
         @Inject(PedidoMySqlRepositoryGateway) private pedidoRepositoryGateway: IPedidoRepositoryGateway,
         @Inject() private logger: Logger) { }
 
-    async atualizarStatusPreparando(pedidoId: number): Promise<void> {
+    async atualizarStatus(pedidoId: number): Promise<void> {
         this.logger.trace("Start id={}", pedidoId);
         const pedido: Optional<Pedido> = await this.pedidoRepositoryGateway.obterPorId(pedidoId);
-        if (pedido) {
+        if (pedido.isEmpty()) {
             this.logger.warn("Pedido id={} não encontrado", pedidoId);
             throw new PedidoNotFoundException();
         }
-        const id = await this.pedidoRepositoryGateway.alterar(pedido);
-        this.logger.trace("End id={}", id);
+        const pedidoEncontrado = pedido.get();
+        pedidoEncontrado.setStatus();
+        await this.pedidoRepositoryGateway.alterar(pedidoEncontrado);
+        this.logger.trace("End pedido={}", pedidoEncontrado);
     }
 }

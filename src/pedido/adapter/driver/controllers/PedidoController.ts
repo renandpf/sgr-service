@@ -2,6 +2,7 @@ import { BodyParams, Inject, Logger, PathParams } from "@tsed/common";
 import { Post, Put, Returns } from "@tsed/schema";
 import { Controller } from "@tsed/di";
 import { CriarPedidoUseCase } from "../../../core/application/useCases/CriarPedidoUseCase";
+import { AtualizarStatusPedidoUseCase } from "../../../core/application/useCases/AtualizarStatusPedidoUseCase";
 import { PedidoJson } from "./json/PedidoJson";
 
 @Controller("")
@@ -9,6 +10,7 @@ export class PedidoController {
 
     constructor(
         @Inject() private criarPedidoUseCase: CriarPedidoUseCase,
+        @Inject() private atualizarStatusPedidoUseCase: AtualizarStatusPedidoUseCase,
         @Inject() private logger: Logger) {
     }
 
@@ -27,7 +29,7 @@ export class PedidoController {
     async atualizar(@PathParams("id") id: number): Promise<void> {
         //TODO implementar
         Promise.resolve(15);
-        //await this.atualizarStatusPedidoUseCase.atualizarStatusPreparando(id);
+        await this.atualizarStatusPedidoUseCase.atualizarStatus(id);
     }
 
 }

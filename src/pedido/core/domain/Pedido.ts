@@ -12,17 +12,35 @@ export class Pedido {
         public readonly cliente?: Cliente,
         public readonly pagamentos?: Pagamento[],
         public readonly observacao?: string,
-    ){}
+    ) { }
 
-    temCliente(): boolean{
+    temCliente(): boolean {
         return this.cliente !== undefined;
     }
 
-    setStatusNovo(){
-        if(this.status === undefined || this.status === StatusPedido.AGUARDANDO_PAGAMENTO){
+    setStatusNovo() {
+        if (this.status === undefined || this.status === StatusPedido.AGUARDANDO_PAGAMENTO) {
             this.status = StatusPedido.AGUARDANDO_PAGAMENTO;
             return;
-        } 
+        }
+
+        throw new AlteracaoStatusNovoPedidoException();
+    }
+
+    setStatus() {
+        switch (this.status) {
+            case StatusPedido.AGUARDANDO_PAGAMENTO:
+                this.status = StatusPedido.PREPARANDO
+                break;
+            case StatusPedido.PREPARANDO:
+                this.status = StatusPedido.PRONTO
+                break;
+            case StatusPedido.PREPARANDO:
+                this.status = StatusPedido.FINALIZADO
+                break;
+            default:
+                break;
+        }
 
         throw new AlteracaoStatusNovoPedidoException();
     }
