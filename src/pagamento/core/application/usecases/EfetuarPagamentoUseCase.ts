@@ -1,12 +1,15 @@
 import { Inject, Logger, } from "@tsed/common";
 import { Service } from "@tsed/di";
 import { Pagamento } from "../../domain/Pagamento";
+import { ObterPedidoUseCase } from "./ObterPedidoUseCase";
 
 @Service()
 export class EfetuarPagamentoUseCase {
 
     constructor(
-        @Inject() private logger: Logger) {
+        @Inject() private logger: Logger,
+        @Inject() private obterPedidoUseCase: ObterPedidoUseCase,
+        ) {
     }
 
     async efetuar(pagamento: Pagamento){
