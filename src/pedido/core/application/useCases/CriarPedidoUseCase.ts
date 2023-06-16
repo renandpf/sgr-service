@@ -18,8 +18,8 @@ export class CriarPedidoUseCase {
     async criar(pedido: Pedido): Promise<number | undefined> {
         this.logger.trace("Start pedido={}", pedido);
 
-        this.verificaExistenciaProduto(pedido);
-        this.verificaRemoveClienteInexistente(pedido);
+        await this.verificaExistenciaProduto(pedido);
+        await this.verificaRemoveClienteInexistente(pedido);
         
         pedido.setStatusNovo();
         const id = await this.pedidoRepositoryGateway.criar(pedido);
@@ -28,11 +28,11 @@ export class CriarPedidoUseCase {
         return id;
     }
 
-    private verificaRemoveClienteInexistente(pedido: Pedido) {
+    private async verificaRemoveClienteInexistente(pedido: Pedido) {
         const clienteId = pedido.getCliente()?.id;
         if (clienteId !== undefined) {
             try {
-                this.obterClienteUseCase.obterPorId(clienteId);
+                await this.obterClienteUseCase.obterPorId(clienteId);
 
             } catch (e) {
                 if (e instanceof ClienteNaoEncontradoException) {
@@ -44,11 +44,11 @@ export class CriarPedidoUseCase {
         }
     }
 
-    private verificaExistenciaProduto(pedido: Pedido) {
+    private async verificaExistenciaProduto(pedido: Pedido) {
         pedido.itens?.map(i => i.produto)
-            .forEach(p => {
+            .forEach(async p => {
                 if (p?.id !== undefined) {
-                    this.obterProdutoUsecase.obterPorId(p.id);
+                    await this.obterProdutoUsecase.obterPorId(p.id);
                 }
             });
     }

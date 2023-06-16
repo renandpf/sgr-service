@@ -13,7 +13,7 @@ export class ClienteMySqlRepositoryGateway implements IClienteRepositoryGateway 
     @Inject()
     logger: Logger;
 
-    //@Inject(CLIENTE_DATABASE_REPOSITORY)//FIXME
+    @Inject(CLIENTE_DATABASE_REPOSITORY)//FIXME
     protected clienteRepository: CLIENTE_DATABASE_REPOSITORY;
 
 
