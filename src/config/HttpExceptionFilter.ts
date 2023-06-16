@@ -3,9 +3,9 @@ import {Catch, ExceptionFilterMethods} from "@tsed/platform-exceptions";
 import {Exception} from "@tsed/exceptions";
 import { SystemBaseException } from "../common";
 
-@Catch(Error)
+@Catch(SystemBaseException, Exception)
 export class ErrorFilter implements ExceptionFilterMethods {
-    catch(exception: Exception, ctx: PlatformContext) {
+    catch(exception: SystemBaseException, ctx: PlatformContext) {
         const {response, logger} = ctx;
         const error = this.mapError(exception);
         const headers = this.getHeaders(exception);

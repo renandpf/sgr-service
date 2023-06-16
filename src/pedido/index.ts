@@ -3,12 +3,16 @@
  */
 
 export * from "./adapter/driven/repositories/PedidoMySqlRepositoryGateway";
+export * from "./adapter/driven/repositories/ProdutoMySqlRepositoryGateway";
 export * from "./adapter/driven/repositories/entities/index";
 export * from "./adapter/driver/controllers/index";
 export * from "./core/application/exceptions/PedidoNotFoundException";
+export * from "./core/application/exceptions/ProdutoNotFoundException";
 export * from "./core/application/ports/IPedidoRepositoryGateway";
+export * from "./core/application/ports/IProdutoRepositoryGateway";
 export * from "./core/application/useCases/AtualizarStatusPedidoUseCase";
 export * from "./core/application/useCases/CriarPedidoUseCase";
+export * from "./core/application/useCases/ObterProdutoUseCase";
 export * from "./core/domain/Item";
 export * from "./core/domain/Pedido";
 export * from "./core/domain/StatusPedido";
