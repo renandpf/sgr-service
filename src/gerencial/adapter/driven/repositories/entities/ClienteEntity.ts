@@ -27,10 +27,16 @@ export class ClienteEntity {
     pedidos?: PedidoEntity[];
 
     constructor(cliente?: Cliente){
-        this.id = cliente?.id;
-        this.nome = cliente?.nome;
-        this.cpf = cliente?.cpf;
-        this.email = cliente?.email
+        if(cliente){
+            if(cliente.id){
+                this.id = cliente.id;
+            }
+            this.nome = cliente.nome;
+            this.email = cliente.email;
+            if(cliente.cpf) {
+                this.cpf = cliente.cpf;
+            }
+        }
     }
 
     public getDomain(): Cliente{

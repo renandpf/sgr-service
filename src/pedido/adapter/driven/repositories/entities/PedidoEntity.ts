@@ -1,5 +1,5 @@
 import {Property,} from "@tsed/schema";
-import { ClienteEntity } from "src/gerencial/adapter/driven/repositories/entity";
+import { ClienteEntity } from "src/gerencial/adapter/driven/repositories/entities";
 import {Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";
 import { ItemEntity } from "./ItemEntity";
 import { Pedido } from "src/pedido/core/domain/Pedido";

@@ -1,8 +1,8 @@
 import {registerProvider} from "@tsed/di";
 import {MysqlDataSource} from "../MysqlDataSource";
-import {ProdutoEntity} from "../../../gerencial/adapter/driven/repositories/entity/ProdutoEntity";
+import {ProdutoEntity} from "../../../gerencial/adapter/driven/repositories/entities/ProdutoEntity";
 import {PedidoEntity} from "src/pedido/adapter/driven/repositories/entities/PedidoEntity";
-import { ClienteEntity } from "src/gerencial/adapter/driven/repositories/entity/ClienteEntity";
+import { ClienteEntity } from "src/gerencial/adapter/driven/repositories/entities/ClienteEntity";
 import { ItemEntity } from "src/pedido/adapter/driven/repositories/entities/ItemEntity";
 
 export const ProdutoDatabaseRepository = MysqlDataSource.getRepository(ProdutoEntity);

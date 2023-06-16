@@ -1,13 +1,12 @@
 import { Inject, Service } from "@tsed/di";
 import { IProdutoRepositoryGateway } from "../../../core/application/ports";
-import { Produto, CategoriaEnum } from "../../../core/domain";
+import { CategoriaEnum, Produto } from "../../../core/domain";
 import { Optional } from "typescript-optional";
 import { ErrorToAccessDatabaseException } from "../../../../common/exception/ErrorToAccessDatabaseException";
 import { PRODUTO_DATABASE_REPOSITORY } from "../../../../config/database/repository/repository-register.provider";
-
 import { Logger } from "@tsed/common";
 import { Equal } from "typeorm";
-import { ProdutoEntity } from "./entity/ProdutoEntity";
+import { ProdutoEntity } from "./entities";
 
 @Service()
 export class ProdutoMySqlRepositoryGateway implements IProdutoRepositoryGateway {
