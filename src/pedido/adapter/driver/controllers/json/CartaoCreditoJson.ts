@@ -3,4 +3,5 @@ export class CartaoCreditoJson {
     public readonly cvv: string;
     public readonly nome: string;
     public readonly cpf: string;
+    public readonly valor: number;
 }

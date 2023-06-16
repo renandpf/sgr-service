@@ -8,6 +8,7 @@ import "./config/HttpExceptionFilter";
 import {config} from "./config";
 import * as gerencial from "./gerencial/adapter/driver/controllers";
 import * as pedido from "./pedido/adapter/driver/controllers";
+import * as pagamento from "./pagamento/adapter/driver/";
 
 @Configuration({
   ...config,
@@ -21,6 +22,9 @@ import * as pedido from "./pedido/adapter/driver/controllers";
     ],
     "/pedido": [
       ...Object.values(pedido)
+    ],
+    "/pagamento": [
+      ...Object.values(pagamento)
     ],
   },
   swagger: [

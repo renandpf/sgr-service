@@ -1,9 +1,11 @@
+import { Pedido } from "src/pedido";
+import { CartaoCredito } from "./CartaoCredito";
+
 export class Pagamento {
     constructor(
-        public readonly numero: string,
-        public readonly cvv: string,
-        public readonly nome: string,
-        public readonly cpf: string,
-    ){}
-
+        readonly id?: number,
+        readonly pedido?: Pedido,
+        readonly cartoesCredito?: CartaoCredito[],
+        ){
+    }
 }
