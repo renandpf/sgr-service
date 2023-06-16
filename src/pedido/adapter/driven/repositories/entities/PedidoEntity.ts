@@ -27,7 +27,7 @@ export class PedidoEntity {
     this.statusId = StatusPedidoMapper.mapper(pedido?.getStatus());
     
     if(pedido?.temCliente()){
-      this.cliente = new ClienteEntity(pedido?.cliente);
+      this.cliente = new ClienteEntity(pedido?.getCliente());
     }
   }
 

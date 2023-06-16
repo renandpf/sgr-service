@@ -6,7 +6,7 @@ export class ClienteValidacaoException extends SystemBaseException {
     public readonly httpStatus: number = 400;
 
     constructor(mensagem: string) {
-        super(mensagem);
+        super();
         this.message = mensagem;
     }
 }

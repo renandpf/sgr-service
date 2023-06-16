@@ -1,7 +1,7 @@
 import { Controller } from "@tsed/di";
 import { Get, Post, Put, Returns } from "@tsed/schema";
 import { BodyParams, Inject, PathParams } from "@tsed/common";
-import { AlterarClienteUseCase, CriarClienteUseCase, ObterClienteUseCase } from "../../../../core/application";
+import { AlterarClienteUseCase, CriarClienteUseCase, ObterClienteUseCase } from "../../../../core/application/useCases";
 import { ClienteJson } from "./json/ClienteJson";
 
 @Controller("/cliente")

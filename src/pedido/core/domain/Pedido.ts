@@ -9,7 +9,7 @@ export class Pedido {
         public readonly id?: number,
         private status?: StatusPedido,
         public readonly itens?: Item[],
-        public readonly cliente?: Cliente,
+        private cliente?: Cliente,
         public readonly pagamentos?: Pagamento[],
         public readonly observacao?: string,
     ) { }
@@ -49,4 +49,11 @@ export class Pedido {
         return this.status;
     }
 
+    removerCliente(){
+        this.cliente = undefined;
+    }
+
+    getCliente(): Cliente | undefined{
+        return this.cliente;
+    }
 }
