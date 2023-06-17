@@ -5,12 +5,12 @@ import { Logger } from "@tsed/common";
 import { ErrorToAccessDatabaseException } from "src/common/exception/ErrorToAccessDatabaseException";
 import { Optional } from "typescript-optional";
 import { PRODUTO_DATABASE_REPOSITORY } from "src/config/database/repository/repository-register.provider";
-import { IProdutoRepositoryGateway } from "src/pedido/core/application/ports/IProdutoRepositoryGateway";
+import { IProdutoServiceGateway } from "src/pedido/core/application/ports/IProdutoServiceGateway";
 import { Equal } from "typeorm";
 import { Produto } from "src/gerencial/core/domain/Produto";
 
 @Service()
-export class ProdutoMySqlRepositoryGateway implements IProdutoRepositoryGateway {
+export class ProdutoServiceHttpGateway implements IProdutoServiceGateway {
     @Inject()
     logger: Logger;
 

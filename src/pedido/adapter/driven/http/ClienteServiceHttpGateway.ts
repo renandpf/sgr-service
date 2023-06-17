@@ -2,13 +2,13 @@ import { Logger, Service } from "@tsed/common";
 import { Inject } from "@tsed/di";
 import { Optional } from "typescript-optional";
 import { ErrorToAccessDatabaseException } from "../../../../common/exception/ErrorToAccessDatabaseException";
-import { IClienteRepositoryGateway } from "src/pedido/core/application/ports/IClienteRepositoryGateway";
+import { IClienteServiceGateway } from "src/pedido/core/application/ports/IClienteServiceGateway";
 import { Cliente } from "src/gerencial/core/domain/Cliente";
 import { ClienteController } from "src/gerencial";
 
 
 @Service()
-export class ClienteMySqlRepositoryGateway implements IClienteRepositoryGateway {
+export class ClienteServiceHttpGateway implements IClienteServiceGateway {
     @Inject()
     private logger: Logger;
 

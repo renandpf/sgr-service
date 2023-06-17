@@ -1,6 +1,6 @@
 import { Cliente } from "src/gerencial";
 import { Optional } from "typescript-optional";
 
-export interface IClienteRepositoryGateway {
+export interface IClienteServiceGateway {
     obterPorId(clienteId: number): Promise<Optional<Cliente>>;
 }

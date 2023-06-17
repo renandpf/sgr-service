@@ -2,17 +2,19 @@ import { Service, Logger, Inject } from "@tsed/common";
 import { Pedido } from "../../domain/Pedido";
 import { IPedidoRepositoryGateway } from "../ports/IPedidoRepositoryGateway";
 import { PedidoMySqlRepositoryGateway } from "src/pedido/adapter/driven/repositories/PedidoMySqlRepositoryGateway";
-import { ObterProdutoUseCase } from "./ObterProdutoUseCase";
-import { ObterClienteUseCase } from "./ObterClienteUseCase";
-import { ClienteNaoEncontradoException } from "../exceptions/ClienteNaoEncontradoException";
+import { IClienteServiceGateway } from "../ports/IClienteServiceGateway";
+import { IProdutoServiceGateway } from "../ports/IProdutoServiceGateway";
+import { ClienteServiceHttpGateway } from "src/pedido/adapter/driven/http/ClienteServiceHttpGateway";
+import { ProdutoServiceHttpGateway } from "src/pedido/adapter/driven/http/ProdutoServiceHttpGateway";
+import { ProdutoNotFoundException } from "../exceptions/ProdutoNotFoundException";
 
 @Service()
 export class CriarPedidoUseCase {
     
     constructor(
         @Inject(PedidoMySqlRepositoryGateway) private pedidoRepositoryGateway: IPedidoRepositoryGateway,
-        @Inject() private obterProdutoUsecase: ObterProdutoUseCase,
-        @Inject() private obterClienteUseCase: ObterClienteUseCase,
+        @Inject(ClienteServiceHttpGateway) private clienteServiceGateway: IClienteServiceGateway,
+        @Inject(ProdutoServiceHttpGateway) private produtoServiceGateway: IProdutoServiceGateway,
         @Inject() private logger: Logger){}
 
     async criar(pedido: Pedido): Promise<number | undefined> {
@@ -31,15 +33,9 @@ export class CriarPedidoUseCase {
     private async verificaRemoveClienteInexistente(pedido: Pedido) {
         const clienteId = pedido.getCliente()?.id;
         if (clienteId !== undefined) {
-            try {
-                await this.obterClienteUseCase.obterPorId(clienteId);
-
-            } catch (e) {
-                if (e instanceof ClienteNaoEncontradoException) {
-                    pedido.removerCliente();
-                } else {
-                    throw e;
-                }
+            const prodOp = await this.clienteServiceGateway.obterPorId(clienteId);
+            if(prodOp.isEmpty()){
+                pedido.removerCliente();
             }
         }
     }
@@ -48,7 +44,10 @@ export class CriarPedidoUseCase {
         pedido.itens?.map(i => i.produto)
             .forEach(async p => {
                 if (p?.id !== undefined) {
-                    await this.obterProdutoUsecase.obterPorId(p.id);
+                    const produtoOp = await this.produtoServiceGateway.obterPorId(p.id);
+                    if(produtoOp.isEmpty()){
+                        throw new ProdutoNotFoundException();
+                    }
                 }
             });
     }
