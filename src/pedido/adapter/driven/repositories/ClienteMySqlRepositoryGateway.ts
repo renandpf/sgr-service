@@ -1,29 +1,24 @@
 import { Logger, Service } from "@tsed/common";
 import { Inject } from "@tsed/di";
-import { In } from "typeorm";
 import { Optional } from "typescript-optional";
-import { CLIENTE_DATABASE_REPOSITORY } from "../../../../config/database/repository/repository-register.provider";
 import { ErrorToAccessDatabaseException } from "../../../../common/exception/ErrorToAccessDatabaseException";
 import { IClienteRepositoryGateway } from "src/pedido/core/application/ports/IClienteRepositoryGateway";
 import { Cliente } from "src/gerencial/core/domain/Cliente";
+import { ClienteController } from "src/gerencial";
 
 
 @Service()
 export class ClienteMySqlRepositoryGateway implements IClienteRepositoryGateway {
     @Inject()
-    logger: Logger;
+    private logger: Logger;
 
-    @Inject(CLIENTE_DATABASE_REPOSITORY)//FIXME
-    protected clienteRepository: CLIENTE_DATABASE_REPOSITORY;
-
+    //@Inject(ClienteController)//FIXME
+    private clienteController: ClienteController;
 
     async obterPorId(id: number): Promise<Optional<Cliente>> {
         try {
-            const clienteEntity = await this.clienteRepository.findOneBy(
-                {
-                    id: In([id])
-                });
-            return Optional.ofNullable(clienteEntity?.getDomain());
+            const clienteJson =  await this.clienteController.obterPorId(id);
+            return Optional.ofNullable(clienteJson.getDomain(clienteJson.id));
         } catch (e) {
             this.logger.error(e);
             throw new ErrorToAccessDatabaseException();
