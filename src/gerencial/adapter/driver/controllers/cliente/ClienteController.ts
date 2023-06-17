@@ -4,7 +4,7 @@ import { BodyParams, Inject, PathParams } from "@tsed/common";
 import { AlterarClienteUseCase, CriarClienteUseCase, ObterClienteUseCase } from "../../../../core/application/useCases";
 import { ClienteJson } from "./json/ClienteJson";
 
-@Controller("/cliente")
+@Controller("/clientes")
 export class ClienteController {
 
     constructor(
