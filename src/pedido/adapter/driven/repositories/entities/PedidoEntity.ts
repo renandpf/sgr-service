@@ -1,6 +1,5 @@
-import {Property,} from "@tsed/schema";
 import { ClienteEntity } from "src/gerencial/adapter/driven/repositories/entities";
-import {Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { ItemEntity } from "./ItemEntity";
 import { Pedido } from "src/pedido/core/domain/Pedido";
 import { StatusPedidoMapper } from "./StatusMapper";
@@ -8,10 +7,11 @@ import { StatusPedidoMapper } from "./StatusMapper";
 @Entity("Pedido")
 export class PedidoEntity {
   @PrimaryGeneratedColumn()
-  @Property()
   id?: number;
 
-  @Column()
+  @Column({
+    nullable: false
+  })
   statusId?: number;
 
   @ManyToOne(() => ClienteEntity, (cliente) => cliente.pedidos, {nullable: true})

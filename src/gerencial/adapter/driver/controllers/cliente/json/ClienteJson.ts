@@ -28,10 +28,10 @@ export class ClienteJson {
         this.cpf = cliente.cpf;
         this.email = cliente.email;
     }
-    
-    public getDomain(id?: number): Cliente{
-        if(id){
-            return new Cliente(id, this.nome, this.cpf, this.email);
+
+    public getDomain(id?: number | null): Cliente{
+        if(id || id === null){
+            return new Cliente(id === null ? undefined : id, this.nome, this.cpf, this.email);
         } 
         return new Cliente(this.id, this.nome, this.cpf, this.email);
     }    

@@ -1,13 +1,28 @@
-import {Property} from "@tsed/schema";
-import { Entity, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { PedidoEntity } from "./PedidoEntity";
 import { Item } from "src/pedido/core/domain/Item";
 
 @Entity("Item")
 export class ItemEntity {
   @PrimaryGeneratedColumn()
-  @Property()
   id?: number;
+
+  @Column({
+    nullable: false
+  })
+  quantidade?: number;
+
+  @Column({
+    type: "float",
+    nullable: false
+  })
+  valorUnitario?: number;
+
+  @Column({
+    type: "float",
+    nullable: false
+  })
+  valorTotal?: number;
 
   @ManyToOne(() => PedidoEntity, (pedido) => pedido.itens)
   pedido?: PedidoEntity;

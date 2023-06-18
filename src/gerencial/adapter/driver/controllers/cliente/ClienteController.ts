@@ -25,7 +25,7 @@ export class ClienteController {
     @Get("/email/:email")
     @Returns(200, ClienteJson)
     @Returns(404).Description("Not found")
-    async obterPorEmail(@PathParams("e-mail") email: string) {
+    async obterPorEmail(@PathParams("email") email: string) {
         const cliente = await this.obterClienteUseCase.obterPorEmail(email);
 
         return new ClienteJson(cliente);
@@ -40,7 +40,7 @@ export class ClienteController {
     }
 
     @Post("/")
-    @Returns(200, ClienteJson)
+    @Returns(201, ClienteJson)
     @Returns(404).Description("Not found")
     async criarCliente(@BodyParams() cliente: ClienteJson){
         return await this.criarClienteUseCase.criar(cliente.getDomain());

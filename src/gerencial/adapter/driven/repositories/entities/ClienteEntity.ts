@@ -6,21 +6,27 @@ import { PedidoEntity } from "../../../../../pedido/adapter/driven/repositories/
 @Entity("Cliente")
 export class ClienteEntity {
     @PrimaryGeneratedColumn()
-    @Property()
     id?: number;
 
-    @Column()
-    @MaxLength(100)
-    @Required()
+    @Column({
+        type: "varchar",
+        length: 100,
+        nullable: true
+    })
     nome?: string;
 
-    @Column()
-    @MaxLength(11)
-    @Required()
+    @Column({
+        type: "varchar",
+        length: 11,
+        nullable: false
+    })
     cpf?: string;
 
-    @Column()
-    @Maximum(100)
+    @Column({
+        type: "varchar",
+        length: 100,
+        nullable: true
+    })
     email?: string;
 
     @OneToMany(() => PedidoEntity, (pedido) => pedido.cliente)

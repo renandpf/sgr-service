@@ -11,10 +11,12 @@ export class CriarProdutoUseCase {
         @Inject() private logger: Logger,
      ){}
 
-    public async criar(produto: Produto): Promise<number | undefined> {
-        //TODO: validar se id NÃO foi informado
-        this.logger.trace("Start produto={}", produto);
-        const id = this.produtoRepositoryGateway.criar(produto);
+    public async criar(produtoReq: Produto): Promise<number | undefined> {
+        this.logger.trace("Start produto={}", produtoReq);
+
+        produtoReq.validar();
+
+        const id = this.produtoRepositoryGateway.criar(produtoReq);
         this.logger.trace("End id={}", id);
         return id;
     }

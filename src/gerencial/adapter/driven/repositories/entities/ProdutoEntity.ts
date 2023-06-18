@@ -1,42 +1,76 @@
-import {Maximum, MaxLength, Minimum, Property, Required} from "@tsed/schema";
 import { CategoriaEnum, Produto } from "../../../..";
-import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Exception } from "@tsed/exceptions";
 
 @Entity("Produto")
 export class ProdutoEntity {
-  @PrimaryGeneratedColumn()
-  @Property()
-  id?: number;
+    @PrimaryGeneratedColumn()
+    id?: number;
 
-  @Column()
-  @MaxLength(100)
-  @Required()
-  nome?: string;
+    @Column({
+        type: "varchar",
+        length: 100,
+        nullable: false
+    })
+    nome?: string;
 
-  @Column()
-  @MaxLength(100)
-  @Required()
-  valor?: number;
+    @Column({
+        type: "varchar",
+        length: 500,
+        nullable: true
+    })
+    descricao?: string;
 
-  @Column()
-  @Minimum(0)
-  @Maximum(100)
-  categoriaId?: number;
+    @Column({
+        type: "text",
+        nullable: true
+    })
+    imagem?: string;
 
-  constructor(produto?: Produto){
-    if(produto){
-      if(produto.id){
-        this.id = produto.id;
-      }
-      this.nome = produto.nome;
-      this.valor = produto.valor;
-      if(produto.categoria !== undefined){
-        this.categoriaId = (CategoriaEnum as never)[produto.categoria] + 1;
-      }
+    @Column({
+        type: "float",
+        nullable: false
+    })
+    valor?: number;
+
+    @Column({
+        nullable: false
+    })
+    categoriaId?: number;
+
+    constructor(produto?: Produto){
+        if(produto){
+            if(produto.id){
+                this.id = produto.id;
+            }
+            this.nome = produto.nome;
+            this.descricao = produto.descricao;
+            this.valor = produto.valor;
+            this.imagem = produto.imagem;
+            if(produto.categoria !== undefined){
+                this.categoriaId = <number>produto.categoria;
+            }
+        }
     }
-  }
 
-  public getDomain(): Produto{
-    return new Produto(this.id, this.nome, this.valor);//FIXME: setar a categoria
-  }
+    public getDomain(): Produto{
+        return new Produto(this.id, this.nome, this.descricao,
+            this.valor, this.traduzirCategoria(this.categoriaId), this.imagem);
+    }
+
+    private traduzirCategoria(codigo: number | undefined): CategoriaEnum {
+
+        switch (codigo){
+            case 0:
+                return CategoriaEnum.LANCHE;
+            case 1:
+                return CategoriaEnum.ACOMPANHAMENTO;
+            case 2:
+                return CategoriaEnum.BEBIDA;
+            case 3:
+                return CategoriaEnum.SOBREMESA;
+            default:
+                throw new Exception(500,"Categoria Inválida");
+        }
+    }
 }
