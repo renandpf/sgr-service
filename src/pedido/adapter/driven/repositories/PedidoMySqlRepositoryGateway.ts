@@ -38,8 +38,8 @@ export class PedidoMySqlRepositoryGateway implements IPedidoRepositoryGateway {
     async alterar(pedido: Pedido): Promise<void> {
         try {
             this.logger.trace("Start pedido={}", pedido);
-            //TODO: Implementar
-            Promise.resolve(15);
+            await this.pedidoRepository.save(new PedidoEntity(pedido));
+            this.logger.trace("End pedidoUpdatedId={}", pedido.id);
         }
         catch (e) {
             this.logger.error(e);
