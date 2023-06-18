@@ -49,11 +49,11 @@ export class Pedido {
         return this.status;
     }
 
-    removerCliente(){
+    removerCliente() {
         this.cliente = undefined;
     }
 
-    getCliente(): Cliente | undefined{
+    getCliente(): Cliente | undefined {
         return this.cliente;
     }
 }

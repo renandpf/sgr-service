@@ -8,6 +8,7 @@ import { ErrorToAccessDatabaseException } from "src/common/exception/ErrorToAcce
 import { Optional } from "typescript-optional";
 import { PEDIDO_DATABASE_REPOSITORY } from "src/config/database/repository/repository-register.provider";
 import { PedidoEntity } from "./entities";
+import { Equal } from "typeorm";
 
 @Service()
 export class PedidoMySqlRepositoryGateway implements IPedidoRepositoryGateway {
@@ -50,9 +51,11 @@ export class PedidoMySqlRepositoryGateway implements IPedidoRepositoryGateway {
     async obterPorId(pedidoId: number): Promise<Optional<Pedido>> {
         try {
             this.logger.trace("Start id={}", pedidoId);
-            const pedido: Optional<Pedido> = Optional.empty();
-            //TODO: Implementar
-            return Promise.resolve(pedido);
+            const pedidoEntity = await this.pedidoRepository.findOneBy(
+                {
+                    id: Equal(pedidoId)
+                });
+            return Optional.ofNullable(pedidoEntity?.getDomain());
         }
         catch (e) {
             this.logger.error(e);
