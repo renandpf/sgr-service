@@ -6,7 +6,6 @@ import { IClienteServiceGateway } from "src/pedido/core/application/ports/IClien
 import { Cliente } from "src/gerencial/core/domain/Cliente";
 import axios from "axios";
 
-
 @Service()
 export class ClienteServiceHttpGateway implements IClienteServiceGateway {
     @Inject()
@@ -15,37 +14,49 @@ export class ClienteServiceHttpGateway implements IClienteServiceGateway {
 
     async obterPorId(id: number): Promise<Optional<Cliente>> {
         try {
-            const config = {
-                method: "get",
-                maxBodyLength: Infinity,
-                url: `${this.clientServiceUrlBase}/gerencial/clientes/${id}`,
-                headers: { }
-              };
+          
+          const config = {
+            method: "get",
+            maxBodyLength: Infinity,
+            url: `${this.clientServiceUrlBase}/gerencial/clientes/${id}`,
+            headers: { }
+          };
 
-              const response = await axios.request(config);
+          this.logger.info("Try connect ClienteService. config={}", config);
 
-              console.log("AAA");
-              console.log(response);
-              console.log("BBB");
+          let clienteOp: Optional<Cliente> = Optional.empty();
+          let response = undefined;
+          try {
+            response = await axios.request(config);
 
-              if(response.status === 200) {
-                //PEGAR RESPONSE BODY
-                /*
-                data: {
-                    id: 1,
-                    nome: 'Any Cliente Name',
-                    cpf: '11111111111',
-                    email: 'teste@mail.com'
-                } 
-                */
-              } else if(response.status === 404) {
-                //Verificar code
-                //Cliente não encontrado - retornar Optional vazio
-              } else {
-                //Erro inesperado, lançar exceção
-              }
+            this.logger.info("response={}", response);
+  
+            if(response.status === 200) {
+  
+              const id = response.data.id;
+              const nome = response.data.nome;
+              const cpf = response.data.cpf;
+              const email = response.data.email;
+  
+              const cliente = new Cliente(id, nome, cpf, email);
+  
+              clienteOp = Optional.of(cliente);
+            } else {
+              this.logger.warn("Erro ao acessar cliente service");
+              throw Error("Erro ao acessar cliente service");
+            }
 
-              return Promise.resolve(Optional.empty());
+          } catch (error) {
+             if(error.response.status === 404 && error.response.data.name === "sgr.clienteNaoEncontrado") {
+                this.logger.warn("Cliente não encontrado. id={}", id);
+            } else {
+              this.logger.warn("Erro ao acessar cliente service");
+              throw error;
+            }
+          }
+
+          this.logger.trace("End clienteOp={}", clienteOp);
+          return clienteOp;
         } catch (e) {
             this.logger.error(e);
             throw new ErrorToAccessDatabaseException();//FIXME: mudar para exceção especifica
