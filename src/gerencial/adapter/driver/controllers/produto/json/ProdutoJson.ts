@@ -1,5 +1,7 @@
 import { CategoriaEnum, Produto } from "../../../../../core/domain";
-import { Description, Example, Property } from "@tsed/schema";
+import { Description, Enum, Example, Property } from "@tsed/schema";
+import { OnSerialize } from "@tsed/json-mapper";
+import { CategoriaEnumMapper } from "../../../../../core/domain/CategoriaEnumMapper";
 
 export class ProdutoJson {
     @Description("Identificador")
@@ -24,7 +26,8 @@ export class ProdutoJson {
 
     @Description("Categoria")
     @Example("LANCHE")
-    @Property()
+    @Enum("LANCHE", "ACOMPANHAMENTO", "BEBIDA", "SOBREMESA")
+    @OnSerialize((c: CategoriaEnum) => CategoriaEnumMapper.enumParaString(c))
     public readonly categoria?: CategoriaEnum;
 
     @Description("Imagem")

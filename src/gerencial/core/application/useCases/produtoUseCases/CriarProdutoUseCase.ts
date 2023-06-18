@@ -16,7 +16,7 @@ export class CriarProdutoUseCase {
 
         produtoReq.validar();
 
-        const id = this.produtoRepositoryGateway.criar(produtoReq);
+        const id = await this.produtoRepositoryGateway.criar(produtoReq);
         this.logger.trace("End id={}", id);
         return id;
     }

@@ -1,6 +1,6 @@
-import { CategoriaEnum, Produto } from "../../../..";
+import { CategoriaEnum, Produto } from "../../../../core/domain";
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
-import { Exception } from "@tsed/exceptions";
+import { CategoriaEnumMapper } from "../../../../core/domain/CategoriaEnumMapper";
 
 @Entity("Produto")
 export class ProdutoEntity {
@@ -48,29 +48,13 @@ export class ProdutoEntity {
             this.valor = produto.valor;
             this.imagem = produto.imagem;
             if(produto.categoria !== undefined){
-                this.categoriaId = <number>produto.categoria;
+                this.categoriaId = (CategoriaEnum as never)[produto.categoria];
             }
         }
     }
 
     public getDomain(): Produto{
         return new Produto(this.id, this.nome, this.descricao,
-            this.valor, this.traduzirCategoria(this.categoriaId), this.imagem);
-    }
-
-    private traduzirCategoria(codigo: number | undefined): CategoriaEnum {
-
-        switch (codigo){
-            case 0:
-                return CategoriaEnum.LANCHE;
-            case 1:
-                return CategoriaEnum.ACOMPANHAMENTO;
-            case 2:
-                return CategoriaEnum.BEBIDA;
-            case 3:
-                return CategoriaEnum.SOBREMESA;
-            default:
-                throw new Exception(500,"Categoria Inválida");
-        }
+            this.valor, CategoriaEnumMapper.numberParaEnum(this.categoriaId), this.imagem);
     }
 }

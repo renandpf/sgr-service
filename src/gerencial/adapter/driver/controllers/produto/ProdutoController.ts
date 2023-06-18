@@ -35,8 +35,8 @@ export class ProdutoController {
 
   @Post("/produtos")
   @Returns(201).Description("ID do produto criado")
-  async criar(@BodyParams() produtoJson: ProdutoJson): Promise<number | undefined> {
-    return await this.criarProdutoUseCase.criar(produtoJson.getDomain(null));
+  async criar(@BodyParams() produtoJson: ProdutoJson): Promise<string> {
+    return await this.criarProdutoUseCase.criar(produtoJson.getDomain(null)) + "";
   }
 
   @Put("/produtos/:id")
