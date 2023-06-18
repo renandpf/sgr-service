@@ -7,4 +7,5 @@ export const anyProduto = factory.Sync.makeFactory<Produto>({
     valor: faker.number.float(),
     nome: faker.string.alpha(),
     categoria: CategoriaEnum.ACOMPANHAMENTO,
+    validar: () => "",
 });
