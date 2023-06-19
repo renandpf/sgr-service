@@ -14,46 +14,9 @@ export class ClienteServiceHttpGateway implements IClienteServiceGateway {
 
     async obterPorId(id: number): Promise<Optional<Cliente>> {
         try {
+          this.logger.trace("Start id={}", id);
           
-          const config = {
-            method: "get",
-            maxBodyLength: Infinity,
-            url: `${this.clientServiceUrlBase}/gerencial/clientes/${id}`,
-            headers: { }
-          };
-
-          this.logger.info("Try connect ClienteService. config={}", config);
-
-          let clienteOp: Optional<Cliente> = Optional.empty();
-          let response = undefined;
-          try {
-            response = await axios.request(config);
-
-            this.logger.info("response={}", response);
-  
-            if(response.status === 200) {
-  
-              const id = response.data.id;
-              const nome = response.data.nome;
-              const cpf = response.data.cpf;
-              const email = response.data.email;
-  
-              const cliente = new Cliente(id, nome, cpf, email);
-  
-              clienteOp = Optional.of(cliente);
-            } else {
-              this.logger.warn("Erro ao acessar cliente service");
-              throw Error("Erro ao acessar cliente service");
-            }
-
-          } catch (error) {
-             if(error.response.status === 404 && error.response.data.name === "sgr.clienteNaoEncontrado") {
-                this.logger.warn("Cliente não encontrado. id={}", id);
-            } else {
-              this.logger.warn("Erro ao acessar cliente service");
-              throw error;
-            }
-          }
+          const clienteOp: Optional<Cliente> = await this.callService(id);
 
           this.logger.trace("End clienteOp={}", clienteOp);
           return clienteOp;
@@ -62,4 +25,57 @@ export class ClienteServiceHttpGateway implements IClienteServiceGateway {
             throw new ErrorToAccessDatabaseException();//FIXME: mudar para exceção especifica
         }
     }
+
+  private async callService(id: number): Promise<Optional<Cliente>>  {
+    try {
+
+      const config = {
+        method: "get",
+        maxBodyLength: Infinity,
+        url: `${this.clientServiceUrlBase}/gerencial/clientes/${id}`,
+        headers: { }
+      };
+
+      this.logger.info("Try connect ClienteService. config={}", config);
+
+      const response = await axios.request(config);
+      this.logger.info("response={}", response);
+      
+      return this.processSucessResponse(response);
+
+    } catch (error) {
+      return this.processErrorResponse(error, id);
+    }
+  }
+
+  private processSucessResponse(response: any): Optional<Cliente> {
+    if (response.status === 200) {
+      return this.getClientFromResponse(response);
+    } else {
+      this.logger.warn("Erro ao acessar cliente service");
+      throw Error("Erro ao acessar cliente service");
+    }
+  }
+
+  private processErrorResponse(error: any, id: number): Optional<Cliente> {
+    if (error.response.status === 404 && error.response.data.code === "sgr.clienteNaoEncontrado") {
+      this.logger.warn("Cliente não encontrado. id={}", id);
+      return Optional.empty();
+    } else {
+      this.logger.warn("Erro ao acessar cliente service");
+      throw error;
+    }
+  }
+
+
+  private getClientFromResponse(response: any): Optional<Cliente> {
+    const id = response.data.id;
+    const nome = response.data.nome;
+    const cpf = response.data.cpf;
+    const email = response.data.email;
+
+    const cliente = new Cliente(id, nome, cpf, email);
+
+    return Optional.of(cliente);
+  }
 }

@@ -6,7 +6,6 @@ import { IClienteServiceGateway } from "../ports/IClienteServiceGateway";
 import { IProdutoServiceGateway } from "../ports/IProdutoServiceGateway";
 import { ClienteServiceHttpGateway } from "src/pedido/adapter/driven/http/ClienteServiceHttpGateway";
 import { ProdutoServiceHttpGateway } from "src/pedido/adapter/driven/http/ProdutoServiceHttpGateway";
-import { ProdutoNotFoundException } from "../exceptions/ProdutoNotFoundException";
 
 @Service()
 export class CriarPedidoUseCase {
@@ -46,7 +45,7 @@ export class CriarPedidoUseCase {
                 if (p?.id !== undefined) {
                     const produtoOp = await this.produtoServiceGateway.obterPorId(p.id);
                     if(produtoOp.isEmpty()){
-                        throw new ProdutoNotFoundException();
+                        //throw new ProdutoNotFoundException();
                     }
                 }
             });

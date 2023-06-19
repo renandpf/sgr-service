@@ -24,10 +24,9 @@ export class ErrorFilter implements ExceptionFilterMethods {
         const systemException = error instanceof SystemBaseException;
 
         return {
-            name: systemException ? (error as SystemBaseException).code : error.origin?.name || error.name,
+            code: systemException ? (error as SystemBaseException).code : error.origin?.name || error.name,
             message: systemException ? (error as SystemBaseException).message : error.message,
             status: systemException ? (error as SystemBaseException).httpStatus : error.status || 500,
-            // errors: this.getErrors(error)
         };
     }
 
