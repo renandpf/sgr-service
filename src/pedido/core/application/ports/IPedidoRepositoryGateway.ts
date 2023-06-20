@@ -3,6 +3,6 @@ import { Pedido } from "../../domain/Pedido";
 
 export interface IPedidoRepositoryGateway {
     criar(pedido: Pedido): Promise<number | undefined>;
-    alterar(pedido: Pedido): Promise<void>;
+    atualizarStatus(pedido: Pedido): Promise<void>;
     obterPorId(pedidoId: number): Promise<Optional<Pedido>>;
 }

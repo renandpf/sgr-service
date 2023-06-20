@@ -36,7 +36,7 @@ export class PedidoMySqlRepositoryGateway implements IPedidoRepositoryGateway {
 
     }
 
-    async alterar(pedido: Pedido): Promise<void> {
+    async atualizarStatus(pedido: Pedido): Promise<void> {
         try {
             this.logger.trace("Start pedido={}", pedido);
             const pedidoId = pedido.id as number;

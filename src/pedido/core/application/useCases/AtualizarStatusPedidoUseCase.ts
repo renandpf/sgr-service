@@ -20,7 +20,7 @@ export class AtualizarStatusPedidoUseCase {
         }
         const pedidoEncontrado = pedido.get();
         pedidoEncontrado.setStatus();
-        await this.pedidoRepositoryGateway.alterar(pedidoEncontrado);
+        await this.pedidoRepositoryGateway.atualizarStatus(pedidoEncontrado);
         this.logger.trace("End pedido={}", pedidoEncontrado);
     }
 }
