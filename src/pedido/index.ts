@@ -19,4 +19,5 @@ export * from "./core/application/useCases/CriarPedidoUseCase";
 export * from "./core/domain/Item";
 export * from "./core/domain/Pedido";
 export * from "./core/domain/StatusPedido";
+export * from "./core/domain/StatusPedidoEnumMapper";
 export * from "./core/domain/Usuario";

@@ -1,6 +1,6 @@
 import { Pedido } from "src/pedido/core/domain/Pedido";
 import { Optional } from "typescript-optional";
 
-export interface IPedidoRepositoryGateway {
+export interface IPedidoServiceGateway {
     obterPorId(pedidoId: number): Promise<Optional<Pedido>>;
 }

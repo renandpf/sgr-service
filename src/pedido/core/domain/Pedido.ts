@@ -34,6 +34,16 @@ export class Pedido {
         throw new AlteracaoStatusNovoPedidoException();
     }
 
+    setStatusPago() {
+        if (this.status === StatusPedido.AGUARDANDO_PAGAMENTO) {
+            this.status = StatusPedido.PAGO;
+            return;
+        }
+
+        throw new AlteracaoStatusNovoPedidoException();
+    }
+
+    //TODO: analisar. Este método permite falhas, no sentido de ser chamado no momento errado e não haver validação
     setStatus() {
         switch (this.status) {
             case StatusPedido.AGUARDANDO_PAGAMENTO:
