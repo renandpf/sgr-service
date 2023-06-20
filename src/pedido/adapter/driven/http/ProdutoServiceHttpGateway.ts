@@ -11,7 +11,7 @@ import { ErrorToAccessProdutoServiceException } from "src/pedido/core/applicatio
 export class ProdutoServiceHttpGateway implements IProdutoServiceGateway {
     @Inject()
     private logger: Logger;
-    private readonly clientServiceUrlBase: string = "http://localhost:8083";
+    private readonly clientServiceUrlBase: string = "http://localhost:8083";//FIXME: usar arquivo properties
 
     async obterPorId(id: number): Promise<Optional<Produto>> {
         try {

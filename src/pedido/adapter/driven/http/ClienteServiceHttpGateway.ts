@@ -10,7 +10,7 @@ import { ErrorToAccessClienteServiceException } from "src/pedido/core/applicatio
 export class ClienteServiceHttpGateway implements IClienteServiceGateway {
     @Inject()
     private logger: Logger;
-    private readonly clientServiceUrlBase: string = "http://localhost:8083";
+    private readonly clientServiceUrlBase: string = "http://localhost:8083";//FIXME: usar arquivo properties
 
     async obterPorId(id: number): Promise<Optional<Cliente>> {
         try {
