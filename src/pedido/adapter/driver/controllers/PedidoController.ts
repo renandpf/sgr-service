@@ -27,9 +27,9 @@ export class PedidoController {
     @Put("/pedidos/:id")
     @Returns(200).Description("Nenhuma resposta")
     async atualizar(@PathParams("id") id: number): Promise<void> {
-        //TODO implementar
-        Promise.resolve(15);
+        this.logger.info("Start pedidoId={}", id);
         await this.atualizarStatusPedidoUseCase.atualizarStatus(id);
+        this.logger.trace("End pedidoId={}", id);
     }
 
 }
