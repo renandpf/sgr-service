@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
 
 export const anyPedidoJson = {
-    idsRefeicao: [faker.number.int()],
+    idsLanche: [faker.number.int()],
     idsAcompanhamento: [faker.number.int()],
     idsBebida: [faker.number.int()],
     idsSobremesa: [faker.number.int()],

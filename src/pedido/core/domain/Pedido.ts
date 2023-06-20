@@ -12,7 +12,14 @@ export class Pedido {
         private cliente?: Cliente,
         public readonly pagamentos?: Pagamento[],
         public readonly observacao?: string,
+        private dataCadastro?: Date,
+        private dataConclusao?: Date
     ) { }
+
+    inicializar() {
+        this.dataCadastro?.setDate(Date.now());
+        this.dataConclusao = undefined;
+    }
 
     temCliente(): boolean {
         return this.cliente !== undefined;
@@ -30,13 +37,17 @@ export class Pedido {
     setStatus() {
         switch (this.status) {
             case StatusPedido.AGUARDANDO_PAGAMENTO:
+                this.status = StatusPedido.RECEBIDO
+                break;
+            case StatusPedido.RECEBIDO:
                 this.status = StatusPedido.PREPARANDO
                 break;
             case StatusPedido.PREPARANDO:
                 this.status = StatusPedido.PRONTO
                 break;
-            case StatusPedido.PREPARANDO:
+            case StatusPedido.PRONTO:
                 this.status = StatusPedido.FINALIZADO
+                this.dataConclusao?.setDate(Date.now());
                 break;
             default:
                 break;

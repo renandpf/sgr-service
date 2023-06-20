@@ -15,6 +15,16 @@ export class PedidoEntity {
   })
   statusId?: number;
 
+  @Column({
+    nullable: false
+  })
+  dataCadastro: Date;
+
+  @Column({
+    nullable: true
+  })
+  dataConclusao: Date;
+
   @ManyToOne(() => ClienteEntity, (cliente) => cliente.pedidos, { nullable: true })
   cliente?: ClienteEntity;
 
