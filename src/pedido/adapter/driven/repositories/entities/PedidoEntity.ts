@@ -16,7 +16,7 @@ export class PedidoEntity {
   statusId?: number;
 
   @Column({
-    nullable: false
+    nullable: true
   })
   dataCadastro: Date;
 
