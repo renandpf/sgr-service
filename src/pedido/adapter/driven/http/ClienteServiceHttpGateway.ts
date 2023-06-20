@@ -1,10 +1,10 @@
 import { Logger, Service } from "@tsed/common";
 import { Inject } from "@tsed/di";
 import { Optional } from "typescript-optional";
-import { ErrorToAccessDatabaseException } from "../../../../common/exception/ErrorToAccessDatabaseException";
 import { IClienteServiceGateway } from "src/pedido/core/application/ports/IClienteServiceGateway";
 import { Cliente } from "src/gerencial/core/domain/Cliente";
 import axios from "axios";
+import { ErrorToAccessClienteServiceException } from "src/pedido/core/application/exceptions/ErrorToAccessClienteServiceException";
 
 @Service()
 export class ClienteServiceHttpGateway implements IClienteServiceGateway {
@@ -22,7 +22,7 @@ export class ClienteServiceHttpGateway implements IClienteServiceGateway {
           return clienteOp;
         } catch (e) {
             this.logger.error(e);
-            throw new ErrorToAccessDatabaseException();//FIXME: mudar para exceção especifica
+            throw new ErrorToAccessClienteServiceException();
         }
     }
 

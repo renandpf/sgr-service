@@ -1,13 +1,11 @@
 import { Inject, Service } from "@tsed/di";
-
 import { Logger } from "@tsed/common";
-
-import { ErrorToAccessDatabaseException } from "src/common/exception/ErrorToAccessDatabaseException";
 import { Optional } from "typescript-optional";
 
 import { IProdutoServiceGateway } from "src/pedido/core/application/ports/IProdutoServiceGateway";
 import { Produto } from "src/gerencial";
 import axios from "axios";
+import { ErrorToAccessProdutoServiceException } from "src/pedido/core/application/exceptions/ErrorToAccessProdutoServiceException";
 
 @Service()
 export class ProdutoServiceHttpGateway implements IProdutoServiceGateway {
@@ -25,7 +23,7 @@ export class ProdutoServiceHttpGateway implements IProdutoServiceGateway {
           return produtoOp;
         } catch (e) {
             this.logger.error(e);
-            throw new ErrorToAccessDatabaseException();//FIXME: mudar para exceção especifica
+            throw new ErrorToAccessProdutoServiceException();
         }
     }
 

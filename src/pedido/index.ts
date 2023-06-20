@@ -7,6 +7,8 @@ export * from "./adapter/driven/http/ProdutoServiceHttpGateway";
 export * from "./adapter/driven/repositories/PedidoMySqlRepositoryGateway";
 export * from "./adapter/driven/repositories/entities/index";
 export * from "./adapter/driver/controllers/index";
+export * from "./core/application/exceptions/ErrorToAccessClienteServiceException";
+export * from "./core/application/exceptions/ErrorToAccessProdutoServiceException";
 export * from "./core/application/exceptions/PedidoNotFoundException";
 export * from "./core/application/exceptions/ProdutoNotFoundException";
 export * from "./core/application/ports/IClienteServiceGateway";
