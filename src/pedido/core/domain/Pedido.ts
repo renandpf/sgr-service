@@ -6,6 +6,8 @@ import { AlteracaoStatusNovoPedidoException } from "src/gerencial/core/applicati
 import { AlteracaoStatusPagoPedidoException } from "src/gerencial/core/application/exception/AlteracaoStatusPagoPedidoException";
 
 export class Pedido {
+
+    private dataCadastro: Date;
     constructor(
         public readonly id?: number,
         private status?: StatusPedido,
@@ -13,9 +15,13 @@ export class Pedido {
         private cliente?: Cliente,
         public readonly pagamentos?: Pagamento[],
         public readonly observacao?: string,
-        private dataCadastro?: Date,
+        dataCadastro?: Date,
         private dataConclusao?: Date
-    ) { }
+    ) {
+        if(dataCadastro != undefined){
+            this.dataCadastro.setDate(dataCadastro.getTime());
+        }
+    }
 
     inicializar() {
         this.dataCadastro?.setDate(Date.now());
@@ -55,10 +61,10 @@ export class Pedido {
                 break;
             case StatusPedido.PREPARANDO:
                 this.status = StatusPedido.PRONTO
+                this.dataConclusao?.setDate(Date.now());
                 break;
             case StatusPedido.PRONTO:
                 this.status = StatusPedido.FINALIZADO
-                this.dataConclusao?.setDate(Date.now());
                 break;
             default:
                 break;
@@ -69,6 +75,22 @@ export class Pedido {
 
     public getStatus(): StatusPedido | undefined {
         return this.status;
+    }
+
+    public getDataCadastro(): Date | undefined {
+        return this.dataCadastro;
+    }
+
+    public getTempoEspera(): number {
+        let dataFim: number = Date.now();
+        if(this.dataConclusao){
+            dataFim = this.dataConclusao.getTime();
+        }
+        return dataFim -  this.dataCadastro.getTime();
+    }
+
+    public getDataConclusao(): Date | undefined {
+        return this.dataConclusao;
     }
 
     removerCliente() {

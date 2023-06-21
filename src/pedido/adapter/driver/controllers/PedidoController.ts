@@ -5,6 +5,7 @@ import { CriarPedidoUseCase } from "../../../core/application/useCases/CriarPedi
 import { AtualizarStatusPedidoUseCase } from "../../../core/application/useCases/AtualizarStatusPedidoUseCase";
 import { PedidoJson } from "./json/PedidoJson";
 import { ObterPedidoUseCase } from "src/pedido/core/application/useCases/ObterPedidoUseCase";
+import { PedidoEmAndamentoJson } from "./json/PedidoEmAndamentoJson";
 
 @Controller("")
 export class PedidoController {
@@ -17,7 +18,7 @@ export class PedidoController {
     }
 
     @Get("/pedidos/:id")
-    @Returns(200).Description("Pedido")
+    @Returns(200, PedidoJson).Description("Pedido")
     async obterPorId(@PathParams("id") id: number): Promise<PedidoJson> {
         this.logger.info("Start pedidoId={}", id);
         const pedido = await this.obterPedidoUseCase.obterPorId(id);
@@ -25,7 +26,6 @@ export class PedidoController {
         this.logger.trace("End pedidoJson={}", pedidoJson);
         return pedidoJson;
     }
-
 
     @Post("/pedidos")
     @Returns(201).Description("ID do pedido criado")
@@ -42,6 +42,19 @@ export class PedidoController {
         this.logger.info("Start pedidoId={}", id);
         await this.atualizarStatusPedidoUseCase.atualizarStatus(id);
         this.logger.trace("End pedidoId={}", id);
+    }
+
+    @Get("/pedidos/andamento")
+    @Returns(200, PedidoEmAndamentoJson).Description("Pedidos em andamento")
+    async obterEmAndamento(): Promise<PedidoEmAndamentoJson[]> {
+        this.logger.info("Start em andamento");
+        const pedidosJson: PedidoEmAndamentoJson[] = [];
+        const pedido = await this.obterPedidoUseCase.obterEmAndamento();
+        pedido.forEach(pe => {
+            pedidosJson.push(new PedidoEmAndamentoJson(pe));
+        });
+        this.logger.trace("End em andamento");
+        return pedidosJson;
     }
 
 }

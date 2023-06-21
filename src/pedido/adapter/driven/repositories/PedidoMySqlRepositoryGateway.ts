@@ -1,7 +1,5 @@
 import { Inject, Service } from "@tsed/di";
-
 import { Logger } from "@tsed/common";
-
 import { IPedidoRepositoryGateway } from "src/pedido/core/application/ports/IPedidoRepositoryGateway";
 import { Pedido } from "src/pedido/core/domain/Pedido";
 import { ErrorToAccessDatabaseException } from "src/common/exception/ErrorToAccessDatabaseException";
@@ -9,6 +7,8 @@ import { Optional } from "typescript-optional";
 import { PEDIDO_DATABASE_REPOSITORY } from "src/config/database/repository/repository-register.provider";
 import { PedidoEntity } from "./entities";
 import { Equal } from "typeorm";
+import { StatusPedido } from "../../../core/domain/StatusPedido";
+import { StatusPedidoEnumMapper } from "../../../core/domain/StatusPedidoEnumMapper";
 
 @Service()
 export class PedidoMySqlRepositoryGateway implements IPedidoRepositoryGateway {
@@ -57,6 +57,33 @@ export class PedidoMySqlRepositoryGateway implements IPedidoRepositoryGateway {
                     id: Equal(pedidoId)
                 });
             return Optional.ofNullable(pedidoEntity?.getDomain());
+        }
+        catch (e) {
+            this.logger.error(e);
+            throw new ErrorToAccessDatabaseException();
+        }
+    }
+
+    async obterEmAndamento(): Promise<Optional<Pedido[]>> {
+        try {
+            this.logger.trace("Start em amdamento");
+            const pedidos: Pedido[] = [];
+
+            const pedidoEntity = await this.pedidoRepository
+                .createQueryBuilder("ped")
+                .where("ped.status in(:...status)", {
+                    status:  [
+                        StatusPedidoEnumMapper.enumParaNumber(StatusPedido.RECEBIDO),
+                        StatusPedidoEnumMapper.enumParaNumber(StatusPedido.PREPARANDO)
+                    ]
+                })
+                .getMany();
+
+            pedidoEntity.forEach(pe => {
+                pedidos.push(pe.getDomain());
+            });
+
+            return Optional.of(pedidos);
         }
         catch (e) {
             this.logger.error(e);

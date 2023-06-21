@@ -25,4 +25,18 @@ export class ObterPedidoUseCase {
         return pedido;
     }
 
+    async obterEmAndamento(): Promise<Pedido[]> {
+        this.logger.trace("Start em andamento");
+
+        const pedidoOp = await this.pedidoRepositoryGateway.obterEmAndamento();
+        if(pedidoOp.isEmpty()){
+            this.logger.warn("Pedidos não retornados");
+            throw new PedidoNotFoundException();
+        }
+
+        const pedido = pedidoOp.get();
+        this.logger.trace("End em andamento");
+        return pedido;
+    }
+
 }

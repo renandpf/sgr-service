@@ -1,9 +1,8 @@
-
 import { ClienteEntity } from "src/gerencial/adapter/driven/repositories/entities";
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { ItemEntity } from "./ItemEntity";
 import { Pedido } from "src/pedido/core/domain/Pedido";
-import { StatusPedidoMapper } from "./StatusMapper";
+import { StatusPedidoEnumMapper } from "../../../../core/domain/StatusPedidoEnumMapper";
 
 @Entity("Pedido")
 export class PedidoEntity {
@@ -23,7 +22,12 @@ export class PedidoEntity {
   @Column({
     nullable: true
   })
-  dataConclusao: Date;
+  dataConclusao?: Date;
+
+  @Column({
+    nullable: true
+  })
+  observaco?: string;
 
   @ManyToOne(() => ClienteEntity, (cliente) => cliente.pedidos, { nullable: true })
   cliente?: ClienteEntity;
@@ -33,9 +37,14 @@ export class PedidoEntity {
 
   constructor(pedido?: Pedido) {
     this.id = pedido?.id;
-
+    this.observaco = pedido?.observacao;
+    this.dataCadastro = pedido?.getDataCadastro() as never;
+    this.dataConclusao = pedido?.getDataConclusao();
     this.itens = pedido?.itens?.map(i => new ItemEntity(i, this));
-    this.statusId = StatusPedidoMapper.mapper(pedido?.getStatus());
+    const status = pedido?.getStatus();
+    if(status) {
+      this.statusId = StatusPedidoEnumMapper.enumParaNumber(status);
+    }
 
     if (pedido?.temCliente()) {
       this.cliente = new ClienteEntity(pedido?.getCliente());
