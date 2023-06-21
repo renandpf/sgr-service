@@ -29,16 +29,15 @@ export class EfetuarPagamentoUseCase {
         const pedido = await this.obtemPedidoVerificandoSeEleExiste(pagamento); 
         pedido.setStatusPago();
 
-        const responsePagamentoDto = this.pagamentoServiceGateway.enviarPagamento(new RequestPagamentoDto(pagamento.cartoesCredito));
-
-
+        const responsePagamentoDto = await this.pagamentoServiceGateway.enviarPagamento(new RequestPagamentoDto(pagamento.cartoesCredito));
+        pagamento.setIdentificadorPagamentoExterno(responsePagamentoDto.identificadorPagamento);
 
         /*TODO: implementar: 
             obter pedido - OK, 
             verificar status do pedido - OK, 
             chamar api de pagamento - OK, 
             alterar status do pedido - OK
-            adicionar codigoPagamento (api terceira) no pedido
+            adicionar codigoPagamento (api terceira) no pedido - OK
             salvar pedido no database
         */
 

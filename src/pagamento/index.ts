@@ -13,3 +13,4 @@ export * from "./core/application/ports/IPedidoServiceGateway";
 export * from "./core/application/usecases/EfetuarPagamentoUseCase";
 export * from "./core/domain/CartaoCredito";
 export * from "./core/domain/Pagamento";
+export * from "./core/domain/SistemaExterno";

@@ -1,5 +1,3 @@
 export class ResponsePagamentoDto {
-    constructor(private readonly idPagamentoSistemaPagamento: string){
-
-    }
+    constructor(readonly identificadorPagamento: string){}
 }

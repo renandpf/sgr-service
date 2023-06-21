@@ -1,8 +1,12 @@
 import { Pedido } from "src/pedido";
 import { CartaoCredito } from "./CartaoCredito";
 import { CamposObrigatoriosNaoPreechidoException } from "../application/exceptions/CamposObrigatoriosNaoPreechidoException";
+import { SistemaExterno } from "./SistemaExterno";
 
 export class Pagamento {
+
+    private sistemaExterno?: SistemaExterno;
+
     constructor(
         readonly id?: number,
         readonly pedido?: Pedido,
@@ -25,4 +29,7 @@ export class Pagamento {
         }
     }
 
+    setIdentificadorPagamentoExterno(identificadorPagamento: string){
+        this.sistemaExterno = new SistemaExterno(identificadorPagamento);        
+    }
 }
