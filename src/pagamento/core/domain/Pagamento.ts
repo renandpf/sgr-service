@@ -19,7 +19,10 @@ export class Pagamento {
         if(this.cartoesCredito === undefined || this.cartoesCredito.length === 0){
             mensagens.push("Meio de pagamento não informado");
         }
-        throw new CamposObrigatoriosNaoPreechidoException(mensagens.join(","));
+
+        if(mensagens.length > 0){
+            throw new CamposObrigatoriosNaoPreechidoException(mensagens.join(","));
+        }
     }
 
 }

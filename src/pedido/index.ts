@@ -16,6 +16,7 @@ export * from "./core/application/ports/IPedidoRepositoryGateway";
 export * from "./core/application/ports/IProdutoServiceGateway";
 export * from "./core/application/useCases/AtualizarStatusPedidoUseCase";
 export * from "./core/application/useCases/CriarPedidoUseCase";
+export * from "./core/application/useCases/ObterPedidoUseCase";
 export * from "./core/domain/Item";
 export * from "./core/domain/Pedido";
 export * from "./core/domain/StatusPedido";

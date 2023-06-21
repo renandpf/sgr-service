@@ -10,17 +10,17 @@ export class PedidoJson {
     @Description("Identificador")
     @Example("123456")
     @Property()
-    public readonly id: number;
+    public readonly id?: number;
 
     @Description("Observação")
     @Example("Sem cebola")
     @Property()
-    public readonly observacao: string;
+    public readonly observacao?: string;
 
     @Description("Cliente")
     @Example("123456")
     @Property()
-    public readonly clienteId: number;
+    public readonly clienteId?: number;
 
     @Description("Categoria")
     @Example("RECEBIDO")
@@ -47,6 +47,13 @@ export class PedidoJson {
     @Example("[123, 321, 456]")
     @Property()
     public readonly idsSobremesa: number[];
+
+    constructor(pedido: Pedido) {
+        this.id = pedido.id;
+        this.observacao = pedido.observacao;
+        this.clienteId = pedido.getCliente()?.id;
+        this.status = pedido.getStatus();
+    }
 
     public getDomain(): Pedido {
         const lanches:Produto[] = this.mapIdToProduto(this.idsLanche, CategoriaEnum.LANCHE);

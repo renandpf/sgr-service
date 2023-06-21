@@ -1,17 +1,29 @@
 import { BodyParams, Inject, Logger, PathParams } from "@tsed/common";
-import { Post, Put, Returns } from "@tsed/schema";
+import { Get, Post, Put, Returns } from "@tsed/schema";
 import { Controller } from "@tsed/di";
 import { CriarPedidoUseCase } from "../../../core/application/useCases/CriarPedidoUseCase";
 import { AtualizarStatusPedidoUseCase } from "../../../core/application/useCases/AtualizarStatusPedidoUseCase";
 import { PedidoJson } from "./json/PedidoJson";
+import { ObterPedidoUseCase } from "src/pedido/core/application/useCases/ObterPedidoUseCase";
 
 @Controller("")
 export class PedidoController {
 
     constructor(
+        @Inject() private obterPedidoUseCase: ObterPedidoUseCase,
         @Inject() private criarPedidoUseCase: CriarPedidoUseCase,
         @Inject() private atualizarStatusPedidoUseCase: AtualizarStatusPedidoUseCase,
         @Inject() private logger: Logger) {
+    }
+
+    @Get("/pedidos/:id")
+    @Returns(200).Description("Pedido")
+    async obterPorId(@PathParams("id") id: number): Promise<PedidoJson> {
+        this.logger.info("Start pedidoId={}", id);
+        const pedido = await this.obterPedidoUseCase.obterPorId(id);
+        const pedidoJson = new PedidoJson(pedido);
+        this.logger.trace("End pedidoJson={}", pedidoJson);
+        return pedidoJson;
     }
 
 

@@ -2,7 +2,7 @@ import { SystemBaseException } from "../../../../common/exception/SystemBaseExce
 
 export class CamposObrigatoriosNaoPreechidoException extends SystemBaseException {
     public readonly code = "sgr.camposObrigatoriosNaoPreenchido";
-    public readonly httpStatus = 404;
+    public readonly httpStatus = 400;
 
     constructor(public readonly message: string){
         super();
