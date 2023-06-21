@@ -3,7 +3,7 @@ import { Inject } from "@tsed/di";
 import { Optional } from "typescript-optional";
 import axios from "axios";
 import { IPedidoServiceGateway } from "src/pagamento/core/application/ports/IPedidoServiceGateway";
-import { Pedido } from "src/pedido";
+import { Pedido, StatusPedido } from "src/pedido";
 import { ErrorToAccessPedidoServiceException } from "src/pagamento/core/application/exceptions/ErrorToAccessPedidoServiceException";
 
 @Service()
@@ -70,11 +70,9 @@ export class PedidoServiceHttpGateway implements IPedidoServiceGateway {
 
   private getClientFromResponse(response: any): Optional<Pedido> {
     const id = response.data.id;
-    const nome = response.data.nome;
-    const cpf = response.data.cpf;
-    const email = response.data.email;
+    const status = StatusPedido[response.data.status] as unknown as number;
 
-    const pedido = new Pedido(id, nome, cpf, email);
+    const pedido = new Pedido(id, status);
 
     return Optional.of(pedido);
   }

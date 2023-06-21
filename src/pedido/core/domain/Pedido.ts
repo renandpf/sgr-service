@@ -3,6 +3,7 @@ import { Item } from "./Item";
 import { StatusPedido } from "./StatusPedido";
 import { Pagamento } from "../../../pagamento/core/domain/Pagamento";
 import { AlteracaoStatusNovoPedidoException } from "src/gerencial/core/application/exception/AlteracaoStatusNovoPedidoException";
+import { AlteracaoStatusPagoPedidoException } from "src/gerencial/core/application/exception/AlteracaoStatusPagoPedidoException";
 
 export class Pedido {
     constructor(
@@ -35,12 +36,12 @@ export class Pedido {
     }
 
     setStatusPago() {
-        if (this.status === StatusPedido.AGUARDANDO_PAGAMENTO) {
+        if (this.status == StatusPedido.AGUARDANDO_PAGAMENTO) {
             this.status = StatusPedido.PAGO;
             return;
         }
 
-        throw new AlteracaoStatusNovoPedidoException();
+        throw new AlteracaoStatusPagoPedidoException();
     }
 
     //TODO: analisar. Este método permite falhas, no sentido de ser chamado no momento errado e não haver validação

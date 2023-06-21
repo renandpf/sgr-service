@@ -2,7 +2,6 @@ import { Service, Logger, Inject } from "@tsed/common";
 import { Pedido } from "../../domain/Pedido";
 import { IPedidoRepositoryGateway } from "../ports/IPedidoRepositoryGateway";
 import { PedidoMySqlRepositoryGateway } from "src/pedido/adapter/driven/repositories/PedidoMySqlRepositoryGateway";
-import { ProdutoNotFoundException } from "../exceptions/ProdutoNotFoundException";
 import { PedidoNotFoundException } from "../exceptions/PedidoNotFoundException";
 
 @Service()
