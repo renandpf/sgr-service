@@ -42,7 +42,7 @@ export class PedidoEntity {
     this.dataConclusao = pedido?.getDataConclusao();
     this.itens = pedido?.itens?.map(i => new ItemEntity(i, this));
     const status = pedido?.getStatus();
-    if(status) {
+    if(status !== undefined){
       this.statusId = StatusPedidoEnumMapper.enumParaNumber(status);
     }
 

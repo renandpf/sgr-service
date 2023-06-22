@@ -24,8 +24,6 @@ export class CriarPedidoUseCase {
         await this.verificaExistenciaProduto(pedido);
         await this.verificaRemoveClienteInexistente(pedido);
 
-        //TODO: adicionar regra: validar se cada produto informado é da categoria certa
-        
         pedido.setStatusNovo();
         const id = await this.pedidoRepositoryGateway.criar(pedido);
 
