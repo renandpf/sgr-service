@@ -22,7 +22,7 @@ export class PedidoController {
     async obterPorId(@PathParams("id") id: number): Promise<PedidoJson> {
         this.logger.info("Start pedidoId={}", id);
         const pedido = await this.obterPedidoUseCase.obterPorId(id);
-        const pedidoJson = new PedidoJson(pedido);
+        const pedidoJson = PedidoJson.getInstance(pedido);
         this.logger.trace("End pedidoJson={}", pedidoJson);
         return pedidoJson;
     }

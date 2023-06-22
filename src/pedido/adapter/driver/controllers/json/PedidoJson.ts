@@ -48,11 +48,14 @@ export class PedidoJson {
     @Property()
     public readonly idsSobremesa: number[];
 
-    constructor(pedido: Pedido) {
-        this.id = pedido.id;
-        this.observacao = pedido.observacao;
-        this.clienteId = pedido.getCliente()?.id;
-        this.status = pedido.getStatus();
+
+    static getInstance(pedido: Pedido): PedidoJson  {
+        return {
+            id: pedido.id,
+            observacao: pedido.observacao,
+            clienteId: pedido.getCliente()?.id,
+            status: pedido.getStatus(),
+        } as PedidoJson;
     }
 
     public getDomain(): Pedido {
