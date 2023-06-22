@@ -14,7 +14,6 @@ export * from "./core/application/exceptions/ErrorToAccessProdutoServiceExceptio
 export * from "./core/application/exceptions/PedidoNotFoundException";
 export * from "./core/application/exceptions/ProdutoNotFoundException";
 export * from "./core/application/ports/IClienteServiceGateway";
-export * from "./core/application/ports/IPagamentoServiceGateway";
 export * from "./core/application/ports/IPedidoRepositoryGateway";
 export * from "./core/application/ports/IProdutoServiceGateway";
 export * from "./core/application/useCases/AtualizarStatusPedidoUseCase";

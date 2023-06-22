@@ -6,10 +6,10 @@ import { IPedidoServiceGateway } from "../ports/IPedidoServiceGateway";
 import { PedidoNotFoundException } from "../exceptions/PedidoNotFoundException";
 import { Pedido } from "src/pedido/core/domain/Pedido";
 import { CamposObrigatoriosNaoPreechidoException } from "../exceptions/CamposObrigatoriosNaoPreechidoException";
-import { IPagamentoServiceExternoGateway } from "src/pedido/core/application/ports/IPagamentoServiceGateway";
 import { RequestPagamentoDto } from "src/pedido/core/application/dto/RequestPagamentoDto";
 import { PedidoServiceHttpGateway } from "src/pagamento/adapter/driven/http/PedidoServiceHttpGateway";
 import { PagamentoMockExternalServiceHttpGateway } from "src/pagamento/adapter/driven/http/PagamentoMockServiceHttpGateway";
+import { IPagamentoServiceExternoGateway } from "../ports/IPagamentoServiceGateway";
 
 @Service()
 export class EfetuarPagamentoUseCase {
@@ -18,8 +18,7 @@ export class EfetuarPagamentoUseCase {
         @Inject() private logger: Logger,
         @Inject(PedidoServiceHttpGateway) private pedidoServiceGateway: IPedidoServiceGateway,
         @Inject(PagamentoMockExternalServiceHttpGateway) private pagamentoServiceGateway: IPagamentoServiceExternoGateway,
-        ) {
-    }
+        ) {}
 
     async efetuar(pagamento: Pagamento){
         this.logger.trace("Start pagamento={}", pagamento);
@@ -27,7 +26,7 @@ export class EfetuarPagamentoUseCase {
         pagamento.validaCamposObrigatorios();
 
         const pedido = await this.obtemPedidoVerificandoSeEleExiste(pagamento); 
-        pedido.setStatusPago();
+        pedido.setStatusAguardandoConfirmacaoPagamento();//FIXME: colocar aguardando confirmação pagamento
 
         const responsePagamentoDto = await this.pagamentoServiceGateway.enviarPagamento(new RequestPagamentoDto(pagamento.cartoesCredito));
         pagamento.setIdentificadorPagamentoExterno(responsePagamentoDto.identificadorPagamento);

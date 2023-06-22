@@ -41,7 +41,7 @@ export class Pedido {
         throw new AlteracaoStatusNovoPedidoException();
     }
 
-    setStatusPago() {
+    setStatusAguardandoConfirmacaoPagamento() {
         if (this.status == StatusPedido.AGUARDANDO_PAGAMENTO) {
             this.status = StatusPedido.PAGO;
             return;
