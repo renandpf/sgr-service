@@ -47,7 +47,7 @@ export class EfetuarPagamentoUseCase {
             chamar api de pagamento - OK, 
             alterar status do pedido - OK
             adicionar codigoPagamento (api terceira) no pedido - OK
-            criar pagamento no database dados do pagamento externo
+            criar pagamento no database dados do pagamento externo - OK
             salvar pedido no database - via service(novo status)
         */
 
