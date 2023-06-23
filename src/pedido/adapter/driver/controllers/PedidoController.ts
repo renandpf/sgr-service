@@ -7,6 +7,7 @@ import { PedidoJson } from "./json/PedidoJson";
 import { ObterPedidoUseCase } from "src/pedido/core/application/useCases/ObterPedidoUseCase";
 import { PedidoEmAndamentoJson } from "./json/PedidoEmAndamentoJson";
 import { CamposObrigatoriosNaoPreechidoException } from "src/pedido/core/application/exceptions/CamposObrigatoriosNaoPreechidoException";
+import { StatusPedidoEnumMapper } from "src/pedido/core/domain/StatusPedidoEnumMapper";
 
 @Controller("")
 export class PedidoController {
@@ -44,7 +45,7 @@ export class PedidoController {
         if(pedidoJson.status === undefined){
             throw new CamposObrigatoriosNaoPreechidoException("Status deve ser informado");
         }
-        await this.atualizarStatusPedidoUseCase.atualizarStatus(id, pedidoJson.status);
+        await this.atualizarStatusPedidoUseCase.atualizarStatus(id, StatusPedidoEnumMapper.stringParaEnum(pedidoJson.status as unknown as string));
         this.logger.trace("End pedidoId={}", id);
     }
 
