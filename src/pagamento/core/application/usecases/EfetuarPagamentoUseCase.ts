@@ -12,6 +12,7 @@ import { PagamentoMockExternalServiceHttpGateway } from "src/pagamento/adapter/d
 import { IPagamentoExternoServiceGateway } from "../ports/IPagamentoExternoServiceGateway";
 import { PagamentoMySqlRepositoryGateway } from "../../../adapter/driven/repositories/PagamentoMySqlRepositoryGateway";
 import { IPagamentoRepositoryGateway } from "../ports/IPagamentoRepositoryGateway";
+import { StatusPedido } from "src/pedido";
 
 @Service()
 export class EfetuarPagamentoUseCase {
@@ -30,7 +31,7 @@ export class EfetuarPagamentoUseCase {
         pagamento.validaCamposObrigatorios();
 
         const pedido = await this.obtemPedidoVerificandoSeEleExiste(pagamento); 
-        pedido.setStatusAguardandoConfirmacaoPagamento();//FIXME: colocar aguardando confirmação pagamento
+        pedido.setStatus(StatusPedido.AGUARDANDO_CONFIRMACAO_PAGAMENTO);
         
         const responsePagamentoDto = await this.pagamentoExternoServiceGateway.enviarPagamento(new RequestPagamentoDto(pagamento.cartoesCredito));
         pagamento.setIdentificadorPagamentoExterno(responsePagamentoDto.identificadorPagamento);

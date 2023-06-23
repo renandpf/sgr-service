@@ -3,7 +3,7 @@ import { Inject } from "@tsed/di";
 import { Optional } from "typescript-optional";
 import axios from "axios";
 import { IPedidoServiceGateway } from "src/pagamento/core/application/ports/IPedidoServiceGateway";
-import { Pedido, StatusPedido } from "src/pedido";
+import { Pedido, StatusPedido, StatusPedidoEnumMapper } from "src/pedido";
 import { ErrorToAccessPedidoServiceException } from "src/pagamento/core/application/exceptions/ErrorToAccessPedidoServiceException";
 
 @Service()
@@ -48,7 +48,7 @@ export class PedidoServiceHttpGateway implements IPedidoServiceGateway {
       };
 
       const body = {
-        status: pedido.getStatus(),
+        status: StatusPedidoEnumMapper.enumParaString(pedido.getStatus()),
       };
 
       this.logger.info("Try connect pedidoService. config={}, method=patch, body={}", config, body);

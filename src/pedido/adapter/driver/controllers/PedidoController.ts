@@ -1,11 +1,12 @@
 import { BodyParams, Inject, Logger, PathParams } from "@tsed/common";
-import { Get, Post, Put, Returns } from "@tsed/schema";
+import { Get, Patch, Post, Returns } from "@tsed/schema";
 import { Controller } from "@tsed/di";
 import { CriarPedidoUseCase } from "../../../core/application/useCases/CriarPedidoUseCase";
 import { AtualizarStatusPedidoUseCase } from "../../../core/application/useCases/AtualizarStatusPedidoUseCase";
 import { PedidoJson } from "./json/PedidoJson";
 import { ObterPedidoUseCase } from "src/pedido/core/application/useCases/ObterPedidoUseCase";
 import { PedidoEmAndamentoJson } from "./json/PedidoEmAndamentoJson";
+import { CamposObrigatoriosNaoPreechidoException } from "src/pedido/core/application/exceptions/CamposObrigatoriosNaoPreechidoException";
 
 @Controller("")
 export class PedidoController {
@@ -36,11 +37,14 @@ export class PedidoController {
         return `${pedidoId}`;
     }
 
-    @Put("/pedidos/:id")
+    @Patch("/pedidos/:id/status")
     @Returns(200).Description("Nenhuma resposta")
-    async atualizarStatus(@PathParams("id") id: number): Promise<void> {
-        this.logger.info("Start pedidoId={}", id);
-        await this.atualizarStatusPedidoUseCase.atualizarStatus(id);
+    async atualizarStatus(@PathParams("id") id: number, @BodyParams() pedidoJson: PedidoJson): Promise<void> {
+        this.logger.info("Start id={}, pedidoJson={}", id, pedidoJson);
+        if(pedidoJson.status === undefined){
+            throw new CamposObrigatoriosNaoPreechidoException("Status deve ser informado");
+        }
+        await this.atualizarStatusPedidoUseCase.atualizarStatus(id, pedidoJson.status);
         this.logger.trace("End pedidoId={}", id);
     }
 

@@ -1,7 +1,11 @@
 import { SystemBaseException } from "../../../../common/exception/SystemBaseException";
 
-export class AlteracaoStatusPagoPedidoException extends SystemBaseException {
-    public readonly code = "sgr.alteracaoStatusPago";
-    public readonly message = "O pedido deve estar com status equivalente a 'Aguardando Pagamento'";
+export class AlteracaoStatusPedidoException extends SystemBaseException {
+    public readonly code = "sgr.alteracaoStatus";
     public readonly httpStatus = 422;
+
+    constructor(public message: string){
+        super();
+    }
+
 }

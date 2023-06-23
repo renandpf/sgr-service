@@ -2,8 +2,7 @@ import { Cliente } from "../../../gerencial/core/domain/Cliente";
 import { Item } from "./Item";
 import { StatusPedido } from "./StatusPedido";
 import { Pagamento } from "../../../pagamento/core/domain/Pagamento";
-import { AlteracaoStatusNovoPedidoException } from "src/gerencial/core/application/exception/AlteracaoStatusNovoPedidoException";
-import { AlteracaoStatusPagoPedidoException } from "src/gerencial/core/application/exception/AlteracaoStatusPagoPedidoException";
+import { AlteracaoStatusPedidoException } from "src/gerencial/core/application/exception/AlteracaoStatusPagoPedidoException";
 
 export class Pedido {
 
@@ -32,48 +31,59 @@ export class Pedido {
         return this.cliente !== undefined;
     }
 
-    setStatusNovo() {
-        if (this.status === undefined || this.status === StatusPedido.AGUARDANDO_PAGAMENTO) {
-            this.status = StatusPedido.AGUARDANDO_PAGAMENTO;
-            return;
-        }
-
-        throw new AlteracaoStatusNovoPedidoException();
-    }
-
-    setStatusAguardandoConfirmacaoPagamento() {
-        if (this.status == StatusPedido.AGUARDANDO_PAGAMENTO) {
-            this.status = StatusPedido.AGUARDANDO_CONFIRMACAO_PAGAMENTO;
-            return;
-        }
-
-        throw new AlteracaoStatusPagoPedidoException();
-    }
-
-    //TODO: analisar. Este método permite falhas, no sentido de ser chamado no momento errado e não haver validação
-    setStatus() {
-        switch (this.status) {
+    //TODO: Aplicar SOLID: este método tende a crescer sempre q surgir novos status. 
+    //Por isso é sugerido que ele deve ser substituido por classe "Status", sendo que cada uma responde pela alteração de status
+    //Assim Da pra usar chain of responsabilit ou factory - analisar
+    setStatus(newStatus: StatusPedido) {
+        switch (newStatus) {
             case StatusPedido.AGUARDANDO_PAGAMENTO:
-                this.status = StatusPedido.RECEBIDO
-                break;
-            case StatusPedido.RECEBIDO:
-                this.status = StatusPedido.PREPARANDO
-                break;
-            case StatusPedido.PREPARANDO:
-                this.status = StatusPedido.PRONTO
-                this.dataConclusao?.setDate(Date.now());
-                break;
-            case StatusPedido.PRONTO:
-                this.status = StatusPedido.FINALIZADO
-                break;
-            default:
-                break;
-        }
+                if (this.status === undefined || this.status === StatusPedido.AGUARDANDO_PAGAMENTO) {
+                    this.status = newStatus;
+                    break;
+                }
+                throw new AlteracaoStatusPedidoException("O status do pedido não permite essa alteração");
 
-        throw new AlteracaoStatusNovoPedidoException();
+            case StatusPedido.AGUARDANDO_CONFIRMACAO_PAGAMENTO:
+                if (this.status === StatusPedido.AGUARDANDO_PAGAMENTO) {
+                    this.status = newStatus;
+                    break;
+                }
+                throw new AlteracaoStatusPedidoException("O status do pedido não permite essa alteração");
+                
+            case StatusPedido.PAGO || StatusPedido.PAGAMENTO_INVALIDO:
+                if (this.status === StatusPedido.AGUARDANDO_CONFIRMACAO_PAGAMENTO) {
+                    this.status = newStatus;
+                    break;
+                }
+                throw new AlteracaoStatusPedidoException("O status do pedido não permite essa alteração");
+
+            case StatusPedido.PREPARANDO:
+                if (this.status === StatusPedido.PAGO) {
+                    this.status = newStatus;
+                    break;
+                }
+                throw new AlteracaoStatusPedidoException("O status do pedido não permite essa alteração");
+
+            case StatusPedido.PRONTO:
+                if (this.status === StatusPedido.PREPARANDO) {
+                    this.status = newStatus;
+                    break;
+                }
+                throw new AlteracaoStatusPedidoException("O status do pedido não permite essa alteração");
+
+            case StatusPedido.FINALIZADO:
+                if (this.status === StatusPedido.PRONTO) {
+                    this.status = newStatus;
+                    break;
+                }
+                throw new AlteracaoStatusPedidoException("O status do pedido não permite essa alteração");
+        }
     }
 
-    public getStatus(): StatusPedido | undefined {
+    public getStatus(): StatusPedido {
+        if(this.status === undefined){
+            this.status = StatusPedido.AGUARDANDO_PAGAMENTO;
+        }
         return this.status;
     }
 

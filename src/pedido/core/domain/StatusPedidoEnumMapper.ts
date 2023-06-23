@@ -7,15 +7,17 @@ export class StatusPedidoEnumMapper{
             case 0:
                 return StatusPedido.AGUARDANDO_PAGAMENTO;
             case 1:
-                return StatusPedido.PAGO;
+                return StatusPedido.AGUARDANDO_CONFIRMACAO_PAGAMENTO;
             case 2:
-                return StatusPedido.RECEBIDO;
+                return StatusPedido.PAGO;
             case 3:
                 return StatusPedido.PREPARANDO;
             case 4:
                 return StatusPedido.PRONTO;
             case 5:
                 return StatusPedido.FINALIZADO;
+            case 6:
+                return StatusPedido.PAGAMENTO_INVALIDO;
             default:
                 throw new Exception(500,"Status Inválido");
         }
@@ -25,16 +27,18 @@ export class StatusPedidoEnumMapper{
         switch (opcao){
             case "AGUARDANDO_PAGAMENTO":
                 return StatusPedido.AGUARDANDO_PAGAMENTO;
+            case "AGUARDANDO_CONFIRMACAO_PAGAMENTO":
+                return StatusPedido.AGUARDANDO_CONFIRMACAO_PAGAMENTO;
             case "PAGO":
                 return StatusPedido.PAGO;
-            case "RECEBIDO":
-                return StatusPedido.RECEBIDO;
             case "PREPARANDO":
                 return StatusPedido.PREPARANDO;
             case "PRONTO":
                 return StatusPedido.PRONTO;
             case "FINALIZADO":
                 return StatusPedido.FINALIZADO;
+            case "PAGAMENTO_INVALIDO":
+                return StatusPedido.PAGAMENTO_INVALIDO;
             default:
                 throw new Exception(500,"Status Inválido");
         }
@@ -42,29 +46,33 @@ export class StatusPedidoEnumMapper{
 
     static enumParaString(status? : StatusPedido): string {
 
-        switch (status) {
+        switch (status){
             case StatusPedido.AGUARDANDO_PAGAMENTO:
                 return "AGUARDANDO_PAGAMENTO";
-            case StatusPedido.RECEBIDO:
-                return "RECEBIDO";
+            case StatusPedido.AGUARDANDO_CONFIRMACAO_PAGAMENTO:
+                return "AGUARDANDO_CONFIRMACAO_PAGAMENTO";
+            case StatusPedido.PAGO:
+                return "PAGO";
             case StatusPedido.PREPARANDO:
                 return "PREPARANDO";
             case StatusPedido.PRONTO:
                 return "PRONTO";
             case StatusPedido.FINALIZADO:
                 return "FINALIZADO";
+            case StatusPedido.PAGAMENTO_INVALIDO:
+                return "PAGAMENTO_INVALIDO";
+            default:
+                throw new Exception(500,"Status Inválido");
         }
-
-        return ""
     }
 
     static enumParaNumber(status? : StatusPedido): number{
         switch (status){
             case StatusPedido.AGUARDANDO_PAGAMENTO:
                 return 0;
-            case StatusPedido.PAGO:
+            case StatusPedido.AGUARDANDO_CONFIRMACAO_PAGAMENTO:
                 return 1;
-            case StatusPedido.RECEBIDO:
+            case StatusPedido.PAGO:
                 return 2;
             case StatusPedido.PREPARANDO:
                 return 3;
@@ -72,6 +80,9 @@ export class StatusPedidoEnumMapper{
                 return 4;
             case StatusPedido.FINALIZADO:
                 return 5;
+            case StatusPedido.PAGAMENTO_INVALIDO:
+                return 6;
+    
             default:
                 throw new Exception(500,"Status Inválido");
         }

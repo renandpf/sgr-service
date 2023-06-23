@@ -56,6 +56,6 @@ export class PedidoEntity {
   }
 
   public getDomain(): Pedido {
-    return new Pedido(this.id, this.statusId);
+    return new Pedido(this.id, StatusPedidoEnumMapper.numberParaEnum(this.statusId));
   }
 }

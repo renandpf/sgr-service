@@ -9,6 +9,7 @@ export * from "./adapter/driven/repositories/entities/index";
 export * from "./adapter/driver/controllers/index";
 export * from "./core/application/dto/RequestPagamentoDto";
 export * from "./core/application/dto/ResponsePagamentoDto";
+export * from "./core/application/exceptions/CamposObrigatoriosNaoPreechidoException";
 export * from "./core/application/exceptions/ErrorToAccessClienteServiceException";
 export * from "./core/application/exceptions/ErrorToAccessProdutoServiceException";
 export * from "./core/application/exceptions/PedidoNotFoundException";

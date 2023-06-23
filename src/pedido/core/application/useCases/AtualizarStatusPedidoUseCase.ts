@@ -4,6 +4,7 @@ import { IPedidoRepositoryGateway } from "../ports/IPedidoRepositoryGateway";
 import { PedidoMySqlRepositoryGateway } from "src/pedido/adapter/driven/repositories/PedidoMySqlRepositoryGateway";
 import { Optional } from "typescript-optional";
 import { PedidoNotFoundException } from "../exceptions/PedidoNotFoundException";
+import { StatusPedido } from "../../domain/StatusPedido";
 
 @Service()
 export class AtualizarStatusPedidoUseCase {
@@ -11,7 +12,7 @@ export class AtualizarStatusPedidoUseCase {
         @Inject(PedidoMySqlRepositoryGateway) private pedidoRepositoryGateway: IPedidoRepositoryGateway,
         @Inject() private logger: Logger) { }
 
-    async atualizarStatus(pedidoId: number): Promise<void> {
+    async atualizarStatus(pedidoId: number, status: StatusPedido): Promise<void> {
         this.logger.trace("Start id={}", pedidoId);
         const pedido: Optional<Pedido> = await this.pedidoRepositoryGateway.obterPorId(pedidoId);
         if (pedido.isEmpty()) {
@@ -19,8 +20,9 @@ export class AtualizarStatusPedidoUseCase {
             throw new PedidoNotFoundException();
         }
         const pedidoEncontrado = pedido.get();
-        pedidoEncontrado.setStatus();
+        
+        pedidoEncontrado.setStatus(status);
         await this.pedidoRepositoryGateway.atualizarStatus(pedidoEncontrado);
-        this.logger.trace("End pedido={}", pedidoEncontrado);
+        this.logger.trace("End");
     }
 }

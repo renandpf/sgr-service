@@ -73,7 +73,6 @@ export class PedidoMySqlRepositoryGateway implements IPedidoRepositoryGateway {
                 .createQueryBuilder("ped")
                 .where("ped.status in(:...status)", {
                     status:  [
-                        StatusPedidoEnumMapper.enumParaNumber(StatusPedido.RECEBIDO),
                         StatusPedidoEnumMapper.enumParaNumber(StatusPedido.PREPARANDO)
                     ]
                 })
