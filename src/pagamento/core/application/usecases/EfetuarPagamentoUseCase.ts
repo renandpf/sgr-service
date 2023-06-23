@@ -42,16 +42,6 @@ export class EfetuarPagamentoUseCase {
 
         await this.pedidoServiceGateway.alterarStatus(pedido);
 
-        /*TODO: implementar: 
-            obter pedido - OK, 
-            verificar status do pedido - OK, 
-            chamar api de pagamento - OK, 
-            alterar status do pedido - OK
-            adicionar codigoPagamento (api terceira) no pedido - OK
-            criar pagamento no database dados do pagamento externo - OK
-            salvar pedido no database - via service(novo status)
-        */
-
         this.logger.trace("End idPagamento={}", idPagamento);
         return idPagamento;
     }
