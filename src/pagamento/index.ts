@@ -4,12 +4,15 @@
 
 export * from "./adapter/driven/http/PagamentoMockServiceHttpGateway";
 export * from "./adapter/driven/http/PedidoServiceHttpGateway";
+export * from "./adapter/driven/repositories/PagamentoMySqlRepositoryGateway";
+export * from "./adapter/driven/repositories/entities/PagamentoEntity";
 export * from "./adapter/driver/index";
 export * from "./core/application/exceptions/CamposObrigatoriosNaoPreechidoException";
 export * from "./core/application/exceptions/ErrorToAccessPagamentoServicoExternoException";
 export * from "./core/application/exceptions/ErrorToAccessPedidoServiceException";
 export * from "./core/application/exceptions/PedidoNotFoundException";
-export * from "./core/application/ports/IPagamentoServiceGateway";
+export * from "./core/application/ports/IPagamentoExternoServiceGateway";
+export * from "./core/application/ports/IPagamentoRepositoryGateway";
 export * from "./core/application/ports/IPedidoServiceGateway";
 export * from "./core/application/usecases/EfetuarPagamentoUseCase";
 export * from "./core/domain/CartaoCredito";

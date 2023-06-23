@@ -1,8 +1,9 @@
 import { ClienteEntity } from "src/gerencial/adapter/driven/repositories/entities";
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { ItemEntity } from "./ItemEntity";
 import { Pedido } from "src/pedido/core/domain/Pedido";
 import { StatusPedidoEnumMapper } from "../../../../core/domain/StatusPedidoEnumMapper";
+import { PagamentoEntity } from "src/pagamento/adapter/driven/repositories/entities/PagamentoEntity";
 
 @Entity("Pedido")
 export class PedidoEntity {
@@ -34,6 +35,9 @@ export class PedidoEntity {
 
   @OneToMany(() => ItemEntity, (item) => item.pedido)
   itens?: ItemEntity[];
+
+  @OneToOne(() => PagamentoEntity, (pagamento) => pagamento.pedido)
+  pagamento?: PagamentoEntity;
 
   constructor(pedido?: Pedido) {
     this.id = pedido?.id;

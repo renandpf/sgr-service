@@ -1,13 +1,14 @@
 import { Inject, Service } from "@tsed/di";
 import { Logger } from "@tsed/logger";
 import { ErrorToAccessPagamentoServicoExternoException } from "src/pagamento/core/application/exceptions/ErrorToAccessPagamentoServicoExternoException";
-import { IPagamentoServiceExternoGateway } from "src/pagamento/core/application/ports/IPagamentoServiceGateway";
+import { IPagamentoExternoServiceGateway } from "src/pagamento/core/application/ports/IPagamentoExternoServiceGateway";
+
 import { RequestPagamentoDto } from "src/pedido/core/application/dto/RequestPagamentoDto";
 import { ResponsePagamentoDto } from "src/pedido/core/application/dto/ResponsePagamentoDto";
 
 
 @Service()
-export class PagamentoMockExternalServiceHttpGateway implements IPagamentoServiceExternoGateway {
+export class PagamentoMockExternalServiceHttpGateway implements IPagamentoExternoServiceGateway {
     
     @Inject()
     private logger: Logger;
