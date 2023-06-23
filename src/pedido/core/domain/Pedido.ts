@@ -43,7 +43,7 @@ export class Pedido {
 
     setStatusAguardandoConfirmacaoPagamento() {
         if (this.status == StatusPedido.AGUARDANDO_PAGAMENTO) {
-            this.status = StatusPedido.PAGO;
+            this.status = StatusPedido.AGUARDANDO_CONFIRMACAO_PAGAMENTO;
             return;
         }
 

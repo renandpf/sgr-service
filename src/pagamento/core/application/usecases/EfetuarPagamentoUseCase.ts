@@ -37,9 +37,10 @@ export class EfetuarPagamentoUseCase {
 
         pagamento.setPedido(pedido);
 
+        //TODO: deve ocorrer rollback em caso de falha no passo de alterarStatus do serviço
         const idPagamento = await this.pagamentoRepositoryGateway.criar(pagamento);
 
-        //this.pedidoServiceGateway.update()
+        await this.pedidoServiceGateway.alterarStatus(pedido);
 
         /*TODO: implementar: 
             obter pedido - OK, 
