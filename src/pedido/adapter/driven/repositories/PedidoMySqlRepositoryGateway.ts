@@ -12,6 +12,7 @@ import { StatusPedidoEnumMapper } from "../../../core/domain/StatusPedidoEnumMap
 
 @Service()
 export class PedidoMySqlRepositoryGateway implements IPedidoRepositoryGateway {
+
     @Inject()
     logger: Logger;
 
@@ -87,6 +88,28 @@ export class PedidoMySqlRepositoryGateway implements IPedidoRepositoryGateway {
         }
         catch (e) {
             this.logger.error(e);
+            throw new ErrorToAccessDatabaseException();
+        }
+    }
+
+    async obterPorStatus(status: StatusPedido): Promise<Optional<Pedido>> {
+        try {
+            this.logger.trace(`Consultando pedidos por status: ${status}`);
+            const pedidos: Pedido[]= [];
+
+            const pedidoEntity = await this.pedidoRepository
+            .createQueryBuilder("ped")
+            .where("ped.status = :status", {
+                status: StatusPedidoEnumMapper.enumParaNumber(status)
+            }).getMany();
+
+            pedidoEntity.forEach(pe => {
+                pedidos.push(pe.getDomain());
+            })
+
+            return Optional.of(pedidos);
+        } catch (error) {
+            this.logger.error(error);
             throw new ErrorToAccessDatabaseException();
         }
     }
