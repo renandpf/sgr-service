@@ -9,7 +9,7 @@ export class Pagamento {
 
     constructor(
         readonly id?: number,
-        readonly pedido?: Pedido,
+        private pedido?: Pedido,
         readonly cartoesCredito?: CartaoCredito[],
         ){
     }
@@ -32,4 +32,18 @@ export class Pagamento {
     setIdentificadorPagamentoExterno(identificadorPagamento: string){
         this.sistemaExterno = new SistemaExterno(identificadorPagamento);        
     }
+
+    getIdentificadorPagamentoExterno(): string | undefined {
+        return this.sistemaExterno?.identificadorPagamento;
+    }
+
+    setPedido(pedido: Pedido){
+        this.pedido = pedido;
+    }
+
+    getPedido(): Pedido | undefined{
+        return this.pedido;
+    }
+
+
 }

@@ -14,9 +14,10 @@ export class PagamentoController {
 
     @Post("/pagamentos/efetuar")
     @Returns(200)
-    async efetuar(@BodyParams() pagamentoJson: PagamentoJson): Promise<void> {
+    async efetuar(@BodyParams() pagamentoJson: PagamentoJson): Promise<string | undefined> {
         this.logger.info("Start pagamentoJson={}", pagamentoJson);
-        await this.efetuarPagamentoUseCase.efetuar(pagamentoJson.getDomain());
-        this.logger.trace("End");
+        const pagamentoId = await this.efetuarPagamentoUseCase.efetuar(pagamentoJson.getDomain());
+        this.logger.trace("End pagamentoId={}", pagamentoId);
+        return `${pagamentoId}`;
     }
 }

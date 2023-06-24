@@ -7,6 +7,7 @@ import { IProdutoServiceGateway } from "../ports/IProdutoServiceGateway";
 import { ClienteServiceHttpGateway } from "src/pedido/adapter/driven/http/ClienteServiceHttpGateway";
 import { ProdutoServiceHttpGateway } from "src/pedido/adapter/driven/http/ProdutoServiceHttpGateway";
 import { ProdutoNotFoundException } from "../exceptions/ProdutoNotFoundException";
+import { StatusPedido } from "../../domain/StatusPedido";
 
 @Service()
 export class CriarPedidoUseCase {
@@ -24,9 +25,7 @@ export class CriarPedidoUseCase {
         await this.verificaExistenciaProduto(pedido);
         await this.verificaRemoveClienteInexistente(pedido);
 
-        //TODO: adicionar regra: validar se cada produto informado é da categoria certa
-        
-        pedido.setStatusNovo();
+        pedido.setStatus(StatusPedido.AGUARDANDO_PAGAMENTO);
         const id = await this.pedidoRepositoryGateway.criar(pedido);
 
         this.logger.trace("End id={}", id);

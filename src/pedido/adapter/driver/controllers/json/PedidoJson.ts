@@ -24,7 +24,13 @@ export class PedidoJson {
 
     @Description("Categoria")
     @Example("RECEBIDO")
-    @Enum("AGUARDANDO_PAGAMENTO", "RECEBIDO", "PREPARANDO", "PRONTO", "FINALIZADO")
+    @Enum(  "AGUARDANDO_PAGAMENTO", 
+            "AGUARDANDO_CONFIRMACAO_PAGAMENTO", 
+            "PAGO", 
+            "PREPARANDO", 
+            "PRONTO", 
+            "FINALIZADO",
+            "PAGAMENTO_INVALIDO")
     @OnSerialize((c: StatusPedido) => StatusPedidoEnumMapper.enumParaString(c))
     public readonly status?: StatusPedido;
 
@@ -48,11 +54,15 @@ export class PedidoJson {
     @Property()
     public readonly idsSobremesa: number[];
 
-    constructor(pedido: Pedido) {
-        this.id = pedido.id;
-        this.observacao = pedido.observacao;
-        this.clienteId = pedido.getCliente()?.id;
-        this.status = pedido.getStatus();
+
+    static getInstance(pedido: Pedido): PedidoJson  {
+
+        return {
+            id: pedido.id,
+            observacao: pedido.observacao,
+            clienteId: pedido.getCliente()?.id,
+            status: pedido.getStatus(),
+        } as PedidoJson;
     }
 
     public getDomain(): Pedido {

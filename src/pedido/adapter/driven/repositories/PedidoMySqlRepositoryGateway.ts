@@ -41,8 +41,8 @@ export class PedidoMySqlRepositoryGateway implements IPedidoRepositoryGateway {
         try {
             this.logger.trace("Start pedido={}", pedido);
             const pedidoId = pedido.id as number;
-            await this.pedidoRepository.update(pedidoId, { statusId: pedido.getStatus() });
-            this.logger.trace("End pedidoUpdatedId={}", pedido.id);
+            await this.pedidoRepository.update(pedidoId, { statusId: StatusPedidoEnumMapper.enumParaNumber(pedido.getStatus())});
+            this.logger.trace("End");
         }
         catch (e) {
             this.logger.error(e);
@@ -74,7 +74,6 @@ export class PedidoMySqlRepositoryGateway implements IPedidoRepositoryGateway {
                 .createQueryBuilder("ped")
                 .where("ped.status in(:...status)", {
                     status:  [
-                        StatusPedidoEnumMapper.enumParaNumber(StatusPedido.RECEBIDO),
                         StatusPedidoEnumMapper.enumParaNumber(StatusPedido.PREPARANDO)
                     ]
                 })

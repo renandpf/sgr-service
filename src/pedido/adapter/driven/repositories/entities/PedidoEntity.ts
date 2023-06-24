@@ -1,8 +1,9 @@
 import { ClienteEntity } from "src/gerencial/adapter/driven/repositories/entities";
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { ItemEntity } from "./ItemEntity";
 import { Pedido } from "src/pedido/core/domain/Pedido";
 import { StatusPedidoEnumMapper } from "../../../../core/domain/StatusPedidoEnumMapper";
+import { PagamentoEntity } from "src/pagamento/adapter/driven/repositories/entities/PagamentoEntity";
 
 @Entity("Pedido")
 export class PedidoEntity {
@@ -35,6 +36,9 @@ export class PedidoEntity {
   @OneToMany(() => ItemEntity, (item) => item.pedido)
   itens?: ItemEntity[];
 
+  @OneToOne(() => PagamentoEntity, (pagamento) => pagamento.pedido)
+  pagamento?: PagamentoEntity;
+
   constructor(pedido?: Pedido) {
     this.id = pedido?.id;
     this.observaco = pedido?.observacao;
@@ -42,7 +46,7 @@ export class PedidoEntity {
     this.dataConclusao = pedido?.getDataConclusao();
     this.itens = pedido?.itens?.map(i => new ItemEntity(i, this));
     const status = pedido?.getStatus();
-    if(status) {
+    if(status !== undefined){
       this.statusId = StatusPedidoEnumMapper.enumParaNumber(status);
     }
 
@@ -52,6 +56,6 @@ export class PedidoEntity {
   }
 
   public getDomain(): Pedido {
-    return new Pedido(this.id, this.statusId);
+    return new Pedido(this.id, StatusPedidoEnumMapper.numberParaEnum(this.statusId));
   }
 }
