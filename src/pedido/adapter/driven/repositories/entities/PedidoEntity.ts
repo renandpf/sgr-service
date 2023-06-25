@@ -13,10 +13,10 @@ export class PedidoEntity {
   @Column({
     nullable: false
   })
-  statusId?: number;
+  statusId: number;
 
   @Column({
-    nullable: true
+    nullable: false
   })
   dataCadastro: Date;
 
@@ -42,20 +42,32 @@ export class PedidoEntity {
   constructor(pedido?: Pedido) {
     this.id = pedido?.id;
     this.observaco = pedido?.observacao;
-    this.dataCadastro = pedido?.getDataCadastro() as never;
-    this.dataConclusao = pedido?.getDataConclusao();
+    this.dataCadastro = pedido?.dataCadastro as never;
+    this.dataConclusao = pedido?.dataConclusao;
     this.itens = pedido?.itens?.map(i => new ItemEntity(i, this));
-    const status = pedido?.getStatus();
+    const status = pedido?.status;
     if(status !== undefined){
       this.statusId = StatusPedidoEnumMapper.enumParaNumber(status);
     }
 
     if (pedido?.temCliente()) {
-      this.cliente = new ClienteEntity(pedido?.getCliente());
+      this.cliente = new ClienteEntity(pedido?.cliente);
     }
   }
 
   public getDomain(): Pedido {
-    return new Pedido(this.id, StatusPedidoEnumMapper.numberParaEnum(this.statusId));
+
+    const itens = this.itens?.map(i => i.getDomain());
+
+    return new Pedido(
+        this.id,
+        this.cliente?.getDomain(),
+        this.observaco,
+        StatusPedidoEnumMapper.numberParaEnum(this.statusId),
+        this.dataCadastro,
+        this.dataConclusao,
+        itens,
+        // TODO adicionar pagamento
+    );
   }
 }

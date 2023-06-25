@@ -34,14 +34,14 @@ export class PedidoEmAndamentoJson {
     @Description("Tempo de espera em minutos")
     @Example("100")
     @Property()
-    public readonly tempoExpera?: number;
+    public readonly tempoEspera?: number;
 
     constructor(pedido: Pedido) {
         this.id = pedido.id;
         this.observacao = pedido.observacao;
-        this.clienteId = pedido.getCliente()?.id;
-        this.status = pedido.getStatus();
-        this.dataCadastro = pedido.getDataCadastro();
-        this.tempoExpera = pedido.getTempoEspera();
+        this.clienteId = pedido.cliente?.id;
+        this.status = pedido.status;
+        this.dataCadastro = pedido.dataCadastro;
+        this.tempoEspera = pedido.tempoEspera();
     }
 }

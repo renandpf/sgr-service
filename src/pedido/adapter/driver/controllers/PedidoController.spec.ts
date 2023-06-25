@@ -1,7 +1,7 @@
 import { PlatformTest, Logger } from "@tsed/common";
 import { mock } from "jest-mock-extended";
 import { anyPedidoJson } from "../../../../__tests__/databuilder/PedidoDatabuilder";
-import { PedidoJson } from "./json/PedidoJson";
+import { PedidoCadastroJson } from "./json/PedidoCadastroJson";
 import { CriarPedidoUseCase } from "../../../core/application/useCases/CriarPedidoUseCase";
 import { PedidoController } from "./PedidoController";
 import { AtualizarStatusPedidoUseCase } from "../../../core/application/useCases/AtualizarStatusPedidoUseCase";
@@ -15,7 +15,7 @@ describe("Testes de Pedido Controller", () => {
 
 
   it.skip("deve criar um novo pedido contendo todos os dados", async () => {
-    const newPedidoJson = anyPedidoJson as PedidoJson;
+    const newPedidoJson = anyPedidoJson as PedidoCadastroJson;
     const mockedObterPedidoUseCase = mock<ObterPedidoUseCase>();
     const mockedCriarPedidoUseCase = mock<CriarPedidoUseCase>();
     const mockedAtualizarStatusPedidoUseCase = mock<AtualizarStatusPedidoUseCase>();

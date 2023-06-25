@@ -1,4 +1,4 @@
-import { Service, Logger, Inject } from "@tsed/common";
+import { Inject, Logger, Service } from "@tsed/common";
 import { Pedido } from "../../domain/Pedido";
 import { IPedidoRepositoryGateway } from "../ports/IPedidoRepositoryGateway";
 import { PedidoMySqlRepositoryGateway } from "src/pedido/adapter/driven/repositories/PedidoMySqlRepositoryGateway";
@@ -8,54 +8,73 @@ import { ClienteServiceHttpGateway } from "src/pedido/adapter/driven/http/Client
 import { ProdutoServiceHttpGateway } from "src/pedido/adapter/driven/http/ProdutoServiceHttpGateway";
 import { ProdutoNotFoundException } from "../exceptions/ProdutoNotFoundException";
 import { StatusPedido } from "../../domain/StatusPedido";
+import {
+  ObterProdutoUseCase
+} from "../../../../gerencial/core/application/useCases/produtoUseCases/ObterProdutoUseCase";
+import { ObterClienteUseCase } from "../../../../gerencial";
 
 @Service()
 export class CriarPedidoUseCase {
-    
-    constructor(
-        @Inject(PedidoMySqlRepositoryGateway) private pedidoRepositoryGateway: IPedidoRepositoryGateway,
-        @Inject(ClienteServiceHttpGateway) private clienteServiceGateway: IClienteServiceGateway,
-        @Inject(ProdutoServiceHttpGateway) private produtoServiceGateway: IProdutoServiceGateway,
-        @Inject() private logger: Logger){}
 
-    async criar(pedido: Pedido): Promise<number | undefined> {
-        this.logger.trace("Start pedido={}", pedido);
+  constructor(
+    @Inject(PedidoMySqlRepositoryGateway) private pedidoRepositoryGateway: IPedidoRepositoryGateway,
+    @Inject(ClienteServiceHttpGateway) private clienteServiceGateway: IClienteServiceGateway,
+    @Inject(ProdutoServiceHttpGateway) private produtoServiceGateway: IProdutoServiceGateway,
+    @Inject() private obterProdutoUseCase: ObterProdutoUseCase,
+    @Inject() private obterClienteUseCase: ObterClienteUseCase,
+    @Inject() private logger: Logger){}
 
-        pedido.inicializar();
-        await this.verificaExistenciaProduto(pedido);
-        await this.verificaRemoveClienteInexistente(pedido);
+  async criar(pedido: Pedido): Promise<Pedido> {
+    this.logger.trace("Start pedido={}", pedido);
 
-        pedido.setStatus(StatusPedido.AGUARDANDO_PAGAMENTO);
-        const id = await this.pedidoRepositoryGateway.criar(pedido);
+    pedido.dataCadastro = new Date(Date.now());
+    await this.verificaRemoveClienteInexistente(pedido);
+    await this.verificaExistenciaProduto(pedido);
 
-        this.logger.trace("End id={}", id);
-        return id;
+    pedido.setStatus(StatusPedido.AGUARDANDO_PAGAMENTO);
+    const id = await this.pedidoRepositoryGateway.criar(pedido);
+
+    this.logger.trace("End id={}", id);
+    return pedido;
+  }
+
+  private async verificaRemoveClienteInexistente(pedido: Pedido) {
+    const clienteId = pedido.cliente?.id;
+    if (clienteId !== undefined) {
+      // const cliOp = await this.clienteServiceGateway.obterPorId(clienteId);
+      // if(cliOp.isEmpty()){
+
+      const cliOp = await this.obterClienteUseCase.obterPorId(clienteId);
+      if(cliOp == undefined){
+        pedido.removerCliente();
+      }
+    }
+  }
+
+  private async verificaExistenciaProduto(pedido: Pedido) {
+
+    if(pedido.itens === undefined || pedido.itens.length === 0){
+      throw new ProdutoNotFoundException();
     }
 
-    private async verificaRemoveClienteInexistente(pedido: Pedido) {
-        const clienteId = pedido.getCliente()?.id;
-        if (clienteId !== undefined) {
-            const prodOp = await this.clienteServiceGateway.obterPorId(clienteId);
-            if(prodOp.isEmpty()){
-                pedido.removerCliente();
-            }
-        }
+    for (let i = 0; i < pedido.itens.length; ++i) {
+      const item = pedido.itens[i];
+      const produto = item.produto;
+
+      if(produto === undefined){
+        throw new ProdutoNotFoundException();
+      }
+
+      // const produtoOp = await this.produtoServiceGateway.obterPorId(produto.id);
+      // if (produtoOp.isEmpty()) {
+      const produtoOp = await this.obterProdutoUseCase.obterPorId(produto.id as never);
+      if (produtoOp == undefined) {
+        this.logger.warn("Produto informado não existe. produto.id={}", produto.id)
+        throw new ProdutoNotFoundException();
+      }
+
+      item.valorUnitario = produtoOp.valor as never;
     }
 
-    private async verificaExistenciaProduto(pedido: Pedido) {
-        if(pedido.itens !== undefined){
-            for (let i = 0; i < pedido.itens.length; ++i) {
-                const item = pedido.itens[i];
-                const produto = item.produto;
-
-                if(produto !== undefined && produto.id != undefined) {
-                    const produtoOp = await this.produtoServiceGateway.obterPorId(produto.id);
-                    if (produtoOp.isEmpty()) {
-                        this.logger.warn("Produto informado não existe. produto.id={}", produto.id)
-                        throw new ProdutoNotFoundException();
-                    }
-                }
-            }
-        }
-    }
+  }
 }

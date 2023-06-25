@@ -3,11 +3,13 @@ import { Get, Patch, Post, Returns } from "@tsed/schema";
 import { Controller } from "@tsed/di";
 import { CriarPedidoUseCase } from "../../../core/application/useCases/CriarPedidoUseCase";
 import { AtualizarStatusPedidoUseCase } from "../../../core/application/useCases/AtualizarStatusPedidoUseCase";
-import { PedidoJson } from "./json/PedidoJson";
+import { PedidoCadastroJson } from "./json/PedidoCadastroJson";
 import { ObterPedidoUseCase } from "src/pedido/core/application/useCases/ObterPedidoUseCase";
 import { PedidoEmAndamentoJson } from "./json/PedidoEmAndamentoJson";
 import { CamposObrigatoriosNaoPreechidoException } from "src/pedido/core/application/exceptions/CamposObrigatoriosNaoPreechidoException";
 import { StatusPedidoEnumMapper } from "src/pedido/core/domain/StatusPedidoEnumMapper";
+import { PedidoConsultaJson } from "./json/PedidoConsultaJson";
+import { PedidoStatusJson } from "./json/PedidoStatusJson";
 
 @Controller("/pedidos")
 export class PedidoController {
@@ -20,27 +22,27 @@ export class PedidoController {
     }
 
     @Get("/:id")
-    @Returns(200, PedidoJson).Description("Pedido")
-    async obterPorId(@PathParams("id") id: number): Promise<PedidoJson> {
+    @Returns(200, PedidoConsultaJson).Description("Pedido")
+    async obterPorId(@PathParams("id") id: number): Promise<PedidoConsultaJson> {
         this.logger.info("Start pedidoId={}", id);
         const pedido = await this.obterPedidoUseCase.obterPorId(id);
-        const pedidoJson = PedidoJson.getInstance(pedido);
+        const pedidoJson = PedidoConsultaJson.getInstance(pedido);
         this.logger.trace("End pedidoJson={}", pedidoJson);
         return pedidoJson;
     }
 
     @Post("")
-    @Returns(201).Description("ID do pedido criado")
-    async criar(@BodyParams() pedidoJson: PedidoJson): Promise<string> {
+    @Returns(201, PedidoConsultaJson).Description("ID do pedido criado")
+    async criar(@BodyParams() pedidoJson: PedidoCadastroJson): Promise<PedidoConsultaJson> {
         this.logger.info("Start pedidoJson={}", pedidoJson);
-        const pedidoId = await this.criarPedidoUseCase.criar(pedidoJson.getDomain());
-        this.logger.trace("End pedidoId={}", pedidoId);
-        return `${pedidoId}`;
+        const pedido = await this.criarPedidoUseCase.criar(pedidoJson.getDomain());
+        this.logger.trace("End pedidoId={}", pedido?.id);
+        return PedidoConsultaJson.getInstance(pedido);
     }
 
     @Patch("/:id/status")
     @Returns(200).Description("Nenhuma resposta")
-    async atualizarStatus(@PathParams("id") id: number, @BodyParams() pedidoJson: PedidoJson): Promise<void> {
+    async atualizarStatus(@PathParams("id") id: number, @BodyParams() pedidoJson: PedidoStatusJson): Promise<void> {
         this.logger.info("Start id={}, pedidoJson={}", id, pedidoJson);
         if(pedidoJson.status === undefined){
             throw new CamposObrigatoriosNaoPreechidoException("Status deve ser informado");
@@ -63,12 +65,12 @@ export class PedidoController {
     }
 
     @Get('/status/:status')
-    async obterPedidosPorStatus(@PathParams("status") status: string): Promise<PedidoJson[]> {
+    async obterPedidosPorStatus(@PathParams("status") status: string): Promise<PedidoConsultaJson[]> {
         this.logger.info(`Realizando busca de pedidos: ${status}`);
-        const pedidosJson: PedidoJson[] = []
+        const pedidosJson: PedidoConsultaJson[] = []
         const pedidos = await this.obterPedidoUseCase.obterPorStatus(status)
         pedidos.forEach(pedido => {
-            pedidosJson.push(PedidoJson.getInstance(pedido))
+            pedidosJson.push(PedidoConsultaJson.getInstance(pedido))
         });
         return pedidosJson;
     }

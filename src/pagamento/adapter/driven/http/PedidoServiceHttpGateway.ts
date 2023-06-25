@@ -118,7 +118,7 @@ export class PedidoServiceHttpGateway implements IPedidoServiceGateway {
     const id = response.data.id;
     const status = StatusPedido[response.data.status] as unknown as number;
 
-    const pedido = new Pedido(id, status);
+    const pedido = new Pedido(id);
 
     return Optional.of(pedido);
   }
