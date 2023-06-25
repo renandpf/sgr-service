@@ -41,7 +41,7 @@ export class PedidoMySqlRepositoryGateway implements IPedidoRepositoryGateway {
         try {
             this.logger.trace("Start pedido={}", pedido);
             const pedidoId = pedido.id as number;
-            await this.pedidoRepository.update(pedidoId, { statusId: StatusPedidoEnumMapper.enumParaNumber(pedido.getStatus())});
+            await this.pedidoRepository.update(pedidoId, { statusId: StatusPedidoEnumMapper.enumParaNumber(pedido.getStatus()) });
             this.logger.trace("End");
         }
         catch (e) {
@@ -73,7 +73,7 @@ export class PedidoMySqlRepositoryGateway implements IPedidoRepositoryGateway {
             const pedidoEntity = await this.pedidoRepository
                 .createQueryBuilder("ped")
                 .where("ped.status in(:...status)", {
-                    status:  [
+                    status: [
                         StatusPedidoEnumMapper.enumParaNumber(StatusPedido.PREPARANDO)
                     ]
                 })
@@ -91,16 +91,16 @@ export class PedidoMySqlRepositoryGateway implements IPedidoRepositoryGateway {
         }
     }
 
-    async obterPorStatus(status: StatusPedido): Promise<Optional<Pedido>> {
+    async obterPorStatus(status: StatusPedido): Promise<Optional<Pedido[]>> {
         try {
             this.logger.trace(`Consultando pedidos por status: ${status}`);
-            const pedidos: Pedido[]= [];
+            const pedidos: Pedido[] = [];
 
             const pedidoEntity = await this.pedidoRepository
-            .createQueryBuilder("ped")
-            .where("ped.status = :status", {
-                status: StatusPedidoEnumMapper.enumParaNumber(status)
-            }).getMany();
+                .createQueryBuilder("ped")
+                .where("ped.status = :status", {
+                    status: StatusPedidoEnumMapper.enumParaNumber(status)
+                }).getMany();
 
             pedidoEntity.forEach(pe => {
                 pedidos.push(pe.getDomain());

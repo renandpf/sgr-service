@@ -7,5 +7,5 @@ export interface IPedidoRepositoryGateway {
     atualizarStatus(pedido: Pedido): Promise<void>;
     obterPorId(pedidoId: number): Promise<Optional<Pedido>>;
     obterEmAndamento(): Promise<Optional<Pedido[]>>;
-    obterPorStatus(status: StatusPedido): Promise<Optional<Pedido>>;
+    obterPorStatus(status: StatusPedido): Promise<Optional<Pedido[]>>;
 }
