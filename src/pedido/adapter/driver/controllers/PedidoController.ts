@@ -70,8 +70,6 @@ export class PedidoController {
         pedidos.forEach(pedido => {
             pedidosJson.push(PedidoJson.getInstance(pedido))
         });
-        return [];
-
+        return pedidosJson;
     }
-
 }
