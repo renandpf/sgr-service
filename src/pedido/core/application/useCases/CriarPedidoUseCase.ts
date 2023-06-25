@@ -33,7 +33,9 @@ export class CriarPedidoUseCase {
 
     pedido.setStatus(StatusPedido.AGUARDANDO_PAGAMENTO);
     const id = await this.pedidoRepositoryGateway.criar(pedido);
-
+    if(id !== undefined) {
+      pedido.id = id;
+    }
     this.logger.trace("End id={}", id);
     return pedido;
   }

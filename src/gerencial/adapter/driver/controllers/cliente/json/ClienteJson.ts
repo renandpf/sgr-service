@@ -1,5 +1,5 @@
 import { Cliente } from "../../../../../core/domain";
-import { Description, Example, Property } from "@tsed/schema";
+import { Description, Example, Property, Required } from "@tsed/schema";
 
 export class ClienteJson {
     @Description("Identificador")
@@ -14,6 +14,7 @@ export class ClienteJson {
 
     @Description("CPF")
     @Example("12345678909")
+    @Required()
     @Property()
     public readonly cpf?: string;
 

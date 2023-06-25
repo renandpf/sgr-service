@@ -28,7 +28,11 @@ export class Pedido {
 
     get id(): number | undefined{
         return this._id;
-        }
+    }
+
+    set id(value: number) {
+        this._id = value;
+    }
 
     get cliente(): Cliente | undefined{
         return this._cliente;
