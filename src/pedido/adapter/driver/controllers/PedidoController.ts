@@ -9,7 +9,7 @@ import { PedidoEmAndamentoJson } from "./json/PedidoEmAndamentoJson";
 import { CamposObrigatoriosNaoPreechidoException } from "src/pedido/core/application/exceptions/CamposObrigatoriosNaoPreechidoException";
 import { StatusPedidoEnumMapper } from "src/pedido/core/domain/StatusPedidoEnumMapper";
 
-@Controller("")
+@Controller("/pedidos")
 export class PedidoController {
 
     constructor(
@@ -19,7 +19,7 @@ export class PedidoController {
         @Inject() private logger: Logger) {
     }
 
-    @Get("/pedidos/:id")
+    @Get("/:id")
     @Returns(200, PedidoJson).Description("Pedido")
     async obterPorId(@PathParams("id") id: number): Promise<PedidoJson> {
         this.logger.info("Start pedidoId={}", id);
@@ -29,7 +29,7 @@ export class PedidoController {
         return pedidoJson;
     }
 
-    @Post("/pedidos")
+    @Post("")
     @Returns(201).Description("ID do pedido criado")
     async criar(@BodyParams() pedidoJson: PedidoJson): Promise<string> {
         this.logger.info("Start pedidoJson={}", pedidoJson);
@@ -38,7 +38,7 @@ export class PedidoController {
         return `${pedidoId}`;
     }
 
-    @Patch("/pedidos/:id/status")
+    @Patch("/:id/status")
     @Returns(200).Description("Nenhuma resposta")
     async atualizarStatus(@PathParams("id") id: number, @BodyParams() pedidoJson: PedidoJson): Promise<void> {
         this.logger.info("Start id={}, pedidoJson={}", id, pedidoJson);
@@ -49,7 +49,7 @@ export class PedidoController {
         this.logger.trace("End pedidoId={}", id);
     }
 
-    @Get("/pedidos/andamento")
+    @Get("/andamento")
     @Returns(200, PedidoEmAndamentoJson).Description("Pedidos em andamento")
     async obterEmAndamento(): Promise<PedidoEmAndamentoJson[]> {
         this.logger.info("Start em andamento");
@@ -60,6 +60,18 @@ export class PedidoController {
         });
         this.logger.trace("End em andamento");
         return pedidosJson;
+    }
+
+    @Get('/status/:status')
+    async obterPedidosPorStatus(@PathParams("status") status: string): Promise<PedidoJson[]> {
+        this.logger.info(`Realizando busca de pedidos: ${status}`);
+        const pedidosJson: PedidoJson[] = []
+        const pedidos = await this.obterPedidoUseCase.obterPorStatus(status)
+        pedidos.forEach(pedido => {
+            pedidosJson.push(PedidoJson.getInstance(pedido))
+        });
+        return [];
+
     }
 
 }

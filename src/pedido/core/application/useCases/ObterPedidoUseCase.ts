@@ -3,6 +3,7 @@ import { Pedido } from "../../domain/Pedido";
 import { IPedidoRepositoryGateway } from "../ports/IPedidoRepositoryGateway";
 import { PedidoMySqlRepositoryGateway } from "src/pedido/adapter/driven/repositories/PedidoMySqlRepositoryGateway";
 import { PedidoNotFoundException } from "../exceptions/PedidoNotFoundException";
+import { StatusPedidoEnumMapper } from "../../domain/StatusPedidoEnumMapper";
 
 @Service()
 export class ObterPedidoUseCase {
@@ -37,6 +38,19 @@ export class ObterPedidoUseCase {
         const pedido = pedidoOp.get();
         this.logger.trace("End em andamento");
         return pedido;
+    }
+
+    async obterPorStatus(status: string): Promise<Pedido[]> {
+        this.logger.trace(`Solicitando consulta por status: ${status}`);
+        const pedidosOp = await this.pedidoRepositoryGateway.obterPorStatus(StatusPedidoEnumMapper.stringParaEnum(status))
+
+        if(pedidosOp.isEmpty()) {
+            this.logger.warn(`Pedidos não retornados. Status: ${status}`);
+            throw new PedidoNotFoundException();
+        }
+
+        this.logger.trace("Solicitação concluída");
+        return pedidosOp.get();
     }
 
 }
