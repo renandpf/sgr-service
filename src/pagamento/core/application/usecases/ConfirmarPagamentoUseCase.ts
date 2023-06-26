@@ -27,11 +27,15 @@ export class ConfirmarPagamentoUseCase {
 
     async confirmar(identificadorPagamento: string, statusPagamento: string): Promise<void> {
         this.logger.trace("Start identificadorPagamento={}, statusPagamento={}", identificadorPagamento, statusPagamento);
+
+        const status = this.pagamentoExternoServiceGateway.mapStatus(statusPagamento);
+
         //TODO: Implementar
         /*
          *  1- Obter pedido pelo identificador (via service)
-            2- Alterar o status do pedido para: "PAGO"
-            3- Salvar pedido (via service)
+            2- Obter status do pedido a partir do serviço externo (map) - OK
+            3- Alterar o status do pedido para: "PAGO"
+            4- Salvar pedido (via service)
          */
 
         this.logger.trace("End");
