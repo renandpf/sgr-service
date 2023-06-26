@@ -22,7 +22,7 @@ export class PedidoEmAndamentoJson {
 
     @Description("Categoria")
     @Example("RECEBIDO")
-    @Enum("AGUARDANDO_PAGAMENTO", "RECEBIDO", "PREPARANDO", "PRONTO", "FINALIZADO")
+    @Enum("AGUARDANDO_PAGAMENTO", "AGUARDANDO_CONFIRMACAO_PAGAMENTO", "PAGO", "RECEBIDO", "EM_PREPARACAO", "PRONTO", "FINALIZADO", "PAGAMENTO_INVALIDO")
     @OnSerialize((c: StatusPedido) => StatusPedidoEnumMapper.enumParaString(c))
     public readonly status?: StatusPedido;
 

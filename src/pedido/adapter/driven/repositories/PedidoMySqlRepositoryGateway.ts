@@ -72,9 +72,10 @@ export class PedidoMySqlRepositoryGateway implements IPedidoRepositoryGateway {
 
             const pedidoEntity = await this.pedidoRepository
                 .createQueryBuilder("ped")
-                .where("ped.status in(:...status)", {
+                .where("ped.statusId in(:...status)", {
                     status: [
-                        StatusPedidoEnumMapper.enumParaNumber(StatusPedido.PREPARANDO)
+                        StatusPedidoEnumMapper.enumParaNumber(StatusPedido.RECEBIDO),
+                        StatusPedidoEnumMapper.enumParaNumber(StatusPedido.EM_PREPARACAO)
                     ]
                 })
                 .getMany();
@@ -98,7 +99,7 @@ export class PedidoMySqlRepositoryGateway implements IPedidoRepositoryGateway {
 
             const pedidoEntity = await this.pedidoRepository
                 .createQueryBuilder("ped")
-                .where("ped.status = :status", {
+                .where("ped.statusId = :status", {
                     status: StatusPedidoEnumMapper.enumParaNumber(status)
                 }).getMany();
 
