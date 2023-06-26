@@ -70,6 +70,9 @@ export class PedidoController {
     @Returns(200, PedidoConsultaJson)
     async obterPedidosPorStatus(@QueryParams("status") status: string): Promise<PedidoConsultaJson[]> {
         this.logger.info(`Realizando busca de pedidos: ${status}`);
+        if (!status) {
+            throw new CamposObrigatoriosNaoPreechidoException("Status deve ser informado");
+        }      
         const pedidosJson: PedidoConsultaJson[] = []
         const pedidos = await this.obterPedidoUseCase.obterPorStatus(status)
         pedidos.forEach(pedido => {
