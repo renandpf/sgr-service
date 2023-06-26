@@ -14,6 +14,7 @@ export * from "./core/application/exceptions/PedidoNotFoundException";
 export * from "./core/application/ports/IPagamentoExternoServiceGateway";
 export * from "./core/application/ports/IPagamentoRepositoryGateway";
 export * from "./core/application/ports/IPedidoServiceGateway";
+export * from "./core/application/usecases/ConfirmarPagamentoUseCase";
 export * from "./core/application/usecases/EfetuarPagamentoUseCase";
 export * from "./core/domain/CartaoCredito";
 export * from "./core/domain/Pagamento";
