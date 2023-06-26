@@ -1,4 +1,4 @@
-import { BodyParams, Inject, Logger, PathParams } from "@tsed/common";
+import { BodyParams, Inject, Logger, PathParams, QueryParams } from "@tsed/common";
 import { Get, Patch, Post, Returns } from "@tsed/schema";
 import { Controller } from "@tsed/di";
 import { CriarPedidoUseCase } from "../../../core/application/useCases/CriarPedidoUseCase";
@@ -66,11 +66,9 @@ export class PedidoController {
         this.logger.trace("End pedidoId={}", id);
     }
 
-
-
-    @Get('/status/:status')
+    @Get()
     @Returns(200, PedidoConsultaJson)
-    async obterPedidosPorStatus(@PathParams("status") status: string): Promise<PedidoConsultaJson[]> {
+    async obterPedidosPorStatus(@QueryParams("status") status: string): Promise<PedidoConsultaJson[]> {
         this.logger.info(`Realizando busca de pedidos: ${status}`);
         const pedidosJson: PedidoConsultaJson[] = []
         const pedidos = await this.obterPedidoUseCase.obterPorStatus(status)
