@@ -5,6 +5,7 @@ import axios from "axios";
 import { IPedidoServiceGateway } from "src/pagamento/core/application/ports/IPedidoServiceGateway";
 import { Pedido, StatusPedido, StatusPedidoEnumMapper } from "src/pedido";
 import { ErrorToAccessPedidoServiceException } from "src/pagamento/core/application/exceptions/ErrorToAccessPedidoServiceException";
+import { stat } from "fs";
 
 @Service()
 export class PedidoServiceHttpGateway implements IPedidoServiceGateway {
@@ -102,7 +103,7 @@ export class PedidoServiceHttpGateway implements IPedidoServiceGateway {
   private processSucessResponse(response: any): Optional<Pedido> {
     if (response.status === 200) {
       if(response.request.method === 'GET'){
-        return this.getClientFromResponse(response);
+        return this.getPedidoFromResponse(response);
       }
 
       if(response.request.method === 'PATCH'){
@@ -127,11 +128,10 @@ export class PedidoServiceHttpGateway implements IPedidoServiceGateway {
   }
 
 
-  private getClientFromResponse(response: any): Optional<Pedido> {
+  private getPedidoFromResponse(response: any): Optional<Pedido> {
     const id = response.data.id;
     const status = StatusPedido[response.data.status] as unknown as number;
-
-    const pedido = new Pedido(id);
+    const pedido = new Pedido(id, undefined, undefined, status);
 
     return Optional.of(pedido);
   }
