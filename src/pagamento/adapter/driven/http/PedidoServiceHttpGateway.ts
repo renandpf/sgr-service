@@ -40,6 +40,19 @@ export class PedidoServiceHttpGateway implements IPedidoServiceGateway {
 
   }
 
+  async obterPorIdentificadorPagamento(identificadorPagamento: string):Promise<Optional<Pedido>> {
+    try {
+      this.logger.trace("Start identificadorPagamento={}", identificadorPagamento);
+      
+      return Promise.resolve(Optional.empty());
+
+      //this.logger.trace("End");
+    } catch (e) {
+        this.logger.error(e);
+        throw new ErrorToAccessPedidoServiceException();
+    }
+  }
+
   private async callChangeStatusService(pedido: Pedido): Promise<void>  {
     try {
 
