@@ -40,7 +40,7 @@ export class ObterPedidoUseCase {
         return pedido;
     }
 
-    async obterPorStatus(status: string): Promise<Pedido[]> {
+    async obterPorStatusAndIdentificadorPagamento(status: string): Promise<Pedido[]> {
         this.logger.trace(`Solicitando consulta por status: ${status}`);
         const pedidosOp = await this.pedidoRepositoryGateway.obterPorStatus(StatusPedidoEnumMapper.stringParaEnum(status))
 

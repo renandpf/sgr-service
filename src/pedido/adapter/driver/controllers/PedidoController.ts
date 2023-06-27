@@ -68,16 +68,17 @@ export class PedidoController {
 
     @Get()
     @Returns(200, PedidoConsultaJson)
-    async obterPedidosPorStatus(@QueryParams("status") status: string): Promise<PedidoConsultaJson[]> {
-        this.logger.info(`Realizando busca de pedidos: ${status}`);
-        if (!status) {
-            throw new CamposObrigatoriosNaoPreechidoException("Status deve ser informado");
-        }      
-        const pedidosJson: PedidoConsultaJson[] = []
-        const pedidos = await this.obterPedidoUseCase.obterPorStatus(status)
-        pedidos.forEach(pedido => {
-            pedidosJson.push(PedidoConsultaJson.getInstance(pedido))
-        });
+    async obterPedidosPorStatus(
+            @QueryParams("status") status: string,
+            @QueryParams("identificadorPagamento") identificadorPagamento: string): Promise<PedidoConsultaJson[]> {
+        this.logger.trace("Start status={}, identificadorPagamento={}", status, identificadorPagamento);
+
+        const pedidos = await this.obterPedidoUseCase.obterPorStatusAndIdentificadorPagamento(status);
+
+        const pedidosJson = pedidos.map(p => PedidoConsultaJson.getInstance(p));
+
+        this.logger.trace("End pedidosJson={}", pedidosJson);
+
         return pedidosJson;
     }
 }
