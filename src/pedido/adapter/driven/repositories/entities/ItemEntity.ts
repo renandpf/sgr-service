@@ -1,7 +1,7 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { PedidoEntity } from "./PedidoEntity";
 import { Item } from "src/pedido/core/domain/Item";
-import { ProdutoEntity } from "../../../../../gerencial";
+import { ProdutoEntity } from "../../../../../gerencial/adapter/driven/repositories/entities/ProdutoEntity";
 
 @Entity("Item")
 export class ItemEntity {
@@ -25,16 +25,18 @@ export class ItemEntity {
   })
   valorTotal?: number;
 
-  // @ManyToOne(() => ProdutoEntity, (produto) => produto.itens)
-  // produto?: ProdutoEntity;
+  @ManyToOne(() => ProdutoEntity, {nullable: false})
+  produto?: ProdutoEntity;
 
-  @ManyToOne(() => PedidoEntity, (pedido) => pedido.itens)
+  @ManyToOne(() => PedidoEntity, (pedido) => pedido.itens, {nullable: false})
   pedido?: PedidoEntity;
 
   constructor(item?: Item, pedidoEntity?: PedidoEntity){
     this.id = item?.id;
-    this.pedido = pedidoEntity as never;
-    //this.produto = new ProdutoEntity(item?.produto);
+    this.pedido = pedidoEntity;
+    if(item?.produto) {
+      this.produto = new ProdutoEntity(item.produto);
+    }
     this.quantidade = item?.quantidade;
     this.valorUnitario = item?.valorUnitario;
     this.valorTotal = item?.valorTotal;
@@ -45,7 +47,7 @@ export class ItemEntity {
     return new Item(
         this.id,
         this.pedido?.getDomain(),
-        undefined,//this.produto?.getDomain(),
+        this.produto?.getDomain(),
         this.quantidade,
         this.valorUnitario
     );
