@@ -40,17 +40,11 @@ export class ObterPedidoUseCase {
         return pedido;
     }
 
-    async obterPorStatusAndIdentificadorPagamento(status: string): Promise<Pedido[]> {
-        this.logger.trace(`Solicitando consulta por status: ${status}`);
-        const pedidosOp = await this.pedidoRepositoryGateway.obterPorStatus(StatusPedidoEnumMapper.stringParaEnum(status))
-
-        if(pedidosOp.isEmpty()) {
-            this.logger.warn(`Pedidos não retornados. Status: ${status}`);
-            throw new PedidoNotFoundException();
-        }
-
-        this.logger.trace("Solicitação concluída");
-        return pedidosOp.get();
+    async obterPorStatusAndIdentificadorPagamento(status: string, identificadorPagamento: string): Promise<Pedido[]> {
+        this.logger.trace("Start status={}, identificadorPagamento={}", status, identificadorPagamento);
+        const pedidos = await this.pedidoRepositoryGateway.obterPorStatusAndIdentificadorPagamento(StatusPedidoEnumMapper.stringParaEnum(status), identificadorPagamento);
+        this.logger.trace("End pedidos={}", pedidos);
+        return pedidos;
     }
 
 }

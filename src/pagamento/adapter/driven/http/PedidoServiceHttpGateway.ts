@@ -54,6 +54,29 @@ export class PedidoServiceHttpGateway implements IPedidoServiceGateway {
     }
   }
 
+  private async callObterPedidoByIndentificadorPagamentoService(identificadorPagamento: string): Promise<void>  {
+    try {
+
+      //TODO: implementar
+
+      const config = {
+        method: "get",
+        maxBodyLength: Infinity,
+        url: `${this.clientServiceUrlBase}/pedido/pedidos/${identificadorPagamento}`,
+        headers: { }
+      };
+
+      this.logger.info("Try connect pedidoService. config={}", config);
+
+      const response = await axios.request(config);
+      this.logger.info("response={}", response);
+
+    } catch (error) {
+      this.processErrorResponse(error);
+    }
+  }
+
+
   private async callChangeStatusService(pedido: Pedido): Promise<void>  {
     try {
 

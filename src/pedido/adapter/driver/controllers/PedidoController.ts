@@ -73,7 +73,7 @@ export class PedidoController {
             @QueryParams("identificadorPagamento") identificadorPagamento: string): Promise<PedidoConsultaJson[]> {
         this.logger.trace("Start status={}, identificadorPagamento={}", status, identificadorPagamento);
 
-        const pedidos = await this.obterPedidoUseCase.obterPorStatusAndIdentificadorPagamento(status);
+        const pedidos = await this.obterPedidoUseCase.obterPorStatusAndIdentificadorPagamento(status, identificadorPagamento);
 
         const pedidosJson = pedidos.map(p => PedidoConsultaJson.getInstance(p));
 
