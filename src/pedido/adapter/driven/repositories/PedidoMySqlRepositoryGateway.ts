@@ -4,7 +4,10 @@ import { IPedidoRepositoryGateway } from "src/pedido/core/application/ports/IPed
 import { Pedido } from "src/pedido/core/domain/Pedido";
 import { ErrorToAccessDatabaseException } from "src/common/exception/ErrorToAccessDatabaseException";
 import { Optional } from "typescript-optional";
-import { PEDIDO_DATABASE_REPOSITORY } from "src/config/database/repository/repository-register.provider";
+import {
+    ITEM_DATABASE_REPOSITORY,
+    PEDIDO_DATABASE_REPOSITORY
+} from "src/config/database/repository/repository-register.provider";
 import { PedidoEntity } from "./entities";
 import { Equal } from "typeorm";
 import { StatusPedido } from "../../../core/domain/StatusPedido";
@@ -19,12 +22,24 @@ export class PedidoMySqlRepositoryGateway implements IPedidoRepositoryGateway {
     @Inject(PEDIDO_DATABASE_REPOSITORY)
     protected pedidoRepository: PEDIDO_DATABASE_REPOSITORY;
 
+    @Inject(ITEM_DATABASE_REPOSITORY)
+    protected pedidoItemRepository: ITEM_DATABASE_REPOSITORY;
+
     async criar(pedido: Pedido): Promise<number | undefined> {
         try {
             this.logger.trace("Start pedido={}", pedido);
-
-            const pedidoEntityCreated = await this.pedidoRepository.save(new PedidoEntity(pedido));
+            //TODO adicionar controle de transação
+            const pedidoEntity = new PedidoEntity(pedido);
+            const pedidoEntityCreated = await this.pedidoRepository.save(pedidoEntity);
             const pedidoCreatedId = pedidoEntityCreated.id;
+
+            if(pedidoEntity.itens) {
+                for (let i = 0; i < pedidoEntity.itens.length; i++) {
+                    const item = pedidoEntity.itens[i];
+                    item.pedido = pedidoEntityCreated;
+                    await this.pedidoItemRepository.save(item);
+                }
+            }
 
             this.logger.trace("End pedidoCreatedId={}", pedidoCreatedId);
             return pedidoCreatedId;
@@ -54,9 +69,9 @@ export class PedidoMySqlRepositoryGateway implements IPedidoRepositoryGateway {
         try {
             this.logger.trace("Start id={}", pedidoId);
             const pedidoEntity = await this.pedidoRepository.findOneBy(
-                {
-                    id: Equal(pedidoId)
-                });
+              {
+                  id: Equal(pedidoId)
+              });
             return Optional.ofNullable(pedidoEntity?.getDomain());
         }
         catch (e) {
@@ -71,14 +86,14 @@ export class PedidoMySqlRepositoryGateway implements IPedidoRepositoryGateway {
             const pedidos: Pedido[] = [];
 
             const pedidoEntity = await this.pedidoRepository
-                .createQueryBuilder("ped")
-                .where("ped.statusId in(:...status)", {
-                    status: [
-                        StatusPedidoEnumMapper.enumParaNumber(StatusPedido.RECEBIDO),
-                        StatusPedidoEnumMapper.enumParaNumber(StatusPedido.EM_PREPARACAO)
-                    ]
-                })
-                .getMany();
+              .createQueryBuilder("ped")
+              .where("ped.statusId in(:...status)", {
+                  status: [
+                      StatusPedidoEnumMapper.enumParaNumber(StatusPedido.RECEBIDO),
+                      StatusPedidoEnumMapper.enumParaNumber(StatusPedido.EM_PREPARACAO)
+                  ]
+              })
+              .getMany();
 
             pedidoEntity.forEach(pe => {
                 pedidos.push(pe.getDomain());
@@ -113,10 +128,10 @@ export class PedidoMySqlRepositoryGateway implements IPedidoRepositoryGateway {
             const filterStr = filters.join(" and ");
 
             const pedidoEntity = await this.pedidoRepository
-                .createQueryBuilder("ped")
-                .where("ped.statusId = :status", {
-                    status: StatusPedidoEnumMapper.enumParaNumber(status)
-                }).getMany();
+              .createQueryBuilder("ped")
+              .where("ped.statusId = :status", {
+                  status: StatusPedidoEnumMapper.enumParaNumber(status)
+              }).getMany();
 
             pedidoEntity.forEach(pe => {
                 pedidos.push(pe.getDomain());
