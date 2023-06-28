@@ -8,4 +8,5 @@ export interface IPedidoRepositoryGateway {
     obterPorId(pedidoId: number): Promise<Optional<Pedido>>;
     obterEmAndamento(): Promise<Optional<Pedido[]>>;
     obterPorStatusAndIdentificadorPagamento(status: StatusPedido, identificadorPagamento: string): Promise<Pedido[]>;
+    obterPorIdentificadorPagamento(identificadorPagamento: string): Promise<Optional<Pedido>>;
 }

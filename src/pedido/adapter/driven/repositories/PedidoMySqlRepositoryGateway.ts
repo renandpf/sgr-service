@@ -6,11 +6,13 @@ import { ErrorToAccessDatabaseException } from "../../../../common/exception/Err
 import { Optional } from "typescript-optional";
 import {
     ITEM_DATABASE_REPOSITORY,
+    PAGAMENTO_DATABASE_REPOSITORY,
     PEDIDO_DATABASE_REPOSITORY
 } from "../../../../config/database/repository/repository-register.provider";
 import { PedidoEntity } from "./entities";
 import { StatusPedido } from "../../../core/domain/StatusPedido";
 import { StatusPedidoEnumMapper } from "../../../core/domain/StatusPedidoEnumMapper";
+import { Equal } from "typeorm";
 
 @Service()
 export class PedidoMySqlRepositoryGateway implements IPedidoRepositoryGateway {
@@ -20,6 +22,9 @@ export class PedidoMySqlRepositoryGateway implements IPedidoRepositoryGateway {
 
     @Inject(PEDIDO_DATABASE_REPOSITORY)
     protected pedidoRepository: PEDIDO_DATABASE_REPOSITORY;
+
+    @Inject(PAGAMENTO_DATABASE_REPOSITORY)
+    protected pagamentoRepository: PAGAMENTO_DATABASE_REPOSITORY;
 
     @Inject(ITEM_DATABASE_REPOSITORY)
     protected pedidoItemRepository: ITEM_DATABASE_REPOSITORY;
@@ -104,6 +109,29 @@ export class PedidoMySqlRepositoryGateway implements IPedidoRepositoryGateway {
             });
 
             return Optional.of(pedidos);
+        }
+        catch (e) {
+            this.logger.error(e);
+            throw new ErrorToAccessDatabaseException();
+        }
+    }
+
+    async obterPorIdentificadorPagamento(identificadorPagamento: string): Promise<Optional<Pedido>> {
+        try {
+            this.logger.trace("Start identificadorPagamento={}", identificadorPagamento);
+
+            const pagamento = await this.pagamentoRepository.findOneBy({
+                codigoPagamento: identificadorPagamento                
+            });
+
+            let pedidoOp: Optional<Pedido> = Optional.empty();
+            if(pagamento !== null && pagamento.pedido !== undefined){
+                const pedidoEntity = pagamento.pedido;
+                pedidoOp = Optional.of(pedidoEntity.getDomain());
+            }
+
+            this.logger.trace("End pedidoOp={}", pedidoOp)
+            return pedidoOp;
         }
         catch (e) {
             this.logger.error(e);

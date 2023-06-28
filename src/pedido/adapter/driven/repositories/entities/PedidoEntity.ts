@@ -36,8 +36,8 @@ export class PedidoEntity {
   @OneToMany(() => ItemEntity, (item) => item.pedido)
   itens?: ItemEntity[];
 
-  @OneToOne(() => PagamentoEntity, (pagamento) => pagamento.pedido)
-  pagamento?: PagamentoEntity;
+  @OneToMany(() => PagamentoEntity, (pagamento) => pagamento.pedido)
+  pagamentos?: PagamentoEntity[];
 
   constructor(pedido?: Pedido) {
     this.id = pedido?.id;
