@@ -12,7 +12,6 @@ import {
 import { PedidoEntity } from "./entities";
 import { StatusPedido } from "../../../core/domain/StatusPedido";
 import { StatusPedidoEnumMapper } from "../../../core/domain/StatusPedidoEnumMapper";
-import { Equal } from "typeorm";
 
 @Service()
 export class PedidoMySqlRepositoryGateway implements IPedidoRepositoryGateway {
