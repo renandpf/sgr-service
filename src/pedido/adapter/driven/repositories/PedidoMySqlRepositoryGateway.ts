@@ -113,23 +113,10 @@ export class PedidoMySqlRepositoryGateway implements IPedidoRepositoryGateway {
 
     async obterPorStatusAndIdentificadorPagamento(status: StatusPedido, identificadorPagamento: string): Promise<Pedido[]> {
         try {
-            this.logger.trace(`Consultando pedidos por status: ${status}`);
+            this.logger.trace("Start status={}, identificadorPagamento={}", status, identificadorPagamento);
             const pedidos: Pedido[] = [];
-
-            let filters = [];
-            let params = [];
-            if (status !== undefined) {
-                params.push(status);
-                filters.push("ped.statusId = :status");
-            }
-
-            if (identificadorPagamento !== undefined) {
-                params.push(identificadorPagamento);
-                filters.push("ped.pagamento.codigoPagamento = :codigoPagamento");
-            }
-
-            //TODO: terminar usando esse filtro
-            const filterStr = filters.join(" and ");
+            
+            //TODO: implementar filtro de "identificadorPagamento"
 
             const pedidoEntity = await this.pedidoRepository
                 .createQueryBuilder("ped")
@@ -141,6 +128,8 @@ export class PedidoMySqlRepositoryGateway implements IPedidoRepositoryGateway {
                 pedidos.push(pe.getDomain());
             })
 
+
+            this.logger.trace("End pedidos={}", pedidos);
             return pedidos;
         } catch (error) {
             this.logger.error(error);
