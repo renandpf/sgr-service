@@ -4,15 +4,15 @@ import { Pagamento } from "../../domain/Pagamento";
 import { IPedidoServiceGateway } from "../ports/IPedidoServiceGateway";
 
 import { PedidoNotFoundException } from "../exceptions/PedidoNotFoundException";
-import { Pedido } from "src/pedido/core/domain/Pedido";
+import { Pedido } from "../../../../pedido/core/domain/Pedido";
 import { CamposObrigatoriosNaoPreechidoException } from "../exceptions/CamposObrigatoriosNaoPreechidoException";
-import { RequestPagamentoDto } from "src/pedido/core/application/dto/RequestPagamentoDto";
-import { PedidoServiceHttpGateway } from "src/pagamento/adapter/driven/http/PedidoServiceHttpGateway";
-import { PagamentoMockExternalServiceHttpGateway } from "src/pagamento/adapter/driven/http/PagamentoMockServiceHttpGateway";
+import { RequestPagamentoDto } from "../../../../pedido/core/application/dto/RequestPagamentoDto";
+import { PedidoServiceHttpGateway } from "../../../../pagamento/adapter/driven/http/PedidoServiceHttpGateway";
+import { PagamentoMockExternalServiceHttpGateway } from "../../../../pagamento/adapter/driven/http/PagamentoMockServiceHttpGateway";
 import { IPagamentoExternoServiceGateway } from "../ports/IPagamentoExternoServiceGateway";
 import { PagamentoMySqlRepositoryGateway } from "../../../adapter/driven/repositories/PagamentoMySqlRepositoryGateway";
 import { IPagamentoRepositoryGateway } from "../ports/IPagamentoRepositoryGateway";
-import { StatusPedido } from "src/pedido";
+import { StatusPedido } from "../../../../pedido";
 
 @Service()
 export class EfetuarPagamentoUseCase {
@@ -23,16 +23,16 @@ export class EfetuarPagamentoUseCase {
         @Inject(PagamentoMockExternalServiceHttpGateway) private pagamentoExternoServiceGateway: IPagamentoExternoServiceGateway,
         @Inject(PagamentoMySqlRepositoryGateway) private pagamentoRepositoryGateway: IPagamentoRepositoryGateway,
 
-        ) {}
+    ) { }
 
     async efetuar(pagamento: Pagamento): Promise<number | undefined> {
         this.logger.trace("Start pagamento={}", pagamento);
 
         pagamento.validaCamposObrigatorios();
 
-        const pedido = await this.obtemPedidoVerificandoSeEleExiste(pagamento); 
+        const pedido = await this.obtemPedidoVerificandoSeEleExiste(pagamento);
         pedido.setStatus(StatusPedido.AGUARDANDO_CONFIRMACAO_PAGAMENTO);
-        
+
         const responsePagamentoDto = await this.pagamentoExternoServiceGateway.enviarPagamento(new RequestPagamentoDto(pagamento.cartoesCredito));
         pagamento.setIdentificadorPagamentoExterno(responsePagamentoDto.identificadorPagamento);
 
@@ -49,7 +49,7 @@ export class EfetuarPagamentoUseCase {
 
     private async obtemPedidoVerificandoSeEleExiste(pagamento: Pagamento): Promise<Pedido> {
         const pedidoId = pagamento.getPedido()?.id;
-        if ( pedidoId !== undefined) {
+        if (pedidoId !== undefined) {
             const pedidoOp = await this.pedidoServiceGateway.obterPorId(pedidoId);
             if (pedidoOp.isEmpty()) {
                 this.logger.warn("Pedido não encontrado. pagamento.pedido.id={}", pagamento.getPedido()?.id);

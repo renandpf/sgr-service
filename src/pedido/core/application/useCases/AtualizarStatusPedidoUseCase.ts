@@ -1,7 +1,7 @@
 import { Service, Logger, Inject } from "@tsed/common";
 import { Pedido } from "../../domain/Pedido";
 import { IPedidoRepositoryGateway } from "../ports/IPedidoRepositoryGateway";
-import { PedidoMySqlRepositoryGateway } from "src/pedido/adapter/driven/repositories/PedidoMySqlRepositoryGateway";
+import { PedidoMySqlRepositoryGateway } from "../../../../pedido/adapter/driven/repositories/PedidoMySqlRepositoryGateway";
 import { Optional } from "typescript-optional";
 import { PedidoNotFoundException } from "../exceptions/PedidoNotFoundException";
 import { StatusPedido } from "../../domain/StatusPedido";
@@ -20,7 +20,7 @@ export class AtualizarStatusPedidoUseCase {
             throw new PedidoNotFoundException();
         }
         const pedidoEncontrado = pedido.get();
-        
+
         pedidoEncontrado.setStatus(status);
         await this.pedidoRepositoryGateway.atualizarStatus(pedidoEncontrado);
         this.logger.trace("End");

@@ -1,6 +1,7 @@
 version: '3.5'
 services:
   server:
+    container_name: sgr-api
     build:
       context: .
       dockerfile: ./Dockerfile
@@ -10,13 +11,19 @@ services:
         - no_proxy
     image: sgr-service/server:latest
     ports:
-      - '8081:8081'
+      - '8083:8083'
+    networks:
+      - sgr_network
   mysql:
-    image: mysql:8.0.28-oracle
+    container_name: mysql
+    image: mysql:8.0.33
     ports:
       - '3306:3306'
     environment:
-      MYSQL_ROOT_PASSWORD: admin
-      MYSQL_USER: test
-      MYSQL_PASSWORD: test
-      MYSQL_DATABASE: test
+      MYSQL_ROOT_PASSWORD: senha
+    networks:
+      - sgr_network
+
+networks:
+  sgr_network:
+    driver: bridge

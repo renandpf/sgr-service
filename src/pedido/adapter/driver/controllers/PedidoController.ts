@@ -4,12 +4,12 @@ import { Controller } from "@tsed/di";
 import { CriarPedidoUseCase } from "../../../core/application/useCases/CriarPedidoUseCase";
 import { AtualizarStatusPedidoUseCase } from "../../../core/application/useCases/AtualizarStatusPedidoUseCase";
 import { PedidoCadastroJson } from "./json/PedidoCadastroJson";
-import { ObterPedidoUseCase } from "src/pedido/core/application/useCases/ObterPedidoUseCase";
+import { ObterPedidoUseCase } from "../../../../pedido/core/application/useCases/ObterPedidoUseCase";
 import { PedidoEmAndamentoJson } from "./json/PedidoEmAndamentoJson";
 import {
     CamposObrigatoriosNaoPreechidoException
-} from "src/pedido/core/application/exceptions/CamposObrigatoriosNaoPreechidoException";
-import { StatusPedidoEnumMapper } from "src/pedido/core/domain/StatusPedidoEnumMapper";
+} from "../../../../pedido/core/application/exceptions/CamposObrigatoriosNaoPreechidoException";
+import { StatusPedidoEnumMapper } from "../../../../pedido/core/domain/StatusPedidoEnumMapper";
 import { PedidoConsultaJson } from "./json/PedidoConsultaJson";
 import { PedidoStatusJson } from "./json/PedidoStatusJson";
 
@@ -59,7 +59,7 @@ export class PedidoController {
     @Returns(200).Description("Nenhuma resposta")
     async atualizarStatus(@PathParams("id") id: number, @BodyParams() pedidoJson: PedidoStatusJson): Promise<void> {
         this.logger.info("Start id={}, pedidoJson={}", id, pedidoJson);
-        if(pedidoJson.status === undefined){
+        if (pedidoJson.status === undefined) {
             throw new CamposObrigatoriosNaoPreechidoException("Status deve ser informado");
         }
         await this.atualizarStatusPedidoUseCase.atualizarStatus(id, StatusPedidoEnumMapper.stringParaEnum(pedidoJson.status as unknown as string));
@@ -69,8 +69,8 @@ export class PedidoController {
     @Get()
     @Returns(200, PedidoConsultaJson)
     async obterPedidosPorStatus(
-            @QueryParams("status") status: string,
-            @QueryParams("identificadorPagamento") identificadorPagamento: string): Promise<PedidoConsultaJson[]> {
+        @QueryParams("status") status: string,
+        @QueryParams("identificadorPagamento") identificadorPagamento: string): Promise<PedidoConsultaJson[]> {
         this.logger.trace("Start status={}, identificadorPagamento={}", status, identificadorPagamento);
 
         const pedidos = await this.obterPedidoUseCase.obterPorStatusAndIdentificadorPagamento(status, identificadorPagamento);

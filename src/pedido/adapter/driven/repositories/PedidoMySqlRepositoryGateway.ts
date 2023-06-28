@@ -1,16 +1,14 @@
-import { Item } from 'src/pedido/core/domain/Item';
 import { Inject, Service } from "@tsed/di";
 import { Logger } from "@tsed/common";
-import { IPedidoRepositoryGateway } from "src/pedido/core/application/ports/IPedidoRepositoryGateway";
-import { Pedido } from "src/pedido/core/domain/Pedido";
-import { ErrorToAccessDatabaseException } from "src/common/exception/ErrorToAccessDatabaseException";
+import { IPedidoRepositoryGateway } from "../../../../pedido/core/application/ports/IPedidoRepositoryGateway";
+import { Pedido } from "../../../../pedido/core/domain/Pedido";
+import { ErrorToAccessDatabaseException } from "../../../../common/exception/ErrorToAccessDatabaseException";
 import { Optional } from "typescript-optional";
 import {
     ITEM_DATABASE_REPOSITORY,
     PEDIDO_DATABASE_REPOSITORY
-} from "src/config/database/repository/repository-register.provider";
+} from "../../../../config/database/repository/repository-register.provider";
 import { PedidoEntity } from "./entities";
-import { Equal } from "typeorm";
 import { StatusPedido } from "../../../core/domain/StatusPedido";
 import { StatusPedidoEnumMapper } from "../../../core/domain/StatusPedidoEnumMapper";
 

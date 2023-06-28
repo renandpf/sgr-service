@@ -1,5 +1,5 @@
 import { Pedido } from "../../../../core/domain/Pedido";
-import { Item } from "src/pedido/core/domain/Item";
+import { Item } from "../../../../../pedido/core/domain/Item";
 import { CollectionOf, Description, Enum, Example, Property } from "@tsed/schema";
 import { StatusPedido } from "../../../../core/domain/StatusPedido";
 import { StatusPedidoEnumMapper } from "../../../../core/domain/StatusPedidoEnumMapper";
@@ -58,7 +58,7 @@ export class PedidoConsultaJson {
     @CollectionOf(PedidoItemConsultaJson)
     public readonly itens: PedidoItemConsultaJson[];
 
-    static getInstance(pedido: Pedido): PedidoConsultaJson  {
+    static getInstance(pedido: Pedido): PedidoConsultaJson {
         return {
             id: pedido.id,
             observacao: pedido.observacao,
@@ -68,7 +68,7 @@ export class PedidoConsultaJson {
         } as PedidoConsultaJson;
     }
 
-    private static getItemInstance(item: Item) : PedidoItemConsultaJson{
+    private static getItemInstance(item: Item): PedidoItemConsultaJson {
         return {
             id: item.id,
             produtoId: item.produto?.id,

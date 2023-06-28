@@ -2,10 +2,10 @@ import { Cliente } from "../../../gerencial/core/domain/Cliente";
 import { Item } from "./Item";
 import { StatusPedido } from "./StatusPedido";
 import { Pagamento } from "../../../pagamento/core/domain/Pagamento";
-import { AlteracaoStatusPedidoException } from "src/gerencial/core/application/exception/AlteracaoStatusPagoPedidoException";
+import { AlteracaoStatusPedidoException } from "../../../gerencial/core/application/exception/AlteracaoStatusPagoPedidoException";
 
 export class Pedido {
-    get dataCadastro(): Date | undefined{
+    get dataCadastro(): Date | undefined {
         return this._dataCadastro;
     }
 
@@ -20,13 +20,13 @@ export class Pedido {
     set dataConclusao(value: Date) {
         this._dataConclusao = value;
     }
-    get valorTotal(): number{
+    get valorTotal(): number {
         let valorTotal = 0;
-        this.itens?.forEach(i =>  valorTotal += i.valorTotal);
+        this.itens?.forEach(i => valorTotal += i.valorTotal);
         return valorTotal;
     }
 
-    get id(): number | undefined{
+    get id(): number | undefined {
         return this._id;
     }
 
@@ -34,7 +34,7 @@ export class Pedido {
         this._id = value;
     }
 
-    get cliente(): Cliente | undefined{
+    get cliente(): Cliente | undefined {
         return this._cliente;
     }
 
@@ -96,9 +96,9 @@ export class Pedido {
     setStatus(newStatus: StatusPedido) {
         switch (newStatus) {
             case StatusPedido.AGUARDANDO_PAGAMENTO:
-        if (this._status === undefined || this._status === StatusPedido.AGUARDANDO_PAGAMENTO) {
-            this._status = newStatus;
-            return;
+                if (this._status === undefined || this._status === StatusPedido.AGUARDANDO_PAGAMENTO) {
+                    this._status = newStatus;
+                    return;
                 }
                 throw new AlteracaoStatusPedidoException("O status do pedido não permite essa alteração");
 
@@ -108,7 +108,7 @@ export class Pedido {
                     break;
                 }
                 throw new AlteracaoStatusPedidoException("O status do pedido não permite essa alteração");
-                
+
             case StatusPedido.PAGO || StatusPedido.PAGAMENTO_INVALIDO:
                 if (this._status === StatusPedido.AGUARDANDO_CONFIRMACAO_PAGAMENTO) {
                     this._status = newStatus;
@@ -148,7 +148,7 @@ export class Pedido {
     }
 
     public getStatus(): StatusPedido {
-        if(this._status === undefined){
+        if (this._status === undefined) {
             this._status = StatusPedido.AGUARDANDO_PAGAMENTO;
         }
         return this._status;
@@ -156,7 +156,7 @@ export class Pedido {
 
     public tempoEspera(): number {
         let dataFim: number = Date.now();
-        if(this._dataConclusao){
+        if (this._dataConclusao) {
             dataFim = this._dataConclusao.getTime();
         }
         return dataFim - (this._dataCadastro !== undefined ? this._dataCadastro?.getTime() : Date.now());

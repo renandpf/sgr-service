@@ -5,7 +5,7 @@ import { PedidoCadastroJson } from "./json/PedidoCadastroJson";
 import { CriarPedidoUseCase } from "../../../core/application/useCases/CriarPedidoUseCase";
 import { PedidoController } from "./PedidoController";
 import { AtualizarStatusPedidoUseCase } from "../../../core/application/useCases/AtualizarStatusPedidoUseCase";
-import { ObterPedidoUseCase } from "src/pedido/core/application/useCases/ObterPedidoUseCase";
+import { ObterPedidoUseCase } from "../../../../pedido/core/application/useCases/ObterPedidoUseCase";
 
 const mockedLogger = mock<Logger>();
 

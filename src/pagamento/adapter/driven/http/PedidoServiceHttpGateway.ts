@@ -2,59 +2,59 @@ import { Logger, Service } from "@tsed/common";
 import { Inject } from "@tsed/di";
 import { Optional } from "typescript-optional";
 import axios from "axios";
-import { IPedidoServiceGateway } from "src/pagamento/core/application/ports/IPedidoServiceGateway";
-import { Pedido, StatusPedido, StatusPedidoEnumMapper } from "src/pedido";
-import { ErrorToAccessPedidoServiceException } from "src/pagamento/core/application/exceptions/ErrorToAccessPedidoServiceException";
+import { IPedidoServiceGateway } from "../../../../pagamento/core/application/ports/IPedidoServiceGateway";
+import { Pedido, StatusPedido, StatusPedidoEnumMapper } from "../../../../pedido";
+import { ErrorToAccessPedidoServiceException } from "../../../../pagamento/core/application/exceptions/ErrorToAccessPedidoServiceException";
 import { stat } from "fs";
 
 @Service()
 export class PedidoServiceHttpGateway implements IPedidoServiceGateway {
-    @Inject()
-    private logger: Logger;
-    private readonly clientServiceUrlBase: string = "http://localhost:8083";//FIXME: usar arquivo properties
+  @Inject()
+  private logger: Logger;
+  private readonly clientServiceUrlBase: string = "http://localhost:8083";//FIXME: usar arquivo properties
 
   async obterPorId(id: number): Promise<Optional<Pedido>> {
-      try {
-        this.logger.trace("Start id={}", id);
-        
-        const pedidoOp: Optional<Pedido> = await this.callGetByIdService(id);
+    try {
+      this.logger.trace("Start id={}", id);
 
-        this.logger.trace("End pedidoOp={}", pedidoOp);
-        return pedidoOp;
-      } catch (e) {
-          this.logger.error(e);
-          throw new ErrorToAccessPedidoServiceException();
-      }
+      const pedidoOp: Optional<Pedido> = await this.callGetByIdService(id);
+
+      this.logger.trace("End pedidoOp={}", pedidoOp);
+      return pedidoOp;
+    } catch (e) {
+      this.logger.error(e);
+      throw new ErrorToAccessPedidoServiceException();
+    }
   }
 
   async alterarStatus(pedido: Pedido): Promise<void> {
     try {
       this.logger.trace("Start pedido={}", pedido);
-      
+
       await this.callChangeStatusService(pedido);
 
       this.logger.trace("End");
     } catch (e) {
-        this.logger.error(e);
-        throw new ErrorToAccessPedidoServiceException();
+      this.logger.error(e);
+      throw new ErrorToAccessPedidoServiceException();
     }
 
   }
 
-  async obterPorIdentificadorPagamento(identificadorPagamento: string):Promise<Optional<Pedido>> {
+  async obterPorIdentificadorPagamento(identificadorPagamento: string): Promise<Optional<Pedido>> {
     try {
       this.logger.trace("Start identificadorPagamento={}", identificadorPagamento);
-      
+
       return Promise.resolve(Optional.empty());
 
       //this.logger.trace("End");
     } catch (e) {
-        this.logger.error(e);
-        throw new ErrorToAccessPedidoServiceException();
+      this.logger.error(e);
+      throw new ErrorToAccessPedidoServiceException();
     }
   }
 
-  private async callObterPedidoByIndentificadorPagamentoService(identificadorPagamento: string): Promise<void>  {
+  private async callObterPedidoByIndentificadorPagamentoService(identificadorPagamento: string): Promise<void> {
     try {
 
       //TODO: implementar
@@ -63,7 +63,7 @@ export class PedidoServiceHttpGateway implements IPedidoServiceGateway {
         method: "get",
         maxBodyLength: Infinity,
         url: `${this.clientServiceUrlBase}/pedido/pedidos/${identificadorPagamento}`,
-        headers: { }
+        headers: {}
       };
 
       this.logger.info("Try connect pedidoService. config={}", config);
@@ -77,11 +77,11 @@ export class PedidoServiceHttpGateway implements IPedidoServiceGateway {
   }
 
 
-  private async callChangeStatusService(pedido: Pedido): Promise<void>  {
+  private async callChangeStatusService(pedido: Pedido): Promise<void> {
     try {
 
       const config = {
-        headers: { },
+        headers: {},
       };
 
       const body = {
@@ -92,7 +92,7 @@ export class PedidoServiceHttpGateway implements IPedidoServiceGateway {
 
       const response = await axios.patch(`${this.clientServiceUrlBase}/pedido/pedidos/${pedido.id}/status`, body, config)
       this.logger.info("response={}", response);
-      
+
       this.processSucessResponse(response);
 
     } catch (error) {
@@ -101,21 +101,21 @@ export class PedidoServiceHttpGateway implements IPedidoServiceGateway {
   }
 
 
-  private async callGetByIdService(id: number): Promise<Optional<Pedido>>  {
+  private async callGetByIdService(id: number): Promise<Optional<Pedido>> {
     try {
 
       const config = {
         method: "get",
         maxBodyLength: Infinity,
         url: `${this.clientServiceUrlBase}/pedido/pedidos/${id}`,
-        headers: { }
+        headers: {}
       };
 
       this.logger.info("Try connect pedidoService. config={}", config);
 
       const response = await axios.request(config);
       this.logger.info("response={}", response);
-      
+
       return this.processSucessResponse(response);
 
     } catch (error) {
@@ -125,11 +125,11 @@ export class PedidoServiceHttpGateway implements IPedidoServiceGateway {
 
   private processSucessResponse(response: any): Optional<Pedido> {
     if (response.status === 200) {
-      if(response.request.method === 'GET'){
+      if (response.request.method === 'GET') {
         return this.getPedidoFromResponse(response);
       }
 
-      if(response.request.method === 'PATCH'){
+      if (response.request.method === 'PATCH') {
         return Optional.empty();
       }
       this.logger.warn("Request method unexpected")

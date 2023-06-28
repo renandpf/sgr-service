@@ -1,4 +1,4 @@
-import { Cliente } from "src/gerencial";
+import { Cliente } from "../../../../gerencial";
 import { Optional } from "typescript-optional";
 
 export interface IClienteServiceGateway {

@@ -1,10 +1,10 @@
 import { BodyParams, Inject, Logger } from "@tsed/common";
 import { Post, Returns } from "@tsed/schema";
 import { Controller } from "@tsed/di";
-import { EfetuarPagamentoUseCase } from "src/pagamento/core/application/usecases/EfetuarPagamentoUseCase";
+import { EfetuarPagamentoUseCase } from "../../../../pagamento/core/application/usecases/EfetuarPagamentoUseCase";
 import { PagamentoJson } from "./json/PagamentoJson";
 import { ConfirmacaoPagamentoJson } from "./json/ConfirmacaoPagamentoJson";
-import { ConfirmarPagamentoUseCase } from "src/pagamento/core/application/usecases/ConfirmarPagamentoUseCase";
+import { ConfirmarPagamentoUseCase } from "../../../../pagamento/core/application/usecases/ConfirmarPagamentoUseCase";
 
 @Controller("")
 export class PagamentoController {
@@ -28,7 +28,7 @@ export class PagamentoController {
     @Returns(200)
     async confirmar(@BodyParams() confirmacaoPagamentoJson: ConfirmacaoPagamentoJson): Promise<void> {
         this.logger.info("Start confirmacaoPagamentoJson={}", confirmacaoPagamentoJson);
-        
+
         //Esta chamada deve ser async
         this.confirmarPagamentoUseCase.confirmar(confirmacaoPagamentoJson.identificador, confirmacaoPagamentoJson.status);
         this.logger.trace("End");

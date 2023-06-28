@@ -1,4 +1,4 @@
-import { Usuario, Pedido } from "src/pedido";
+import { Usuario, Pedido } from "../../../pedido";
 import { ClienteValidacaoException } from "../application/exception/ClienteValidacaoException";
 
 export class Cliente {
@@ -10,13 +10,13 @@ export class Cliente {
         readonly usuario?: Usuario,
         readonly pedidos?: Pedido[],
 
-    ){}
+    ) { }
     set(clienteAlt: Cliente) {
         return new Cliente(this.id, clienteAlt.nome, this.cpf, clienteAlt.email, clienteAlt.usuario, clienteAlt.pedidos);
     }
 
-    validar(){
-        if(!this.cpf){
+    validar() {
+        if (!this.cpf) {
             throw new ClienteValidacaoException("CPF é obrigatório");
         }
     }

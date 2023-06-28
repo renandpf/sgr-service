@@ -1,5 +1,5 @@
-import { Pagamento } from "src/pagamento/core/domain/Pagamento";
-import { PedidoEntity } from "src/pedido/adapter/driven/repositories/entities/PedidoEntity";
+import { Pagamento } from "../../../../../pagamento/core/domain/Pagamento";
+import { PedidoEntity } from "../../../../../pedido/adapter/driven/repositories/entities/PedidoEntity";
 import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 
@@ -23,11 +23,11 @@ export class PagamentoEntity {
   //   this.codigoPagamento = pagamento?.getIdentificadorPagamentoExterno();
   // }
 
-  static getInstancia(pagamento: Pagamento): PagamentoEntity{
+  static getInstancia(pagamento: Pagamento): PagamentoEntity {
     const pagamentoEntity = new PagamentoEntity();
     pagamentoEntity.id = pagamento.id;
     pagamentoEntity.codigoPagamento = pagamento.getIdentificadorPagamentoExterno();
-    pagamentoEntity.pedido = {id: pagamento.id} as PedidoEntity;
+    pagamentoEntity.pedido = { id: pagamento.id } as PedidoEntity;
 
     return pagamentoEntity;
   }

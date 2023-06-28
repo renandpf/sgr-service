@@ -1,6 +1,6 @@
 import { Pedido } from "../../../../core/domain/Pedido";
 import { Cliente, Produto } from "../../../../../gerencial/core/domain";
-import { Item } from "src/pedido/core/domain/Item";
+import { Item } from "../../../../../pedido/core/domain/Item";
 import { CollectionOf, Description, Example, Property } from "@tsed/schema";
 
 export class PedidoItemCadastroJson {
@@ -35,7 +35,7 @@ export class PedidoCadastroJson {
     public getDomain(): Pedido {
 
         let cliente = undefined;
-        if(this.clienteId){
+        if (this.clienteId) {
             cliente = new Cliente(this.clienteId);
         }
 

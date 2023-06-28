@@ -1,4 +1,4 @@
-import { StatusPedido } from "src/pedido";
+import { StatusPedido } from "../../../../pedido";
 import { RequestPagamentoDto } from "../../../../pedido/core/application/dto/RequestPagamentoDto";
 import { ResponsePagamentoDto } from "../../../../pedido/core/application/dto/ResponsePagamentoDto";
 

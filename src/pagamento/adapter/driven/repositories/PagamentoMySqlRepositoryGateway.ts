@@ -1,9 +1,9 @@
 import { Inject, Service } from "@tsed/di";
 import { Logger } from "@tsed/common";
-import { ErrorToAccessDatabaseException } from "src/common/exception/ErrorToAccessDatabaseException";
-import { PAGAMENTO_DATABASE_REPOSITORY } from "src/config/database/repository/repository-register.provider";
-import { IPagamentoRepositoryGateway } from "src/pagamento/core/application/ports/IPagamentoRepositoryGateway";
-import { Pagamento } from "src/pagamento/core/domain/Pagamento";
+import { ErrorToAccessDatabaseException } from "../../../../common/exception/ErrorToAccessDatabaseException";
+import { PAGAMENTO_DATABASE_REPOSITORY } from "../../../../config/database/repository/repository-register.provider";
+import { IPagamentoRepositoryGateway } from "../../../../pagamento/core/application/ports/IPagamentoRepositoryGateway";
+import { Pagamento } from "../../../../pagamento/core/domain/Pagamento";
 import { PagamentoEntity } from "./entities/PagamentoEntity";
 
 @Service()

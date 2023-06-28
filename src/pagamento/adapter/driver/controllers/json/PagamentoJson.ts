@@ -1,7 +1,7 @@
-import { Pagamento } from "src/pagamento/core/domain/Pagamento";
+import { Pagamento } from "../../../../../pagamento/core/domain/Pagamento";
 import { CartaoCreditoJson } from "./CartaoCreditoJson";
-import { CartaoCredito } from "src/pagamento/core/domain/CartaoCredito";
-import { Pedido } from "src/pedido/core/domain/Pedido";
+import { CartaoCredito } from "../../../../../pagamento/core/domain/CartaoCredito";
+import { Pedido } from "../../../../../pedido/core/domain/Pedido";
 
 export class PagamentoJson {
     readonly pedidoId: number;

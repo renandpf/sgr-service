@@ -2,46 +2,46 @@ import { Inject, Service } from "@tsed/di";
 import { Logger } from "@tsed/common";
 import { Optional } from "typescript-optional";
 
-import { IProdutoServiceGateway } from "src/pedido/core/application/ports/IProdutoServiceGateway";
-import { Produto } from "src/gerencial";
+import { IProdutoServiceGateway } from "../../../../pedido/core/application/ports/IProdutoServiceGateway";
+import { Produto } from "../../../../gerencial";
 import axios from "axios";
-import { ErrorToAccessProdutoServiceException } from "src/pedido/core/application/exceptions/ErrorToAccessProdutoServiceException";
+import { ErrorToAccessProdutoServiceException } from "../../../../pedido/core/application/exceptions/ErrorToAccessProdutoServiceException";
 
 @Service()
 export class ProdutoServiceHttpGateway implements IProdutoServiceGateway {
-    @Inject()
-    private logger: Logger;
-    private readonly clientServiceUrlBase: string = "http://localhost:8083";//FIXME: usar arquivo properties
+  @Inject()
+  private logger: Logger;
+  private readonly clientServiceUrlBase: string = "http://localhost:8083";//FIXME: usar arquivo properties
 
-    async obterPorId(id: number): Promise<Optional<Produto>> {
-        try {
-          this.logger.trace("Start id={}", id);
-          
-          const produtoOp: Optional<Produto> = await this.callService(id);
+  async obterPorId(id: number): Promise<Optional<Produto>> {
+    try {
+      this.logger.trace("Start id={}", id);
 
-          this.logger.trace("End produtoOp={}", produtoOp);
-          return produtoOp;
-        } catch (e) {
-            this.logger.error(e);
-            throw new ErrorToAccessProdutoServiceException();
-        }
+      const produtoOp: Optional<Produto> = await this.callService(id);
+
+      this.logger.trace("End produtoOp={}", produtoOp);
+      return produtoOp;
+    } catch (e) {
+      this.logger.error(e);
+      throw new ErrorToAccessProdutoServiceException();
     }
+  }
 
-  private async callService(id: number): Promise<Optional<Produto>>  {
+  private async callService(id: number): Promise<Optional<Produto>> {
     try {
 
       const config = {
         method: "get",
         maxBodyLength: Infinity,
         url: `${this.clientServiceUrlBase}/gerencial/produtos/${id}`,
-        headers: { }
+        headers: {}
       };
 
       this.logger.info("Try connect produtoService. config={}", config);
 
       const response = await axios.request(config);
       this.logger.info("response={}", response);
-      
+
       return this.processSucessResponse(response);
 
     } catch (error) {
