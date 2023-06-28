@@ -1,3 +1,4 @@
+import { Item } from 'src/pedido/core/domain/Item';
 import { Inject, Service } from "@tsed/di";
 import { Logger } from "@tsed/common";
 import { IPedidoRepositoryGateway } from "src/pedido/core/application/ports/IPedidoRepositoryGateway";
@@ -33,7 +34,7 @@ export class PedidoMySqlRepositoryGateway implements IPedidoRepositoryGateway {
             const pedidoEntityCreated = await this.pedidoRepository.save(pedidoEntity);
             const pedidoCreatedId = pedidoEntityCreated.id;
 
-            if(pedidoEntity.itens) {
+            if (pedidoEntity.itens) {
                 for (let i = 0; i < pedidoEntity.itens.length; i++) {
                     const item = pedidoEntity.itens[i];
                     item.pedido = pedidoEntityCreated;
@@ -68,10 +69,15 @@ export class PedidoMySqlRepositoryGateway implements IPedidoRepositoryGateway {
     async obterPorId(pedidoId: number): Promise<Optional<Pedido>> {
         try {
             this.logger.trace("Start id={}", pedidoId);
-            const pedidoEntity = await this.pedidoRepository.findOneBy(
-              {
-                  id: Equal(pedidoId)
-              });
+            const pedidoEntity = await this.pedidoRepository.findOne({
+                where: {
+                    id: pedidoId
+                },
+                relations: {
+                    cliente: true,
+                    itens: true,
+                },
+            });
             return Optional.ofNullable(pedidoEntity?.getDomain());
         }
         catch (e) {
@@ -86,14 +92,14 @@ export class PedidoMySqlRepositoryGateway implements IPedidoRepositoryGateway {
             const pedidos: Pedido[] = [];
 
             const pedidoEntity = await this.pedidoRepository
-              .createQueryBuilder("ped")
-              .where("ped.statusId in(:...status)", {
-                  status: [
-                      StatusPedidoEnumMapper.enumParaNumber(StatusPedido.RECEBIDO),
-                      StatusPedidoEnumMapper.enumParaNumber(StatusPedido.EM_PREPARACAO)
-                  ]
-              })
-              .getMany();
+                .createQueryBuilder("ped")
+                .where("ped.statusId in(:...status)", {
+                    status: [
+                        StatusPedidoEnumMapper.enumParaNumber(StatusPedido.RECEBIDO),
+                        StatusPedidoEnumMapper.enumParaNumber(StatusPedido.EM_PREPARACAO)
+                    ]
+                })
+                .getMany();
 
             pedidoEntity.forEach(pe => {
                 pedidos.push(pe.getDomain());
@@ -114,12 +120,12 @@ export class PedidoMySqlRepositoryGateway implements IPedidoRepositoryGateway {
 
             let filters = [];
             let params = [];
-            if(status !== undefined){
+            if (status !== undefined) {
                 params.push(status);
                 filters.push("ped.statusId = :status");
             }
 
-            if(identificadorPagamento !== undefined){
+            if (identificadorPagamento !== undefined) {
                 params.push(identificadorPagamento);
                 filters.push("ped.pagamento.codigoPagamento = :codigoPagamento");
             }
@@ -128,10 +134,10 @@ export class PedidoMySqlRepositoryGateway implements IPedidoRepositoryGateway {
             const filterStr = filters.join(" and ");
 
             const pedidoEntity = await this.pedidoRepository
-              .createQueryBuilder("ped")
-              .where("ped.statusId = :status", {
-                  status: StatusPedidoEnumMapper.enumParaNumber(status)
-              }).getMany();
+                .createQueryBuilder("ped")
+                .where("ped.statusId = :status", {
+                    status: StatusPedidoEnumMapper.enumParaNumber(status)
+                }).getMany();
 
             pedidoEntity.forEach(pe => {
                 pedidos.push(pe.getDomain());
