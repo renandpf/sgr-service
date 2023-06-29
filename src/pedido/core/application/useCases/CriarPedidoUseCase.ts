@@ -31,7 +31,7 @@ export class CriarPedidoUseCase {
     await this.verificaRemoveClienteInexistente(pedido);
     await this.verificaExistenciaProduto(pedido);
 
-    pedido.setStatus(StatusPedido.AGUARDANDO_PAGAMENTO);
+    pedido.setStatus(StatusPedido.RECEBIDO);
     const id = await this.pedidoRepositoryGateway.criar(pedido);
     if (id !== undefined) {
       pedido.id = id;
