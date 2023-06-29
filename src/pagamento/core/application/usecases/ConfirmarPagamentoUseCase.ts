@@ -1,18 +1,14 @@
 import { Inject, Logger, } from "@tsed/common";
 import { Service } from "@tsed/di";
-import { Pagamento } from "../../domain/Pagamento";
 import { IPedidoServiceGateway } from "../ports/IPedidoServiceGateway";
 
 import { PedidoNotFoundException } from "../exceptions/PedidoNotFoundException";
-import { Pedido } from "../../../../pedido/core/domain/Pedido";
-import { CamposObrigatoriosNaoPreechidoException } from "../exceptions/CamposObrigatoriosNaoPreechidoException";
-import { RequestPagamentoDto } from "../../../../pedido/core/application/dto/RequestPagamentoDto";
 import { PedidoServiceHttpGateway } from "../../../../pagamento/adapter/driven/http/PedidoServiceHttpGateway";
 import { PagamentoMockExternalServiceHttpGateway } from "../../../../pagamento/adapter/driven/http/PagamentoMockServiceHttpGateway";
 import { IPagamentoExternoServiceGateway } from "../ports/IPagamentoExternoServiceGateway";
 import { PagamentoMySqlRepositoryGateway } from "../../../adapter/driven/repositories/PagamentoMySqlRepositoryGateway";
 import { IPagamentoRepositoryGateway } from "../ports/IPagamentoRepositoryGateway";
-import { StatusPedido } from "../../../../pedido";
+import { StatusPedidoEnumMapper } from "src/pedido";
 
 @Service()
 export class ConfirmarPagamentoUseCase {
@@ -28,18 +24,25 @@ export class ConfirmarPagamentoUseCase {
     async confirmar(identificadorPagamento: string, statusPagamento: string): Promise<void> {
         this.logger.trace("Start identificadorPagamento={}, statusPagamento={}", identificadorPagamento, statusPagamento);
 
-        const pedido = this.pedidoServiceGateway.obterPorIdentificadorPagamento(identificadorPagamento);
         const status = this.pagamentoExternoServiceGateway.mapStatus(statusPagamento);
 
-        //TODO: Implementar
-        /*
-         *  1- Obter pedido pelo identificador (via service)
-            2- Obter status do pedido a partir do serviço externo (map) - OK
-            3- Alterar o status do pedido para: "PAGO"
-            4- Salvar pedido (via service)
-         */
+        const pedido = await this.obtemPedidoPorPagamentoId(identificadorPagamento);
+
+        pedido.setStatus(StatusPedidoEnumMapper.numberParaEnum(status));
+
+        this.pedidoServiceGateway.alterarStatus(pedido);
 
         this.logger.trace("End");
     }
 
+
+    private async obtemPedidoPorPagamentoId(identificadorPagamento: string) {
+        const pedidoOp = await this.pedidoServiceGateway.obterPorIdentificadorPagamento(identificadorPagamento);
+        if (pedidoOp.isEmpty()) {
+            this.logger.warn("Pedido não encontrado. identificadorPagamento={}", identificadorPagamento);
+            throw new PedidoNotFoundException();
+        }
+
+        return pedidoOp.get();
+    }
 }

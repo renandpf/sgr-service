@@ -81,4 +81,18 @@ export class PedidoController {
 
         return pedidosJson;
     }
+
+    @Get("/pagamentos/:idPagamento")
+    @Returns(200, PedidoConsultaJson)
+    async obterPedidosPorIdentificdorPagamento(@PathParams("idPagamento") idPagamento: string): Promise<PedidoConsultaJson> {
+        this.logger.trace("Start identificadorPagamento={}", idPagamento);
+
+        const pedido = await this.obterPedidoUseCase.obterPorIdentificadorPagamento(idPagamento);
+
+        const pedidoJson = PedidoConsultaJson.getInstance(pedido);
+
+        this.logger.trace("End pedidoJson={}", pedidoJson);
+
+        return pedidoJson;
+    }    
 }

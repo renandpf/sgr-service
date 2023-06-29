@@ -47,4 +47,18 @@ export class ObterPedidoUseCase {
         return pedidos;
     }
 
+    async obterPorIdentificadorPagamento(identificadorPagamento: string): Promise<Pedido> {
+        this.logger.trace("Start identificadorPagamento={}", identificadorPagamento);
+        const pedidoOp = await this.pedidoRepositoryGateway.obterPorIdentificadorPagamento(identificadorPagamento);
+
+        if (pedidoOp.isEmpty()) {
+            this.logger.warn("Pedido não encontrado. identificadorPagamento={}", identificadorPagamento);
+            throw new PedidoNotFoundException();
+        }
+
+        const pedido = pedidoOp.get();
+        this.logger.trace("End pedido={}", pedido);
+        return pedido;
+    }
+
 }

@@ -95,15 +95,15 @@ export class Pedido {
     //Assim Da pra usar chain of responsabilit ou factory - analisar
     setStatus(newStatus: StatusPedido) {
         switch (newStatus) {
-            case StatusPedido.AGUARDANDO_PAGAMENTO:
-                if (this._status === undefined || this._status === StatusPedido.AGUARDANDO_PAGAMENTO) {
+            case StatusPedido.RECEBIDO:
+                if (this._status === undefined || this._status === StatusPedido.RECEBIDO) {
                     this._status = newStatus;
                     return;
                 }
                 throw new AlteracaoStatusPedidoException("O status do pedido não permite essa alteração");
 
             case StatusPedido.AGUARDANDO_CONFIRMACAO_PAGAMENTO:
-                if (this._status === StatusPedido.AGUARDANDO_PAGAMENTO) {
+                if (this._status === StatusPedido.RECEBIDO) {
                     this._status = newStatus;
                     break;
                 }
@@ -149,7 +149,7 @@ export class Pedido {
 
     public getStatus(): StatusPedido {
         if (this._status === undefined) {
-            this._status = StatusPedido.AGUARDANDO_PAGAMENTO;
+            this._status = StatusPedido.RECEBIDO;
         }
         return this._status;
     }

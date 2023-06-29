@@ -1,6 +1,6 @@
 import { Pagamento } from "../../../../../pagamento/core/domain/Pagamento";
 import { PedidoEntity } from "../../../../../pedido/adapter/driven/repositories/entities/PedidoEntity";
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 
 @Entity("Pagamento")
@@ -11,10 +11,10 @@ export class PagamentoEntity {
   @Column({
     nullable: false
   })
-  codigoPagamento?: string;
+  public codigoPagamento?: string;
 
 
-  @OneToOne(() => PedidoEntity, (pedido) => pedido.pagamento)
+  @ManyToOne(() => PedidoEntity, (pedido) => pedido.pagamentos, {eager: true})
   pedido?: PedidoEntity;
 
   // constructor(pagamento?: Pagamento){

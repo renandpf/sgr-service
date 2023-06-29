@@ -6,6 +6,7 @@ import { ErrorToAccessDatabaseException } from "../../../../common/exception/Err
 import { Optional } from "typescript-optional";
 import {
     ITEM_DATABASE_REPOSITORY,
+    PAGAMENTO_DATABASE_REPOSITORY,
     PEDIDO_DATABASE_REPOSITORY
 } from "../../../../config/database/repository/repository-register.provider";
 import { PedidoEntity } from "./entities";
@@ -20,6 +21,9 @@ export class PedidoMySqlRepositoryGateway implements IPedidoRepositoryGateway {
 
     @Inject(PEDIDO_DATABASE_REPOSITORY)
     protected pedidoRepository: PEDIDO_DATABASE_REPOSITORY;
+
+    @Inject(PAGAMENTO_DATABASE_REPOSITORY)
+    protected pagamentoRepository: PAGAMENTO_DATABASE_REPOSITORY;
 
     @Inject(ITEM_DATABASE_REPOSITORY)
     protected pedidoItemRepository: ITEM_DATABASE_REPOSITORY;
@@ -111,25 +115,35 @@ export class PedidoMySqlRepositoryGateway implements IPedidoRepositoryGateway {
         }
     }
 
+    async obterPorIdentificadorPagamento(identificadorPagamento: string): Promise<Optional<Pedido>> {
+        try {
+            this.logger.trace("Start identificadorPagamento={}", identificadorPagamento);
+
+            const pagamento = await this.pagamentoRepository.findOneBy({
+                codigoPagamento: identificadorPagamento                
+            });
+
+            let pedidoOp: Optional<Pedido> = Optional.empty();
+            if(pagamento !== null && pagamento.pedido !== undefined){
+                const pedidoEntity = pagamento.pedido;
+                pedidoOp = Optional.of(pedidoEntity.getDomain());
+            }
+
+            this.logger.trace("End pedidoOp={}", pedidoOp)
+            return pedidoOp;
+        }
+        catch (e) {
+            this.logger.error(e);
+            throw new ErrorToAccessDatabaseException();
+        }
+    }
+
     async obterPorStatusAndIdentificadorPagamento(status: StatusPedido, identificadorPagamento: string): Promise<Pedido[]> {
         try {
-            this.logger.trace(`Consultando pedidos por status: ${status}`);
+            this.logger.trace("Start status={}, identificadorPagamento={}", status, identificadorPagamento);
             const pedidos: Pedido[] = [];
-
-            let filters = [];
-            let params = [];
-            if (status !== undefined) {
-                params.push(status);
-                filters.push("ped.statusId = :status");
-            }
-
-            if (identificadorPagamento !== undefined) {
-                params.push(identificadorPagamento);
-                filters.push("ped.pagamento.codigoPagamento = :codigoPagamento");
-            }
-
-            //TODO: terminar usando esse filtro
-            const filterStr = filters.join(" and ");
+            
+            //TODO: implementar filtro de "identificadorPagamento"
 
             const pedidoEntity = await this.pedidoRepository
                 .createQueryBuilder("ped")
@@ -141,6 +155,8 @@ export class PedidoMySqlRepositoryGateway implements IPedidoRepositoryGateway {
                 pedidos.push(pe.getDomain());
             })
 
+
+            this.logger.trace("End pedidos={}", pedidos);
             return pedidos;
         } catch (error) {
             this.logger.error(error);

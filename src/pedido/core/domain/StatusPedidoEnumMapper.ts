@@ -5,20 +5,18 @@ export class StatusPedidoEnumMapper{
   static numberParaEnum(codigo?: number): StatusPedido{
     switch (codigo){
       case 0:
-        return StatusPedido.AGUARDANDO_PAGAMENTO;
+        return StatusPedido.PAGO;
       case 1:
         return StatusPedido.AGUARDANDO_CONFIRMACAO_PAGAMENTO;
       case 2:
-        return StatusPedido.PAGO;
-      case 3:
         return StatusPedido.RECEBIDO;
-      case 4:
+      case 3:
         return StatusPedido.EM_PREPARACAO;
-      case 5:
+      case 4:
         return StatusPedido.PRONTO;
-      case 6:
+      case 5:
         return StatusPedido.FINALIZADO;
-      case 7:
+      case 6:
         return StatusPedido.PAGAMENTO_INVALIDO;
       default:
         throw new Exception(500,"Status Inválido");
@@ -27,8 +25,6 @@ export class StatusPedidoEnumMapper{
 
   static stringParaEnum(opcao?: string): StatusPedido{
     switch (opcao){
-      case "AGUARDANDO_PAGAMENTO":
-        return StatusPedido.AGUARDANDO_PAGAMENTO;
       case "AGUARDANDO_CONFIRMACAO_PAGAMENTO":
         return StatusPedido.AGUARDANDO_CONFIRMACAO_PAGAMENTO;
       case "PAGO":
@@ -51,8 +47,6 @@ export class StatusPedidoEnumMapper{
   static enumParaString(status? : StatusPedido): string {
 
     switch (status){
-      case StatusPedido.AGUARDANDO_PAGAMENTO:
-        return "AGUARDANDO_PAGAMENTO";
       case StatusPedido.AGUARDANDO_CONFIRMACAO_PAGAMENTO:
         return "AGUARDANDO_CONFIRMACAO_PAGAMENTO";
       case StatusPedido.PAGO:
@@ -74,22 +68,20 @@ export class StatusPedidoEnumMapper{
 
   static enumParaNumber(status? : StatusPedido): number{
     switch (status){
-      case StatusPedido.AGUARDANDO_PAGAMENTO:
+      case StatusPedido.RECEBIDO:
         return 0;
       case StatusPedido.AGUARDANDO_CONFIRMACAO_PAGAMENTO:
         return 1;
       case StatusPedido.PAGO:
         return 2;
-      case StatusPedido.RECEBIDO:
-        return 3;
       case StatusPedido.EM_PREPARACAO:
-        return 4;
+        return 3;
       case StatusPedido.PRONTO:
-        return 5;
+        return 4;
       case StatusPedido.FINALIZADO:
-        return 6;
+        return 5;
       case StatusPedido.PAGAMENTO_INVALIDO:
-        return 7;
+        return 6;
 
       default:
         throw new Exception(500,"Status Inválido");

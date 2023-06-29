@@ -5,7 +5,6 @@ import axios from "axios";
 import { IPedidoServiceGateway } from "../../../../pagamento/core/application/ports/IPedidoServiceGateway";
 import { Pedido, StatusPedido, StatusPedidoEnumMapper } from "../../../../pedido";
 import { ErrorToAccessPedidoServiceException } from "../../../../pagamento/core/application/exceptions/ErrorToAccessPedidoServiceException";
-import { stat } from "fs";
 
 @Service()
 export class PedidoServiceHttpGateway implements IPedidoServiceGateway {
@@ -45,16 +44,18 @@ export class PedidoServiceHttpGateway implements IPedidoServiceGateway {
     try {
       this.logger.trace("Start identificadorPagamento={}", identificadorPagamento);
 
-      return Promise.resolve(Optional.empty());
+      const pedido = await this.callObterPedidoByIndentificadorPagamentoService(identificadorPagamento);
 
-      //this.logger.trace("End");
+      this.logger.trace("End pedido={}", pedido)
+      return pedido;
+
     } catch (e) {
       this.logger.error(e);
       throw new ErrorToAccessPedidoServiceException();
     }
   }
 
-  private async callObterPedidoByIndentificadorPagamentoService(identificadorPagamento: string): Promise<void> {
+  private async callObterPedidoByIndentificadorPagamentoService(identificadorPagamento: string): Promise<Optional<Pedido>> {
     try {
 
       //TODO: implementar
@@ -62,7 +63,7 @@ export class PedidoServiceHttpGateway implements IPedidoServiceGateway {
       const config = {
         method: "get",
         maxBodyLength: Infinity,
-        url: `${this.clientServiceUrlBase}/pedido/pedidos/${identificadorPagamento}`,
+        url: `${this.clientServiceUrlBase}/pedido/pedidos/pagamentos/${identificadorPagamento}`,
         headers: {}
       };
 
@@ -71,8 +72,10 @@ export class PedidoServiceHttpGateway implements IPedidoServiceGateway {
       const response = await axios.request(config);
       this.logger.info("response={}", response);
 
+      return this.processSucessResponse(response);
+
     } catch (error) {
-      this.processErrorResponse(error);
+      return this.processErrorResponse(error);
     }
   }
 
