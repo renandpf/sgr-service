@@ -82,7 +82,7 @@ export class PedidoController {
         return pedidosJson;
     }
 
-    @Get("/pagamento/:idPagamento")
+    @Get("/pagamentos/:idPagamento")
     @Returns(200, PedidoConsultaJson)
     async obterPedidosPorIdentificdorPagamento(@PathParams("idPagamento") idPagamento: string): Promise<PedidoConsultaJson> {
         this.logger.trace("Start identificadorPagamento={}", idPagamento);

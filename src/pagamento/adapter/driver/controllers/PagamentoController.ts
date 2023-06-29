@@ -29,8 +29,8 @@ export class PagamentoController {
     async confirmar(@BodyParams() confirmacaoPagamentoJson: ConfirmacaoPagamentoJson): Promise<void> {
         this.logger.info("Start confirmacaoPagamentoJson={}", confirmacaoPagamentoJson);
 
-        //Esta chamada deve ser async
-        this.confirmarPagamentoUseCase.confirmar(confirmacaoPagamentoJson.identificador, confirmacaoPagamentoJson.status);
+        //fixme: Esta chamada deve ser async
+        await this.confirmarPagamentoUseCase.confirmar(confirmacaoPagamentoJson.identificador, confirmacaoPagamentoJson.status);
         this.logger.trace("End");
     }
 }
