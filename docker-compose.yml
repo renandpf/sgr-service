@@ -11,19 +11,24 @@ services:
         - no_proxy
     image: sgr-service/server:latest
     ports:
-      - '8083:8083'
+      - "8083:8083"
     networks:
       - sgr_network
+    expose:
+      - "8083"
   mysql:
     container_name: mysql
     image: mysql:8.0.33
     ports:
-      - '3306:3306'
+      - "3306:3306"
+    expose:
+      - "3306"
     environment:
       MYSQL_ROOT_PASSWORD: senha
+      MYSQL_DATABASE: sgr_database
+      MYSQL_TCP_PORT: 3306
     networks:
       - sgr_network
-
 networks:
   sgr_network:
     driver: bridge
