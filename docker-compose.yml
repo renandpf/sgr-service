@@ -23,6 +23,8 @@ services:
       - "3306:3306"
     expose:
       - "3306"
+    depends_on:
+      - mysql
     environment:
       MYSQL_ROOT_PASSWORD: senha
       MYSQL_DATABASE: sgr_database
