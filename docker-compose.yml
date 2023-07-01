@@ -14,6 +14,8 @@ services:
       - "8083:8083"
     networks:
       - sgr_network
+    depends_on:
+      - mysql
     expose:
       - "8083"
   mysql:
@@ -23,8 +25,6 @@ services:
       - "3306:3306"
     expose:
       - "3306"
-    depends_on:
-      - mysql
     environment:
       MYSQL_ROOT_PASSWORD: senha
       MYSQL_DATABASE: sgr_database
