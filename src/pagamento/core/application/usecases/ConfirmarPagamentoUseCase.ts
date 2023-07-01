@@ -8,7 +8,7 @@ import { PagamentoMockExternalServiceHttpGateway } from "../../../../pagamento/a
 import { IPagamentoExternoServiceGateway } from "../ports/IPagamentoExternoServiceGateway";
 import { PagamentoMySqlRepositoryGateway } from "../../../adapter/driven/repositories/PagamentoMySqlRepositoryGateway";
 import { IPagamentoRepositoryGateway } from "../ports/IPagamentoRepositoryGateway";
-import { StatusPedidoEnumMapper } from "src/pedido";
+import { StatusPedidoEnumMapper } from "../../../../pedido/core/domain/StatusPedidoEnumMapper";
 
 @Service()
 export class ConfirmarPagamentoUseCase {
