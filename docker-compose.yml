@@ -15,7 +15,14 @@ services:
     networks:
       - sgr_network
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
+    healthcheck:
+      interval: 10s
+      retries: 5
+      start_period: 5s
+      timeout: 10s
+    restart: always
     expose:
       - "8083"
   mysql:
@@ -31,6 +38,20 @@ services:
       MYSQL_TCP_PORT: 3306
     networks:
       - sgr_network
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'mysqladmin',
+          'ping',
+          '-h',
+          'mysql',
+          '--user=root',
+          '--password=senha'
+        ]
+      interval: 3s
+      timeout: 3s
+      retries: 5
 networks:
   sgr_network:
     driver: bridge
