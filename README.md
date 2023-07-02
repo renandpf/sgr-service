@@ -8,9 +8,14 @@
 
 ```
 # comando para criar e iniciar os containers(aplicação e banco de dados). O comando -d executa os containers em segundo plano
-docker compose up -d
+docker compose build
 
-# Para abrir o swagger da aplicação entre no link (<a href="http://localhost:8083/doc">Swagger</a>)
+# comando para criar e iniciar os containers(aplicação e banco de dados). O comando -d executa os containers em segundo plano
+docker compose up -d
 
 # Obs: é necessário ter o docker e docker-compose previamente instalado
 ```
+
+## Após a subida dos containers siga os passos a seguir :
+
+> Para acessar o swagger da aplicação: <a href="http://localhost:8083/doc">Clique aqui</a>
