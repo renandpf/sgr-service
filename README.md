@@ -1,67 +1,16 @@
-<p style="text-align: center" align="center">
-  <a href="https://tsed.io" target="_blank"><img src="https://tsed.io/tsed-og.png" width="200" alt="Ts.ED logo"/></a>
-</p>
+## Como iniciar
 
-<div align="center">
-  <h1>Ts.ED - sgr-service</h1>
-  <br />
-  <div align="center">
-    <a href="https://cli.tsed.io/">Website</a>
-    <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
-    <a href="https://cli.tsed.io/getting-started.html">Getting started</a>
-    <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
-    <a href="https://api.tsed.io/rest/slack/tsedio/tsed">Slack</a>
-    <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
-    <a href="https://twitter.com/TsED_io">Twitter</a>
-  </div>
-  <hr />
-</div>
+> Projeto desenvolvido em NodeJs utilizando o framework Ts.ED e banco de dados Mysql
 
-> An awesome project based on Ts.ED framework
+> Para executar o projeto siga os passos a seguir:
 
-## Getting started
-
-> **Important!** Ts.ED requires Node >= 14, Express >= 4 and TypeScript >= 4.
-
-```batch
-# install dependencies
-$ npm install
-
-# serve
-$ npm run start
-
-# build for production
-$ npm run build
-$ npm run start:prod
-```
-
-## Docker
+## Para executar o projeto siga os passos a seguir:
 
 ```
-# build docker image
-docker compose build
+# comando para criar e iniciar os containers(aplicação e banco de dados). O comando -d executa os containers em segundo plano
+docker compose up -d
 
-# start docker image
-docker compose up
-```
+# Para abrir o swagger da aplicação entre no link (<a href="http://localhost:8083/doc">Swagger</a>)
 
-## Barrelsby
-
-This project uses [barrelsby](https://www.npmjs.com/package/barrelsby) to generate index files to import the controllers.
-
-Edit `.barreslby.json` to customize it:
-
-```json
-{
-  "directory": [
-    "./src/controllers/rest",
-    "./src/controllers/pages"
-  ],
-  "exclude": [
-    "__mock__",
-    "__mocks__",
-    ".spec.ts"
-  ],
-  "delete": true
-}
+# Obs: é necessário ter o docker e docker-compose previamente instalado
 ```
