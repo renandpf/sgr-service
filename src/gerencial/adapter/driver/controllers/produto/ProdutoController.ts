@@ -6,16 +6,21 @@ import { ObterProdutoUseCase } from "../../../../core/application/useCases/produ
 import { AlterarProdutoUseCase } from "../../../../core/application/useCases/produtoUseCases/AlterarProdutoUseCase";
 import { CriarProdutoUseCase } from "../../../../core/application/useCases/produtoUseCases/CriarProdutoUseCase";
 import { ExcluirProdutoUseCase } from "../../../../core/application/useCases/produtoUseCases/ExcluirProdutoUseCase";
+import { IObterProdutoUseCase } from "../../../../core/application/useCases/produtoUseCases/IObterProdutoUseCase";
+import { IAlterarProdutoUseCase } from "../../../../core/application/useCases/produtoUseCases/IAlterarProdutoUseCase";
+import { ICriarProdutoUseCase } from "../../../../core/application/useCases/produtoUseCases/ICriarProdutoUseCase";
+import { IExcluirProdutoUseCase } from "../../../../core/application/useCases/produtoUseCases/IExcluirProdutoUseCase";
+
 import { ProdutoJson } from "./json/ProdutoJson";
 
 @Controller("")
 export class ProdutoController {
 
   constructor(
-    @Inject() private obterProdutoUseCase: ObterProdutoUseCase,
-    @Inject() private criarProdutoUseCase: CriarProdutoUseCase,
-    @Inject() private alterarProdutoUseCase: AlterarProdutoUseCase,
-    @Inject() private excluirProdutoUseCase: ExcluirProdutoUseCase,
+    @Inject(ObterProdutoUseCase) private obterProdutoUseCase: IObterProdutoUseCase,
+    @Inject(CriarProdutoUseCase) private criarProdutoUseCase: ICriarProdutoUseCase,
+    @Inject(AlterarProdutoUseCase) private alterarProdutoUseCase: IAlterarProdutoUseCase,
+    @Inject(ExcluirProdutoUseCase) private excluirProdutoUseCase: IExcluirProdutoUseCase,
   ) {
   }
   @Get("/categorias/:categoria/produtos")
