@@ -3,8 +3,9 @@ import { IProdutoRepositoryGateway } from "../../ports/IProdutoRepositoryGateway
 import { ProdutoMySqlRepositoryGateway } from "../../../../adapter/driven/repositories/ProdutoMySqlRepositoryGateway";
 import { Logger } from "@tsed/common";
 import { ExclusaoProdutoAssociadoPedidoException } from "../../exception/ExclusaoProdutoAssociadoPedidoException";
+import { IExcluirProdutoUseCase } from "./IExcluirProdutoUseCase";
 
-export class ExcluirProdutoUseCase {
+export class ExcluirProdutoUseCase implements IExcluirProdutoUseCase {
     constructor(
         @Inject(ProdutoMySqlRepositoryGateway) private produtoRepositoryGateway: IProdutoRepositoryGateway,
         @Inject() private logger: Logger,

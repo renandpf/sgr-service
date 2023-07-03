@@ -3,9 +3,10 @@ import { IProdutoRepositoryGateway } from "../../ports/IProdutoRepositoryGateway
 import { Produto } from "../../../domain/Produto";
 import { ProdutoMySqlRepositoryGateway } from "../../../../adapter/driven/repositories/ProdutoMySqlRepositoryGateway";
 import { Logger } from "@tsed/common";
+import { IAlterarProdutoUseCase } from "./IAlterarProdutoUseCase";
 
 @Service()
-export class AlterarProdutoUseCase {
+export class AlterarProdutoUseCase implements IAlterarProdutoUseCase {
     constructor( 
         @Inject(ProdutoMySqlRepositoryGateway) private produtoRepositoryGateway: IProdutoRepositoryGateway,
         @Inject() private logger: Logger){}

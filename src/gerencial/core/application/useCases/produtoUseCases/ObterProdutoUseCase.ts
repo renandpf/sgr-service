@@ -5,9 +5,10 @@ import { Optional } from "typescript-optional";
 import { ProdutoMySqlRepositoryGateway } from "../../../../adapter/driven/repositories/ProdutoMySqlRepositoryGateway";
 import { Logger } from "@tsed/common";
 import { ProdutoNotFoundException } from "../../exception/ProdutoNotFoundException";
+import { IObterProdutoUseCase } from "./IObterProdutoUseCase";
 
 @Service()
-export class ObterProdutoUseCase {
+export class ObterProdutoUseCase implements IObterProdutoUseCase {
 
     constructor( 
         @Inject(ProdutoMySqlRepositoryGateway) private produtoRepositoryGateway: IProdutoRepositoryGateway,
@@ -29,6 +30,9 @@ export class ObterProdutoUseCase {
     }
 
     public async obterPorCategoria(categoria:  CategoriaEnum): Promise<Produto[]> {
-        return this.produtoRepositoryGateway.obterPorCategoria(categoria);
+        this.logger.trace("Start categoria={}", categoria);
+        const produtos = await this.produtoRepositoryGateway.obterPorCategoria(categoria);
+        this.logger.trace("End produtos={}", produtos);
+        return produtos;
     }
 }

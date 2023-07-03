@@ -1,11 +1,12 @@
 import { Inject, Service } from "@tsed/common";
 import { IProdutoRepositoryGateway } from "../../ports/IProdutoRepositoryGateway";
-import { Produto } from "../../../domain";
+import { Produto } from "../../../domain/Produto";
 import { ProdutoMySqlRepositoryGateway } from "../../../../adapter/driven/repositories/ProdutoMySqlRepositoryGateway";
 import { Logger } from "@tsed/common";
+import { ICriarProdutoUseCase } from "./ICriarProdutoUseCase";
 
 @Service()
-export class CriarProdutoUseCase {
+export class CriarProdutoUseCase implements ICriarProdutoUseCase {
     constructor( 
         @Inject(ProdutoMySqlRepositoryGateway) private produtoRepositoryGateway: IProdutoRepositoryGateway,
         @Inject() private logger: Logger,
