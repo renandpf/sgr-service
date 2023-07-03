@@ -5,9 +5,10 @@ import { PedidoMySqlRepositoryGateway } from "../../../../pedido/adapter/driven/
 import { Optional } from "typescript-optional";
 import { PedidoNotFoundException } from "../exceptions/PedidoNotFoundException";
 import { StatusPedido } from "../../domain/StatusPedido";
+import { IAtualizarStatusPedidoUseCase } from "./IAtualizarStatusPedidoUseCase";
 
 @Service()
-export class AtualizarStatusPedidoUseCase {
+export class AtualizarStatusPedidoUseCase implements IAtualizarStatusPedidoUseCase {
     constructor(
         @Inject(PedidoMySqlRepositoryGateway) private pedidoRepositoryGateway: IPedidoRepositoryGateway,
         @Inject() private logger: Logger) { }

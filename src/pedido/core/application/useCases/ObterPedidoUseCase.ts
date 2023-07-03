@@ -4,9 +4,10 @@ import { IPedidoRepositoryGateway } from "../ports/IPedidoRepositoryGateway";
 import { PedidoMySqlRepositoryGateway } from "../../../../pedido/adapter/driven/repositories/PedidoMySqlRepositoryGateway";
 import { PedidoNotFoundException } from "../exceptions/PedidoNotFoundException";
 import { StatusPedidoEnumMapper } from "../../domain/StatusPedidoEnumMapper";
+import { IObterPedidoUseCase } from "./IObterPedidoUseCase";
 
 @Service()
-export class ObterPedidoUseCase {
+export class ObterPedidoUseCase implements IObterPedidoUseCase {
 
     constructor(
         @Inject(PedidoMySqlRepositoryGateway) private pedidoRepositoryGateway: IPedidoRepositoryGateway,

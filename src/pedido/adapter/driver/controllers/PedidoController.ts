@@ -3,12 +3,13 @@ import { Get, Patch, Post, Returns } from "@tsed/schema";
 import { Controller } from "@tsed/di";
 import { CriarPedidoUseCase } from "../../../core/application/useCases/CriarPedidoUseCase";
 import { AtualizarStatusPedidoUseCase } from "../../../core/application/useCases/AtualizarStatusPedidoUseCase";
-import { PedidoCadastroJson } from "./json/PedidoCadastroJson";
 import { ObterPedidoUseCase } from "../../../../pedido/core/application/useCases/ObterPedidoUseCase";
+import { ICriarPedidoUseCase } from "../../../core/application/useCases/ICriarPedidoUseCase";
+import { IAtualizarStatusPedidoUseCase } from "../../../core/application/useCases/IAtualizarStatusPedidoUseCase";
+import { IObterPedidoUseCase } from "../../../../pedido/core/application/useCases/IObterPedidoUseCase";
+import { PedidoCadastroJson } from "./json/PedidoCadastroJson";
 import { PedidoEmAndamentoJson } from "./json/PedidoEmAndamentoJson";
-import {
-    CamposObrigatoriosNaoPreechidoException
-} from "../../../../pedido/core/application/exceptions/CamposObrigatoriosNaoPreechidoException";
+import { CamposObrigatoriosNaoPreechidoException } from "../../../../pedido/core/application/exceptions/CamposObrigatoriosNaoPreechidoException";
 import { StatusPedidoEnumMapper } from "../../../../pedido/core/domain/StatusPedidoEnumMapper";
 import { PedidoConsultaJson } from "./json/PedidoConsultaJson";
 import { PedidoStatusJson } from "./json/PedidoStatusJson";
@@ -17,9 +18,9 @@ import { PedidoStatusJson } from "./json/PedidoStatusJson";
 export class PedidoController {
 
     constructor(
-        @Inject() private obterPedidoUseCase: ObterPedidoUseCase,
-        @Inject() private criarPedidoUseCase: CriarPedidoUseCase,
-        @Inject() private atualizarStatusPedidoUseCase: AtualizarStatusPedidoUseCase,
+        @Inject(ObterPedidoUseCase) private obterPedidoUseCase: IObterPedidoUseCase,
+        @Inject(CriarPedidoUseCase) private criarPedidoUseCase: ICriarPedidoUseCase,
+        @Inject(AtualizarStatusPedidoUseCase) private atualizarStatusPedidoUseCase: IAtualizarStatusPedidoUseCase,
         @Inject() private logger: Logger) {
     }
 
