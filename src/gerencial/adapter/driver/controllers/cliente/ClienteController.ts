@@ -1,16 +1,22 @@
 import { Controller } from "@tsed/di";
 import { Get, Post, Put, Returns } from "@tsed/schema";
 import { BodyParams, Inject, PathParams } from "@tsed/common";
-import { AlterarClienteUseCase, CriarClienteUseCase, ObterClienteUseCase } from "../../../../core/application/useCases";
+import { 
+    AlterarClienteUseCase, 
+    CriarClienteUseCase, 
+    IAlterarClienteUseCase, 
+    ICriarClienteUseCase, 
+    IObterClienteUseCase, 
+    ObterClienteUseCase } from "../../../../core/application/useCases/clienteUseCases";
 import { ClienteJson } from "./json/ClienteJson";
 
 @Controller("/clientes")
 export class ClienteController {
 
     constructor(
-        @Inject() private obterClienteUseCase: ObterClienteUseCase,
-        @Inject() private criarClienteUseCase: CriarClienteUseCase,
-        @Inject() private alterarClienteUseCase: AlterarClienteUseCase
+        @Inject(ObterClienteUseCase) private obterClienteUseCase: IObterClienteUseCase,
+        @Inject(CriarClienteUseCase) private criarClienteUseCase: ICriarClienteUseCase,
+        @Inject(AlterarClienteUseCase) private alterarClienteUseCase: IAlterarClienteUseCase
     ) {
     }
     @Get("/cpf/:cpf")
