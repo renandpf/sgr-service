@@ -1,3 +1,4 @@
+import { ClienteDto } from "../../../../../core/dto/cliente/ClienteDto";
 import { Cliente } from "../../../../../core/domain";
 import { Description, Example, Property, Required } from "@tsed/schema";
 
@@ -30,10 +31,7 @@ export class ClienteJson {
         this.email = cliente.email;
     }
 
-    public getDomain(id?: number | null): Cliente{
-        if(id || id === null){
-            return new Cliente(id === null ? undefined : id, this.nome, this.cpf, this.email);
-        } 
-        return new Cliente(this.id, this.nome, this.cpf, this.email);
+    public getDto(id?: number): ClienteDto{
+        return new ClienteDto(id, this.nome, this.cpf, this.email);
     }    
 }

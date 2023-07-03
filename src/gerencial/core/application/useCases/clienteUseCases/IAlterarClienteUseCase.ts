@@ -1,5 +1,6 @@
-import { Cliente } from "../../../domain/Cliente";
+import { AlterarClienteParamsDto } from "../../../dto/cliente/flows/AlterarClienteParamsDto";
+import { AlterarClienteResponseDto } from "../../../dto/cliente/flows/AlterarClienteReturnDto";
 
 export interface IAlterarClienteUseCase {
-    alterar(clienteReq: Cliente): Promise<Cliente>;
+    alterar(requestDto: AlterarClienteParamsDto): Promise<AlterarClienteResponseDto>;
 }

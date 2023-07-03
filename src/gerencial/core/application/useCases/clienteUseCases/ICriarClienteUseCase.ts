@@ -1,5 +1,6 @@
-import { Cliente } from "../../../domain/Cliente";
+import { CriarClienteParamsDto } from "../../../dto/cliente/flows/CriarClienteParamsDto";
+import { CriarClienteReturnDto } from "../../../dto/cliente/flows/CriarClienteReturnDto";
 
 export interface ICriarClienteUseCase {
-    criar(clienteReq: Cliente): Promise<Cliente>;
+    criar(dto: CriarClienteParamsDto): Promise<CriarClienteReturnDto>;
 }
