@@ -10,8 +10,8 @@ export const MysqlDataSource = new DataSource({
   // name: "default",  if you come from v0.2.x
   type: "mysql",
   entities: [ProdutoEntity, ClienteEntity, PedidoEntity, ItemEntity, PagamentoEntity], // add this to discover typeorm model
-  // host: "localhost",
-  host: "mysql", // Usar esse host para conectar as aplicação em container ao banco em container
+  host: "localhost",
+//  host: "mysql", // Usar esse host para conectar as aplicação em container ao banco em container
   port: 3306,
   username: "root",
   password: "senha",

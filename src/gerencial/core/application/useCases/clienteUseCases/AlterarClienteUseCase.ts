@@ -2,12 +2,13 @@ import { Inject } from "@tsed/di";
 import { IClienteRepositoryGateway } from "../../ports";
 import { Service } from "@tsed/common";
 import { ClienteMySqlRepositoryGateway } from "../../../../adapter";
-import { Cliente } from "../../../domain";
+import { Cliente } from "../../../domain/Cliente";
 import { Optional } from "typescript-optional";
 import { ClienteNaoEncontradoException } from "../../exception/ClienteNaoEncontradoException";
+import { IAlterarClienteUseCase } from "./IAlterarClienteUseCase";
 
 @Service()
-export class AlterarClienteUseCase {
+export class AlterarClienteUseCase implements IAlterarClienteUseCase {
 
     constructor( @Inject(ClienteMySqlRepositoryGateway) private clienteRepositoryGateway: IClienteRepositoryGateway ){}
     async alterar(clienteReq: Cliente): Promise<Cliente> {
