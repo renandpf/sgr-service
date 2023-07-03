@@ -9,9 +9,10 @@ import { IPagamentoExternoServiceGateway } from "../ports/IPagamentoExternoServi
 import { PagamentoMySqlRepositoryGateway } from "../../../adapter/driven/repositories/PagamentoMySqlRepositoryGateway";
 import { IPagamentoRepositoryGateway } from "../ports/IPagamentoRepositoryGateway";
 import { StatusPedidoEnumMapper } from "../../../../pedido/core/domain/StatusPedidoEnumMapper";
+import { IConfirmarPagamentoUseCase } from "./IConfirmarPagamentoUseCase";
 
 @Service()
-export class ConfirmarPagamentoUseCase {
+export class ConfirmarPagamentoUseCase implements IConfirmarPagamentoUseCase {
 
     constructor(
         @Inject() private logger: Logger,

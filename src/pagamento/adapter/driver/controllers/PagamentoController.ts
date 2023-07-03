@@ -2,16 +2,19 @@ import { BodyParams, Inject, Logger } from "@tsed/common";
 import { Post, Returns } from "@tsed/schema";
 import { Controller } from "@tsed/di";
 import { EfetuarPagamentoUseCase } from "../../../../pagamento/core/application/usecases/EfetuarPagamentoUseCase";
+import { ConfirmarPagamentoUseCase } from "../../../../pagamento/core/application/usecases/ConfirmarPagamentoUseCase";
+import { IEfetuarPagamentoUseCase } from "../../../../pagamento/core/application/usecases/IEfetuarPagamentoUseCase";
+import { IConfirmarPagamentoUseCase } from "../../../../pagamento/core/application/usecases/IConfirmarPagamentoUseCase";
+
 import { PagamentoJson } from "./json/PagamentoJson";
 import { ConfirmacaoPagamentoJson } from "./json/ConfirmacaoPagamentoJson";
-import { ConfirmarPagamentoUseCase } from "../../../../pagamento/core/application/usecases/ConfirmarPagamentoUseCase";
 
 @Controller("")
 export class PagamentoController {
 
     constructor(
-        @Inject() private efetuarPagamentoUseCase: EfetuarPagamentoUseCase,
-        @Inject() private confirmarPagamentoUseCase: ConfirmarPagamentoUseCase,
+        @Inject(EfetuarPagamentoUseCase) private efetuarPagamentoUseCase: IEfetuarPagamentoUseCase,
+        @Inject(ConfirmarPagamentoUseCase) private confirmarPagamentoUseCase: IConfirmarPagamentoUseCase,
         @Inject() private logger: Logger) {
     }
 

@@ -13,9 +13,10 @@ import { IPagamentoExternoServiceGateway } from "../ports/IPagamentoExternoServi
 import { PagamentoMySqlRepositoryGateway } from "../../../adapter/driven/repositories/PagamentoMySqlRepositoryGateway";
 import { IPagamentoRepositoryGateway } from "../ports/IPagamentoRepositoryGateway";
 import { StatusPedido } from "../../../../pedido";
+import { IEfetuarPagamentoUseCase } from "./IEfetuarPagamentoUseCase";
 
 @Service()
-export class EfetuarPagamentoUseCase {
+export class EfetuarPagamentoUseCase implements IEfetuarPagamentoUseCase {
 
     constructor(
         @Inject() private logger: Logger,
