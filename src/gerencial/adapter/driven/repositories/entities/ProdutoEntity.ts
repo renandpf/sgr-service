@@ -1,6 +1,7 @@
 import { CategoriaEnum, Produto } from "../../../../core/domain";
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 import { CategoriaEnumMapper } from "../../../../core/domain/CategoriaEnumMapper";
+import { ProdutoDto } from "src/gerencial/core/dto/produto/ProdutoDto";
 
 @Entity("Produto")
 export class ProdutoEntity {
@@ -38,7 +39,7 @@ export class ProdutoEntity {
     })
     categoriaId?: number;
 
-    constructor(produto?: Produto){
+    constructor(produto?: ProdutoDto){
         if(produto){
             if(produto.id){
                 this.id = produto.id;
@@ -46,10 +47,8 @@ export class ProdutoEntity {
             this.nome = produto.nome;
             this.descricao = produto.descricao;
             this.valor = produto.valor;
-            this.imagem = produto.imagem;
-            if(produto.categoria !== undefined){
-                this.categoriaId = (CategoriaEnum as never)[produto.categoria];
-            }
+            this.imagem = undefined;
+            this.categoriaId = produto.categoriaId;
         }
     }
 

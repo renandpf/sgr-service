@@ -7,6 +7,7 @@ import { PRODUTO_DATABASE_REPOSITORY } from "../../../../config/database/reposit
 import { Logger } from "@tsed/common";
 import { Equal } from "typeorm";
 import { ProdutoEntity } from "./entities";
+import { ProdutoDto } from "src/gerencial/core/dto/produto/ProdutoDto";
 
 @Injectable({
     type: ProviderType.SERVICE,
@@ -68,13 +69,13 @@ export class ProdutoMySqlRepositoryGateway implements IProdutoRepositoryGateway 
             throw new ErrorToAccessDatabaseException();
         }
     }
-    async criar(produto: Produto): Promise<number | undefined> {
+    async criar(dto: ProdutoDto): Promise<number> {
         try {
-            this.logger.trace("Start produto={}", produto)
-            const produtoSavedEntity = await this.produtoRepository.save(new ProdutoEntity(produto));
+            this.logger.trace("Start dto={}", dto)
+            const produtoSavedEntity = await this.produtoRepository.save(new ProdutoEntity(dto));
             const idProdutoCreated = produtoSavedEntity.id;
             this.logger.trace("End idProdutoCreated={}", idProdutoCreated);
-            return idProdutoCreated;
+            return idProdutoCreated as number;
 
         } catch (e) {
             this.logger.error(e);
@@ -82,7 +83,7 @@ export class ProdutoMySqlRepositoryGateway implements IProdutoRepositoryGateway 
         }
 
     }
-    async alterar(produto: Produto): Promise<void> {
+    async alterar(produto: ProdutoDto): Promise<void> {
         try {
             this.logger.trace("Start produto={}", produto)
             await this.produtoRepository.save(new ProdutoEntity(produto));

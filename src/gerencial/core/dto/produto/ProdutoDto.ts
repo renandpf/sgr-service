@@ -1,12 +1,10 @@
-import { CategoriaEnum } from "./CategoriaEnum";
-
-export class Produto {
+export class ProdutoDto {
     constructor(
         readonly id?: number,
         readonly nome?: string,
         readonly descricao?: string,
         readonly valor?: number,
-        readonly categoria?: CategoriaEnum,
-        readonly imagem?: string
+        readonly categoriaId?: number,
     ){}
+
 }

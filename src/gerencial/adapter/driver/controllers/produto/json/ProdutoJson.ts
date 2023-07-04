@@ -2,6 +2,7 @@ import { CategoriaEnum, Produto } from "../../../../../core/domain";
 import { Description, Enum, Example, Property } from "@tsed/schema";
 import { OnSerialize } from "@tsed/json-mapper";
 import { CategoriaEnumMapper } from "../../../../../core/domain/CategoriaEnumMapper";
+import { ProdutoDto } from "../../../../../core/dto/produto/ProdutoDto";
 
 export class ProdutoJson {
   @Description("Identificador")
@@ -44,10 +45,10 @@ export class ProdutoJson {
     this.imagem = produto.imagem;
   }
 
-  public getDomain(id?: number | null): Produto{
+  public getProdutoDto(id?: number | null): ProdutoDto {
     if(id || id === null){
-      return new Produto(id === null ? undefined : id, this.nome, this.descricao, this.valor, this.categoria, this.imagem);
+      return new ProdutoDto(id === null ? undefined : id, this.nome, this.descricao, this.valor, this.categoria);
     }
-    return new Produto(this.id, this.nome, this.descricao, this.valor, this.categoria, this.imagem);
+    return new ProdutoDto(this.id, this.nome, this.descricao, this.valor, this.categoria);
   }
 }

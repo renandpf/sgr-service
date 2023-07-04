@@ -1,8 +1,9 @@
 import { Inject, Logger } from "@tsed/common";
 import { IProdutoRepositoryGateway } from "../../ports/IProdutoRepositoryGateway";
-import { Produto } from "../../../domain/Produto";
 import { IAlterarProdutoUseCase } from "./IAlterarProdutoUseCase";
 import { Injectable, ProviderScope, ProviderType } from "@tsed/di";
+import { AlterarProdutoParamsDto } from "src/gerencial/core/dto/produto/flows/AlterarProdutoParamsDto";
+import { AlterarProdutoReturnDto } from "src/gerencial/core/dto/produto/flows/AlterarProdutoReturnDto";
 
 @Injectable({
     type: ProviderType.SERVICE,
@@ -14,10 +15,11 @@ export class AlterarProdutoUseCase implements IAlterarProdutoUseCase {
         @Inject(IProdutoRepositoryGateway) private produtoRepositoryGateway: IProdutoRepositoryGateway,
         @Inject() private logger: Logger){}
 
-    public async alterar(produto: Produto): Promise<void> {
-        //TODO: validar se id foi informado
-        this.logger.trace("Start produto={}", produto);
-        await this.produtoRepositoryGateway.alterar(produto);
-        this.logger.trace("End");
+    public async alterar(dto: AlterarProdutoParamsDto): Promise<AlterarProdutoReturnDto> {
+        this.logger.trace("Start dto={}", dto);
+        await this.produtoRepositoryGateway.alterar(dto.produto);
+        const returnDto = new AlterarProdutoReturnDto();
+        this.logger.trace("End returnDto={}", returnDto);
+        return returnDto;
     }
 }

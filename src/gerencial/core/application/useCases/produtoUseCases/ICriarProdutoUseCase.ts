@@ -1,7 +1,8 @@
-import { Produto } from "../../../domain";
+import { CriarProdutoParamsDto } from "src/gerencial/core/dto/produto/flows/CriarProdutoParamsDto";
+import { CriarProdutoReturnDto } from "src/gerencial/core/dto/produto/flows/CriarProdutoReturnDto";
 
 export const ICriarProdutoUseCase: unique symbol = Symbol("ICriarProdutoUseCase");
 
 export interface ICriarProdutoUseCase {
-    criar(produtoReq: Produto): Promise<number | undefined>;
+    criar(dto: CriarProdutoParamsDto): Promise<CriarProdutoReturnDto>;
 }

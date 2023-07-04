@@ -1,6 +1,6 @@
 import { Controller } from "@tsed/di";
 import { Delete, Get, Post, Put, Returns } from "@tsed/schema";
-import { BodyParams, Inject, PathParams } from "@tsed/common";
+import { BodyParams, Inject, PathParams, Logger } from "@tsed/common";
 import {
   IAlterarProdutoUseCase,
   ICriarProdutoUseCase,
@@ -8,6 +8,8 @@ import {
   IObterProdutoUseCase
 } from "../../../../core/application";
 import { ProdutoJson } from "./json/ProdutoJson";
+import { AlterarProdutoParamsDto } from "../../../../core/dto/produto/flows/AlterarProdutoParamsDto";
+import { CriarProdutoParamsDto } from "src/gerencial/core/dto/produto/flows/CriarProdutoParamsDto";
 
 @Controller("")
 export class ProdutoController {
@@ -17,6 +19,7 @@ export class ProdutoController {
     @Inject(ICriarProdutoUseCase) private criarProdutoUseCase: ICriarProdutoUseCase,
     @Inject(IAlterarProdutoUseCase) private alterarProdutoUseCase: IAlterarProdutoUseCase,
     @Inject(IExcluirProdutoUseCase) private excluirProdutoUseCase: IExcluirProdutoUseCase,
+    @Inject() private logger: Logger,
   ) {
   }
   @Get("/categorias/:categoria/produtos")
@@ -37,13 +40,18 @@ export class ProdutoController {
   @Post("/produtos")
   @Returns(201).Description("ID do produto criado")
   async criar(@BodyParams() produtoJson: ProdutoJson): Promise<string> {
-    return await this.criarProdutoUseCase.criar(produtoJson.getDomain(null)) + "";
+    this.logger.trace("Start produtoJson={}", produtoJson);
+    const returnDto = await this.criarProdutoUseCase.criar(new CriarProdutoParamsDto(produtoJson.getProdutoDto(undefined)));
+    this.logger.trace("End id={}", returnDto.id);
+    return `${returnDto.id}`;
   }
 
   @Put("/produtos/:id")
   @Returns(200).Description("Nenhuma resposta")
   async alterar(@PathParams("id") id: number, @BodyParams() produtoJson: ProdutoJson): Promise<void> {
-    return await this.alterarProdutoUseCase.alterar(produtoJson.getDomain(id));
+    this.logger.trace("Start id={}, produtoJson={}", id, produtoJson);
+    await this.alterarProdutoUseCase.alterar(new AlterarProdutoParamsDto(produtoJson.getProdutoDto(id)));
+    this.logger.trace("End");
   }
 
   @Delete("/produtos/:id")
