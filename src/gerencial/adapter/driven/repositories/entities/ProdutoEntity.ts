@@ -52,8 +52,7 @@ export class ProdutoEntity {
         }
     }
 
-    public getDomain(): Produto{
-        return new Produto(this.id, this.nome, this.descricao,
-            this.valor, CategoriaEnumMapper.numberParaEnum(this.categoriaId), this.imagem);
+    public getProdutoDto(): ProdutoDto {
+        return new ProdutoDto(this.id, this.nome, this.descricao, this.valor, CategoriaEnumMapper.numberParaEnum(this.categoriaId));
     }
 }

@@ -1,6 +1,6 @@
 import { Inject, Injectable, ProviderScope, ProviderType } from "@tsed/di";
 import { IProdutoRepositoryGateway } from "../../../core/application/ports";
-import { CategoriaEnum, Produto } from "../../../core/domain";
+import { CategoriaEnum } from "../../../core/domain";
 import { Optional } from "typescript-optional";
 import { ErrorToAccessDatabaseException } from "../../../../common/exception/ErrorToAccessDatabaseException";
 import { PRODUTO_DATABASE_REPOSITORY } from "../../../../config/database/repository/repository-register.provider";
@@ -34,15 +34,15 @@ export class ProdutoMySqlRepositoryGateway implements IProdutoRepositoryGateway 
         }
     }
 
-    async obterPorId(id: number): Promise<Optional<Produto>> {
+    async obterPorId(id: number): Promise<Optional<ProdutoDto>> {
         try {
             this.logger.trace("Start id={}", id)
             const produtoEntity = await this.produtoRepository.findOneBy({ id: Equal(id) });
 
 
-            let produtoOp: Optional<Produto> = Optional.empty();
+            let produtoOp: Optional<ProdutoDto> = Optional.empty();
             if (produtoEntity !== null) {
-                produtoOp = Optional.of(produtoEntity.getDomain());
+                produtoOp = Optional.of(produtoEntity.getProdutoDto());
             }
 
             this.logger.trace("End produtoOp={}", produtoOp)
@@ -54,12 +54,11 @@ export class ProdutoMySqlRepositoryGateway implements IProdutoRepositoryGateway 
         }
     }
 
-    async obterPorCategoria(categoria: CategoriaEnum): Promise<Produto[]> {
+    async obterPorCategoria(categoria: CategoriaEnum): Promise<ProdutoDto[]> {
         try {
             this.logger.trace("Start categoria={}", categoria)
-            //const position = (CategoriaEnum as never)[categoria] + 1;
             const produtosEntities = await this.produtoRepository.findBy({ categoriaId: Equal(categoria) });
-            const produtos = produtosEntities.map(pe => pe.getDomain());
+            const produtos = produtosEntities.map(pe => pe.getProdutoDto());
 
             this.logger.trace("End produtos={}", produtos)
             return produtos;

@@ -47,7 +47,7 @@ export class ItemEntity {
     return new Item(
       this.id,
       this.pedido?.getDomain(),
-      this.produto?.getDomain(),
+      this.produto?.getProdutoDto(),
       this.quantidade,
       this.valorUnitario
     );
