@@ -15,6 +15,12 @@ services:
       - "8083:8083"
     networks:
       - sgr_network
+    environment:
+      HOST: mysql
+      USERNAME: root
+      PASSWORD: senha
+      DB_PORT: 3306
+      DATABASE: sgr_database
     depends_on:
       mysql:
         condition: service_healthy
