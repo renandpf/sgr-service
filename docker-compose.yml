@@ -4,12 +4,11 @@ services:
     container_name: sgr-api
     build:
       context: .
-      dockerfile: ./Dockerfile
       args:
         - http_proxy
         - https_proxy
         - no_proxy
-    image: sgr-service/server:latest
+    image: gabrasgp/sgr-service:1.0.0
     ports:
       - "8083:8083"
     networks:
