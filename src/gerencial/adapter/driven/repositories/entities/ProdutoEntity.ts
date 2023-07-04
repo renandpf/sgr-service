@@ -1,6 +1,4 @@
-import { CategoriaEnum, Produto } from "../../../../core/domain";
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
-import { CategoriaEnumMapper } from "../../../../core/domain/CategoriaEnumMapper";
 import { ProdutoDto } from "src/gerencial/core/dto/produto/ProdutoDto";
 
 @Entity("Produto")
@@ -53,6 +51,6 @@ export class ProdutoEntity {
     }
 
     public getProdutoDto(): ProdutoDto {
-        return new ProdutoDto(this.id, this.nome, this.descricao, this.valor, CategoriaEnumMapper.numberParaEnum(this.categoriaId));
+        return new ProdutoDto(this.id, this.nome, this.descricao, this.valor, this.categoriaId);
     }
 }

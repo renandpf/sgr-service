@@ -1,4 +1,4 @@
-import { CategoriaEnum, Produto } from "../../../../../core/domain";
+import { CategoriaEnum } from "../../../../../core/domain";
 import { Description, Enum, Example, Property } from "@tsed/schema";
 import { OnSerialize } from "@tsed/json-mapper";
 import { CategoriaEnumMapper } from "../../../../../core/domain/CategoriaEnumMapper";
@@ -36,19 +36,20 @@ export class ProdutoJson {
   @Property()
   public readonly imagem?: string
 
-  public constructor(produto: Produto){
+  public constructor(produto: ProdutoDto){
     this.id = produto.id;
     this.nome = produto.nome;
     this.descricao = produto.descricao
     this.valor = produto.valor;
-    this.categoria = produto.categoria;
-    this.imagem = produto.imagem;
+    this.categoria = produto.categoriaId === undefined ? undefined : CategoriaEnumMapper.numberParaEnum(produto.categoriaId);
   }
 
   public getProdutoDto(id?: number | null): ProdutoDto {
+    const categoriaId = CategoriaEnumMapper.stringParaEnum(this.categoria as unknown as string);
+
     if(id || id === null){
-      return new ProdutoDto(id === null ? undefined : id, this.nome, this.descricao, this.valor, this.categoria);
+      return new ProdutoDto(id === null ? undefined : id, this.nome, this.descricao, this.valor, categoriaId);
     }
-    return new ProdutoDto(this.id, this.nome, this.descricao, this.valor, this.categoria);
+    return new ProdutoDto(this.id, this.nome, this.descricao, this.valor, categoriaId);
   }
 }

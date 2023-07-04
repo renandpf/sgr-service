@@ -37,7 +37,7 @@ export class CriarProdutoUseCase implements ICriarProdutoUseCase {
             this.logger.warn("Valor é obrigatório");
             throw new ProdutoValidacaoException("Valor é obrigatório");
         }
-        else if(!produtoDto.categoriaId){
+        else if(!produtoDto.categoriaId === undefined){
             this.logger.warn("Categoria é obrigatória");
             throw new ProdutoValidacaoException("Categoria é obrigatória");
         }

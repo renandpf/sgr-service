@@ -32,6 +32,22 @@ export class CategoriaEnumMapper{
         }
     }
 
+    static stringParaNumber(opcao?: string): number {
+        switch (opcao){
+            case "LANCHE":
+                return 0;
+            case "ACOMPANHAMENTO":
+                return 1;
+            case "BEBIDA":
+                return 2;
+            case "SOBREMESA":
+                return 3;
+            default:
+                throw new Exception(500,"Categoria Inválida");
+        }
+    }
+
+
     static enumParaString(categoria? : CategoriaEnum): string {
 
         switch (categoria){
@@ -45,7 +61,7 @@ export class CategoriaEnumMapper{
             return "SOBREMESA";
         }
 
-        return ""
+        throw new Exception(500,"Categoria Inválida");
     }
 }
 
