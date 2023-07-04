@@ -1,12 +1,18 @@
-import { Logger, Service } from "@tsed/common";
-import { Inject } from "@tsed/di";
+import { Logger } from "@tsed/common";
+import { Inject, Injectable, ProviderScope, ProviderType } from "@tsed/di";
 import { Optional } from "typescript-optional";
-import { IClienteServiceGateway } from "../../../../pedido/core/application/ports/IClienteServiceGateway";
-import { Cliente } from "../../../../gerencial/core/domain/Cliente";
+import { IClienteServiceGateway } from "../../../core/application";
+import { Cliente } from "../../../../gerencial";
 import axios from "axios";
-import { ErrorToAccessClienteServiceException } from "../../../../pedido/core/application/exceptions/ErrorToAccessClienteServiceException";
+import {
+  ErrorToAccessClienteServiceException
+} from "../../../core/application/exceptions/ErrorToAccessClienteServiceException";
 
-@Service()
+@Injectable({
+  type: ProviderType.SERVICE,
+  scope: ProviderScope.REQUEST,
+  provide: IClienteServiceGateway
+})
 export class ClienteServiceHttpGateway implements IClienteServiceGateway {
   @Inject()
   private logger: Logger;

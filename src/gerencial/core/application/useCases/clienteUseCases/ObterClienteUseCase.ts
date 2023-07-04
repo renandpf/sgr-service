@@ -1,17 +1,19 @@
-import { Inject, Service } from "@tsed/common";
+import { Inject, Logger } from "@tsed/common";
 import { IClienteRepositoryGateway } from "../../ports";
-import { ClienteMySqlRepositoryGateway } from "../../../../adapter";
-import { Cliente } from "../../../domain/Cliente";
 import { ClienteNaoEncontradoException } from "../../exception/ClienteNaoEncontradoException";
 import { IObterClienteUseCase } from "./IObterClienteUseCase";
-import { Logger } from "@tsed/common";
 import { ClienteDto } from "../../../dto/cliente/ClienteDto";
 import { Optional } from "typescript-optional";
+import { Injectable, ProviderScope, ProviderType } from "@tsed/di";
 
-@Service()
+@Injectable({
+    type: ProviderType.SERVICE,
+    scope: ProviderScope.REQUEST,
+    provide: IObterClienteUseCase
+})
 export class ObterClienteUseCase implements IObterClienteUseCase {
     constructor( 
-        @Inject(ClienteMySqlRepositoryGateway) private clienteRepositoryGateway: IClienteRepositoryGateway,
+        @Inject(IClienteRepositoryGateway) private clienteRepositoryGateway: IClienteRepositoryGateway,
         @Inject() private logger: Logger,){}
 
     async obterPorId(id: number): Promise<ClienteDto> {

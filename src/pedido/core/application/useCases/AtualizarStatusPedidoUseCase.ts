@@ -1,16 +1,19 @@
-import { Service, Logger, Inject } from "@tsed/common";
-import { Pedido } from "../../domain/Pedido";
-import { IPedidoRepositoryGateway } from "../ports/IPedidoRepositoryGateway";
-import { PedidoMySqlRepositoryGateway } from "../../../../pedido/adapter/driven/repositories/PedidoMySqlRepositoryGateway";
+import { Inject, Logger } from "@tsed/common";
+import { Pedido, StatusPedido } from "../../domain";
+import { IPedidoRepositoryGateway } from "../ports";
 import { Optional } from "typescript-optional";
 import { PedidoNotFoundException } from "../exceptions/PedidoNotFoundException";
-import { StatusPedido } from "../../domain/StatusPedido";
 import { IAtualizarStatusPedidoUseCase } from "./IAtualizarStatusPedidoUseCase";
+import { Injectable, ProviderScope, ProviderType } from "@tsed/di";
 
-@Service()
+@Injectable({
+    type: ProviderType.SERVICE,
+    scope: ProviderScope.REQUEST,
+    provide: IAtualizarStatusPedidoUseCase
+})
 export class AtualizarStatusPedidoUseCase implements IAtualizarStatusPedidoUseCase {
     constructor(
-        @Inject(PedidoMySqlRepositoryGateway) private pedidoRepositoryGateway: IPedidoRepositoryGateway,
+        @Inject(IPedidoRepositoryGateway) private pedidoRepositoryGateway: IPedidoRepositoryGateway,
         @Inject() private logger: Logger) { }
 
     async atualizarStatus(pedidoId: number, status: StatusPedido): Promise<void> {

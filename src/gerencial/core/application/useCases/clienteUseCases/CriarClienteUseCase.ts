@@ -1,20 +1,22 @@
-import { Inject } from "@tsed/di";
+import { Inject, Injectable, ProviderScope, ProviderType } from "@tsed/di";
 import { IClienteRepositoryGateway } from "../../ports";
 import { Cliente } from "../../../domain/Cliente";
-import { Service, Logger } from "@tsed/common";
-import { ClienteMySqlRepositoryGateway } from "../../../../adapter";
+import { Logger } from "@tsed/common";
 import { ClienteExistenteException } from "../../exception/ClienteExistenteException";
 import { ICriarClienteUseCase } from "./ICriarClienteUseCase";
 import { CriarClienteParamsDto } from "../../../dto/cliente/flows/CriarClienteParamsDto";
 import { CriarClienteReturnDto } from "../../../dto/cliente/flows/CriarClienteReturnDto";
 import { ClienteDto } from "../../../dto/cliente/ClienteDto";
 
-
-@Service()
+@Injectable({
+    type: ProviderType.SERVICE,
+    scope: ProviderScope.REQUEST,
+    provide: ICriarClienteUseCase
+})
 export class CriarClienteUseCase implements ICriarClienteUseCase {
 
     constructor( 
-        @Inject(ClienteMySqlRepositoryGateway) private clienteRepositoryGateway: IClienteRepositoryGateway,
+        @Inject(IClienteRepositoryGateway) private clienteRepositoryGateway: IClienteRepositoryGateway,
         @Inject() private logger: Logger  ){}
     async criar(dto: CriarClienteParamsDto): Promise<CriarClienteReturnDto> {
         this.logger.trace("Start dto={}", dto);

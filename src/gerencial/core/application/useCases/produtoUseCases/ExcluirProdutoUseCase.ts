@@ -1,16 +1,19 @@
-import { Inject } from "@tsed/common";
+import { Inject, Logger } from "@tsed/common";
 import { IProdutoRepositoryGateway } from "../../ports/IProdutoRepositoryGateway";
-import { ProdutoMySqlRepositoryGateway } from "../../../../adapter/driven/repositories/ProdutoMySqlRepositoryGateway";
-import { Logger } from "@tsed/common";
 import { ExclusaoProdutoAssociadoPedidoException } from "../../exception/ExclusaoProdutoAssociadoPedidoException";
 import { IExcluirProdutoUseCase } from "./IExcluirProdutoUseCase";
+import { Injectable, ProviderScope, ProviderType } from "@tsed/di";
 
+@Injectable({
+    type: ProviderType.SERVICE,
+    scope: ProviderScope.REQUEST,
+    provide: IExcluirProdutoUseCase
+})
 export class ExcluirProdutoUseCase implements IExcluirProdutoUseCase {
     constructor(
-        @Inject(ProdutoMySqlRepositoryGateway) private produtoRepositoryGateway: IProdutoRepositoryGateway,
+        @Inject(IProdutoRepositoryGateway) private produtoRepositoryGateway: IProdutoRepositoryGateway,
         @Inject() private logger: Logger,
     ) { }
-
 
     public async excluir(id: number): Promise<void> {
         this.logger.trace("Start id={}", id);

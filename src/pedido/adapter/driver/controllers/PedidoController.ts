@@ -1,26 +1,20 @@
 import { BodyParams, Inject, Logger, PathParams, QueryParams } from "@tsed/common";
 import { Get, Patch, Post, Returns } from "@tsed/schema";
 import { Controller } from "@tsed/di";
-import { CriarPedidoUseCase } from "../../../core/application/useCases/CriarPedidoUseCase";
-import { AtualizarStatusPedidoUseCase } from "../../../core/application/useCases/AtualizarStatusPedidoUseCase";
-import { ObterPedidoUseCase } from "../../../../pedido/core/application/useCases/ObterPedidoUseCase";
-import { ICriarPedidoUseCase } from "../../../core/application/useCases/ICriarPedidoUseCase";
-import { IAtualizarStatusPedidoUseCase } from "../../../core/application/useCases/IAtualizarStatusPedidoUseCase";
-import { IObterPedidoUseCase } from "../../../../pedido/core/application/useCases/IObterPedidoUseCase";
-import { PedidoCadastroJson } from "./json/PedidoCadastroJson";
-import { PedidoEmAndamentoJson } from "./json/PedidoEmAndamentoJson";
-import { CamposObrigatoriosNaoPreechidoException } from "../../../../pedido/core/application/exceptions/CamposObrigatoriosNaoPreechidoException";
-import { StatusPedidoEnumMapper } from "../../../../pedido/core/domain/StatusPedidoEnumMapper";
-import { PedidoConsultaJson } from "./json/PedidoConsultaJson";
-import { PedidoStatusJson } from "./json/PedidoStatusJson";
+import { IAtualizarStatusPedidoUseCase, ICriarPedidoUseCase, IObterPedidoUseCase } from "../../../core/application";
+import { PedidoCadastroJson, PedidoConsultaJson, PedidoEmAndamentoJson, PedidoStatusJson } from "./json";
+import {
+    CamposObrigatoriosNaoPreechidoException
+} from "../../../core/application/exceptions/CamposObrigatoriosNaoPreechidoException";
+import { StatusPedidoEnumMapper } from "../../../core/domain";
 
 @Controller("/pedidos")
 export class PedidoController {
 
     constructor(
-        @Inject(ObterPedidoUseCase) private obterPedidoUseCase: IObterPedidoUseCase,
-        @Inject(CriarPedidoUseCase) private criarPedidoUseCase: ICriarPedidoUseCase,
-        @Inject(AtualizarStatusPedidoUseCase) private atualizarStatusPedidoUseCase: IAtualizarStatusPedidoUseCase,
+        @Inject(IObterPedidoUseCase) private obterPedidoUseCase: IObterPedidoUseCase,
+        @Inject(ICriarPedidoUseCase) private criarPedidoUseCase: ICriarPedidoUseCase,
+        @Inject(IAtualizarStatusPedidoUseCase) private atualizarStatusPedidoUseCase: IAtualizarStatusPedidoUseCase,
         @Inject() private logger: Logger) {
     }
 

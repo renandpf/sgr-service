@@ -1,6 +1,7 @@
 import { Optional } from "typescript-optional";
-import { Pedido } from "../../domain/Pedido";
-import { StatusPedido } from "../../domain/StatusPedido";
+import { Pedido, StatusPedido } from "../../domain";
+
+export const IPedidoRepositoryGateway: unique symbol = Symbol("IPedidoRepositoryGateway");
 
 export interface IPedidoRepositoryGateway {
     criar(pedido: Pedido): Promise<number | undefined>;

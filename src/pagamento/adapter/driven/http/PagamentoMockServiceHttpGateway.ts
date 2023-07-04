@@ -1,14 +1,20 @@
-import { Inject, Service } from "@tsed/di";
+import { Inject, Injectable, ProviderScope, ProviderType } from "@tsed/di";
 import { Logger } from "@tsed/logger";
-import { ErrorToAccessPagamentoServicoExternoException } from "../../../../pagamento/core/application/exceptions/ErrorToAccessPagamentoServicoExternoException";
-import { IPagamentoExternoServiceGateway } from "../../../../pagamento/core/application/ports/IPagamentoExternoServiceGateway";
+import {
+    ErrorToAccessPagamentoServicoExternoException
+} from "../../../../pagamento/core/application/exceptions/ErrorToAccessPagamentoServicoExternoException";
+import {
+    IPagamentoExternoServiceGateway
+} from "../../../../pagamento/core/application/ports/IPagamentoExternoServiceGateway";
 import { StatusPedido } from "../../../../pedido";
-
 import { RequestPagamentoDto } from "../../../../pedido/core/application/dto/RequestPagamentoDto";
 import { ResponsePagamentoDto } from "../../../../pedido/core/application/dto/ResponsePagamentoDto";
 
-
-@Service()
+@Injectable({
+    type: ProviderType.SERVICE,
+    scope: ProviderScope.REQUEST,
+    provide: IPagamentoExternoServiceGateway
+})
 export class PagamentoMockExternalServiceHttpGateway implements IPagamentoExternoServiceGateway {
 
     @Inject()

@@ -1,4 +1,6 @@
-import { Pedido } from "../../domain/Pedido";
+import { Pedido } from "../../domain";
+
+export const IObterPedidoUseCase: unique symbol = Symbol("IObterPedidoUseCase");
 
 export interface IObterPedidoUseCase {
     obterPorId(id: number): Promise<Pedido>;

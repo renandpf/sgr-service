@@ -1,7 +1,6 @@
-import { Inject } from "@tsed/di";
+import { Inject, Injectable, ProviderScope, ProviderType } from "@tsed/di";
 import { IClienteRepositoryGateway } from "../../ports";
-import { Service, Logger } from "@tsed/common";
-import { ClienteMySqlRepositoryGateway } from "../../../../adapter";
+import { Logger } from "@tsed/common";
 import { ClienteNaoEncontradoException } from "../../exception/ClienteNaoEncontradoException";
 import { IAlterarClienteUseCase } from "./IAlterarClienteUseCase";
 import { AlterarClienteParamsDto } from "../../../dto/cliente/flows/AlterarClienteParamsDto";
@@ -9,11 +8,15 @@ import { AlterarClienteReturnDto } from "../../../dto/cliente/flows/AlterarClien
 import { Cliente } from "../../../domain/Cliente";
 import { ClienteDto } from "../../../dto/cliente/ClienteDto";
 
-@Service()
+@Injectable({
+    type: ProviderType.SERVICE,
+    scope: ProviderScope.REQUEST,
+    provide: IAlterarClienteUseCase
+})
 export class AlterarClienteUseCase implements IAlterarClienteUseCase {
 
     constructor( 
-        @Inject(ClienteMySqlRepositoryGateway) private clienteRepositoryGateway: IClienteRepositoryGateway,
+        @Inject(IClienteRepositoryGateway) private clienteRepositoryGateway: IClienteRepositoryGateway,
         @Inject() private logger: Logger 
      ){}
     

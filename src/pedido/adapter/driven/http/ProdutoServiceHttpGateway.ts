@@ -1,13 +1,18 @@
-import { Inject, Service } from "@tsed/di";
+import { Inject, Injectable, ProviderScope, ProviderType } from "@tsed/di";
 import { Logger } from "@tsed/common";
 import { Optional } from "typescript-optional";
-
-import { IProdutoServiceGateway } from "../../../../pedido/core/application/ports/IProdutoServiceGateway";
+import { IProdutoServiceGateway } from "../../../core/application";
 import { Produto } from "../../../../gerencial";
 import axios from "axios";
-import { ErrorToAccessProdutoServiceException } from "../../../../pedido/core/application/exceptions/ErrorToAccessProdutoServiceException";
+import {
+  ErrorToAccessProdutoServiceException
+} from "../../../core/application/exceptions/ErrorToAccessProdutoServiceException";
 
-@Service()
+@Injectable({
+  type: ProviderType.SERVICE,
+  scope: ProviderScope.REQUEST,
+  provide: IProdutoServiceGateway
+})
 export class ProdutoServiceHttpGateway implements IProdutoServiceGateway {
   @Inject()
   private logger: Logger;

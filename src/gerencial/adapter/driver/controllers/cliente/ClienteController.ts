@@ -1,14 +1,11 @@
 import { Controller } from "@tsed/di";
-import { Logger } from "@tsed/common";
+import { BodyParams, Inject, Logger, PathParams } from "@tsed/common";
 import { Get, Post, Put, Returns } from "@tsed/schema";
-import { BodyParams, Inject, PathParams } from "@tsed/common";
-import { 
-    AlterarClienteUseCase, 
-    CriarClienteUseCase, 
-    IAlterarClienteUseCase, 
-    ICriarClienteUseCase, 
-    IObterClienteUseCase, 
-    ObterClienteUseCase } from "../../../../core/application/useCases/clienteUseCases";
+import {
+    IAlterarClienteUseCase,
+    ICriarClienteUseCase,
+    IObterClienteUseCase
+} from "../../../../core/application/useCases/clienteUseCases";
 import { ClienteJson } from "./json/ClienteJson";
 import { AlterarClienteParamsDto } from "../../../../core/dto/cliente/flows/AlterarClienteParamsDto";
 import { CriarClienteParamsDto } from "../../../../core/dto/cliente/flows/CriarClienteParamsDto";
@@ -17,9 +14,9 @@ import { CriarClienteParamsDto } from "../../../../core/dto/cliente/flows/CriarC
 export class ClienteController {
 
     constructor(
-        @Inject(ObterClienteUseCase) private obterClienteUseCase: IObterClienteUseCase,
-        @Inject(CriarClienteUseCase) private criarClienteUseCase: ICriarClienteUseCase,
-        @Inject(AlterarClienteUseCase) private alterarClienteUseCase: IAlterarClienteUseCase,
+        @Inject(IObterClienteUseCase) private obterClienteUseCase: IObterClienteUseCase,
+        @Inject(ICriarClienteUseCase) private criarClienteUseCase: ICriarClienteUseCase,
+        @Inject(IAlterarClienteUseCase) private alterarClienteUseCase: IAlterarClienteUseCase,
         @Inject() private logger: Logger,
     ) {
     }

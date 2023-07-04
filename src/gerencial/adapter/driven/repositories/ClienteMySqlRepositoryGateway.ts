@@ -1,7 +1,6 @@
 import { IClienteRepositoryGateway } from "../../../core/application/ports";
-import { Cliente } from "../../../core/domain";
-import { Logger, Service } from "@tsed/common";
-import { Inject } from "@tsed/di";
+import { Logger } from "@tsed/common";
+import { Inject, Injectable, ProviderScope, ProviderType } from "@tsed/di";
 import { In } from "typeorm";
 import { Optional } from "typescript-optional";
 import { ClienteEntity } from "./entities";
@@ -13,8 +12,11 @@ import { CriarClienteParamsDto } from "../../../core/dto/cliente/flows/CriarClie
 import { CriarClienteReturnDto } from "../../../core/dto/cliente/flows/CriarClienteReturnDto";
 import { ClienteDto } from "src/gerencial/core/dto/cliente/ClienteDto";
 
-
-@Service()
+@Injectable({
+    type: ProviderType.SERVICE,
+    scope: ProviderScope.REQUEST,
+    provide: IClienteRepositoryGateway
+})
 export class ClienteMySqlRepositoryGateway implements IClienteRepositoryGateway{
     @Inject()
     logger: Logger;

@@ -5,11 +5,11 @@ export class StatusPedidoEnumMapper{
   static numberParaEnum(codigo?: number): StatusPedido{
     switch (codigo){
       case 0:
-        return StatusPedido.PAGO;
+        return StatusPedido.RECEBIDO;
       case 1:
         return StatusPedido.AGUARDANDO_CONFIRMACAO_PAGAMENTO;
       case 2:
-        return StatusPedido.RECEBIDO;
+        return StatusPedido.PAGO;
       case 3:
         return StatusPedido.EM_PREPARACAO;
       case 4:

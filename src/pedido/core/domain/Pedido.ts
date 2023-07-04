@@ -116,15 +116,8 @@ export class Pedido {
                 }
                 throw new AlteracaoStatusPedidoException("O status do pedido não permite essa alteração");
 
-            case StatusPedido.RECEBIDO:
-                if (this._status === StatusPedido.PAGO) {
-                    this._status = newStatus;
-                    break;
-                }
-                throw new AlteracaoStatusPedidoException("O status do pedido não permite essa alteração");
-
             case StatusPedido.EM_PREPARACAO:
-                if (this._status === StatusPedido.RECEBIDO) {
+                if (this._status === StatusPedido.PAGO) {
                     this._status = newStatus;
                     break;
                 }

@@ -1,4 +1,4 @@
-import { Inject, Service } from "@tsed/di";
+import { Inject, Injectable, ProviderScope, ProviderType } from "@tsed/di";
 import { Logger } from "@tsed/common";
 import { ErrorToAccessDatabaseException } from "../../../../common/exception/ErrorToAccessDatabaseException";
 import { PAGAMENTO_DATABASE_REPOSITORY } from "../../../../config/database/repository/repository-register.provider";
@@ -6,7 +6,11 @@ import { IPagamentoRepositoryGateway } from "../../../../pagamento/core/applicat
 import { Pagamento } from "../../../../pagamento/core/domain/Pagamento";
 import { PagamentoEntity } from "./entities/PagamentoEntity";
 
-@Service()
+@Injectable({
+    type: ProviderType.SERVICE,
+    scope: ProviderScope.REQUEST,
+    provide: IPagamentoRepositoryGateway
+})
 export class PagamentoMySqlRepositoryGateway implements IPagamentoRepositoryGateway {
     @Inject()
     logger: Logger;

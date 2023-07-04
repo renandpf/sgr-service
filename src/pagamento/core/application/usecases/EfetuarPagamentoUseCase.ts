@@ -1,21 +1,21 @@
-import { Inject, Logger, } from "@tsed/common";
-import { Service } from "@tsed/di";
+import { Inject, Logger } from "@tsed/common";
+import { Injectable, ProviderScope, ProviderType } from "@tsed/di";
 import { Pagamento } from "../../domain/Pagamento";
-import { IPedidoServiceGateway } from "../ports/IPedidoServiceGateway";
-
+import { IPagamentoExternoServiceGateway, IPagamentoRepositoryGateway, IPedidoServiceGateway } from "../ports";
 import { PedidoNotFoundException } from "../exceptions/PedidoNotFoundException";
-import { Pedido } from "../../../../pedido/core/domain/Pedido";
+import { Pedido, StatusPedido } from "../../../../pedido";
 import { CamposObrigatoriosNaoPreechidoException } from "../exceptions/CamposObrigatoriosNaoPreechidoException";
-import { RequestPagamentoDto } from "../../../../pedido/core/application/dto/RequestPagamentoDto";
-import { PedidoServiceHttpGateway } from "../../../../pagamento/adapter/driven/http/PedidoServiceHttpGateway";
-import { PagamentoMockExternalServiceHttpGateway } from "../../../../pagamento/adapter/driven/http/PagamentoMockServiceHttpGateway";
-import { IPagamentoExternoServiceGateway } from "../ports/IPagamentoExternoServiceGateway";
-import { PagamentoMySqlRepositoryGateway } from "../../../adapter/driven/repositories/PagamentoMySqlRepositoryGateway";
-import { IPagamentoRepositoryGateway } from "../ports/IPagamentoRepositoryGateway";
-import { StatusPedido } from "../../../../pedido";
 import { IEfetuarPagamentoUseCase } from "./IEfetuarPagamentoUseCase";
+import { PedidoServiceHttpGateway } from "../../../adapter/driven/http/PedidoServiceHttpGateway";
+import { PagamentoMockExternalServiceHttpGateway } from "../../../adapter/driven/http/PagamentoMockServiceHttpGateway";
+import { PagamentoMySqlRepositoryGateway } from "../../../adapter/driven/repositories/PagamentoMySqlRepositoryGateway";
+import { RequestPagamentoDto } from "../../../../pedido/core/application/dto/RequestPagamentoDto";
 
-@Service()
+@Injectable({
+    type: ProviderType.SERVICE,
+    scope: ProviderScope.REQUEST,
+    provide: IEfetuarPagamentoUseCase
+})
 export class EfetuarPagamentoUseCase implements IEfetuarPagamentoUseCase {
 
     constructor(

@@ -1,20 +1,22 @@
-import { Inject, Logger, Service } from "@tsed/common";
-import { Pedido } from "../../domain/Pedido";
-import { IPedidoRepositoryGateway } from "../ports/IPedidoRepositoryGateway";
-import { PedidoMySqlRepositoryGateway } from "../../../../pedido/adapter/driven/repositories/PedidoMySqlRepositoryGateway";
+import { Inject, Logger } from "@tsed/common";
+import { Pedido, StatusPedido } from "../../domain";
+import { IPedidoRepositoryGateway } from "../ports";
 import { ProdutoNotFoundException } from "../exceptions/ProdutoNotFoundException";
-import { StatusPedido } from "../../domain/StatusPedido";
-import { ObterProdutoUseCase } from "../../../../gerencial/core/application/useCases/produtoUseCases/ObterProdutoUseCase";
-import { ObterClienteUseCase } from "../../../../gerencial";
 import { ICriarPedidoUseCase } from "./ICriarPedidoUseCase";
+import { Injectable, ProviderScope, ProviderType } from "@tsed/di";
+import { IObterClienteUseCase, IObterProdutoUseCase } from "../../../../gerencial";
 
-@Service()
+@Injectable({
+  type: ProviderType.SERVICE,
+  scope: ProviderScope.REQUEST,
+  provide: ICriarPedidoUseCase
+})
 export class CriarPedidoUseCase implements ICriarPedidoUseCase {
 
   constructor(
-    @Inject(PedidoMySqlRepositoryGateway) private pedidoRepositoryGateway: IPedidoRepositoryGateway,
-    @Inject() private obterProdutoUseCase: ObterProdutoUseCase,
-    @Inject() private obterClienteUseCase: ObterClienteUseCase,
+    @Inject(IPedidoRepositoryGateway) private pedidoRepositoryGateway: IPedidoRepositoryGateway,
+    @Inject(IObterProdutoUseCase) private obterProdutoUseCase: IObterProdutoUseCase,
+    @Inject(IObterClienteUseCase) private obterClienteUseCase: IObterClienteUseCase,
     @Inject() private logger: Logger) { }
 
   async criar(pedido: Pedido): Promise<Pedido> {

@@ -1,14 +1,17 @@
-import { Inject, Service } from "@tsed/common";
+import { Inject, Logger } from "@tsed/common";
 import { IProdutoRepositoryGateway } from "../../ports/IProdutoRepositoryGateway";
-import { Produto } from "../../../domain/Produto";
-import { ProdutoMySqlRepositoryGateway } from "../../../../adapter/driven/repositories/ProdutoMySqlRepositoryGateway";
-import { Logger } from "@tsed/common";
+import { Produto } from "../../../domain";
 import { ICriarProdutoUseCase } from "./ICriarProdutoUseCase";
+import { Injectable, ProviderScope, ProviderType } from "@tsed/di";
 
-@Service()
+@Injectable({
+    type: ProviderType.SERVICE,
+    scope: ProviderScope.REQUEST,
+    provide: ICriarProdutoUseCase
+})
 export class CriarProdutoUseCase implements ICriarProdutoUseCase {
     constructor( 
-        @Inject(ProdutoMySqlRepositoryGateway) private produtoRepositoryGateway: IProdutoRepositoryGateway,
+        @Inject(IProdutoRepositoryGateway) private produtoRepositoryGateway: IProdutoRepositoryGateway,
         @Inject() private logger: Logger,
      ){}
 

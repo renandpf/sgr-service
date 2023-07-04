@@ -1,6 +1,8 @@
 import { Optional } from "typescript-optional";
 import { CategoriaEnum, Produto } from "../../domain";
 
+export const IProdutoRepositoryGateway: unique symbol = Symbol("IProdutoRepositoryGateway");
+
 export interface IProdutoRepositoryGateway {
     obterPorId(produtoId: number): Promise<Optional<Produto>>;
     obterPorCategoria(categoria: CategoriaEnum): Promise<Produto[]>;

@@ -1,17 +1,20 @@
-import { Inject, Service } from "@tsed/common";
+import { Inject, Logger } from "@tsed/common";
 import { IProdutoRepositoryGateway } from "../../ports/IProdutoRepositoryGateway";
-import { Produto, CategoriaEnum } from "../../../domain";
+import { CategoriaEnum, Produto } from "../../../domain";
 import { Optional } from "typescript-optional";
-import { ProdutoMySqlRepositoryGateway } from "../../../../adapter/driven/repositories/ProdutoMySqlRepositoryGateway";
-import { Logger } from "@tsed/common";
 import { ProdutoNotFoundException } from "../../exception/ProdutoNotFoundException";
 import { IObterProdutoUseCase } from "./IObterProdutoUseCase";
+import { Injectable, ProviderScope, ProviderType } from "@tsed/di";
 
-@Service()
+@Injectable({
+    type: ProviderType.SERVICE,
+    scope: ProviderScope.REQUEST,
+    provide: IObterProdutoUseCase
+})
 export class ObterProdutoUseCase implements IObterProdutoUseCase {
 
     constructor( 
-        @Inject(ProdutoMySqlRepositoryGateway) private produtoRepositoryGateway: IProdutoRepositoryGateway,
+        @Inject(IProdutoRepositoryGateway) private produtoRepositoryGateway: IProdutoRepositoryGateway,
         @Inject() private logger: Logger
     ){}
 

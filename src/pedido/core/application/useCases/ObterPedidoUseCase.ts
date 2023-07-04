@@ -1,16 +1,19 @@
-import { Service, Logger, Inject } from "@tsed/common";
-import { Pedido } from "../../domain/Pedido";
-import { IPedidoRepositoryGateway } from "../ports/IPedidoRepositoryGateway";
-import { PedidoMySqlRepositoryGateway } from "../../../../pedido/adapter/driven/repositories/PedidoMySqlRepositoryGateway";
+import { Inject, Logger } from "@tsed/common";
+import { Pedido, StatusPedidoEnumMapper } from "../../domain";
+import { IPedidoRepositoryGateway } from "../ports";
 import { PedidoNotFoundException } from "../exceptions/PedidoNotFoundException";
-import { StatusPedidoEnumMapper } from "../../domain/StatusPedidoEnumMapper";
 import { IObterPedidoUseCase } from "./IObterPedidoUseCase";
+import { Injectable, ProviderScope, ProviderType } from "@tsed/di";
 
-@Service()
+@Injectable({
+    type: ProviderType.SERVICE,
+    scope: ProviderScope.REQUEST,
+    provide: IObterPedidoUseCase
+})
 export class ObterPedidoUseCase implements IObterPedidoUseCase {
 
     constructor(
-        @Inject(PedidoMySqlRepositoryGateway) private pedidoRepositoryGateway: IPedidoRepositoryGateway,
+        @Inject(IPedidoRepositoryGateway) private pedidoRepositoryGateway: IPedidoRepositoryGateway,
         @Inject() private logger: Logger) { }
 
     async obterPorId(id: number): Promise<Pedido> {

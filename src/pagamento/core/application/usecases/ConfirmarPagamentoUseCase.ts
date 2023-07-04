@@ -1,24 +1,22 @@
-import { Inject, Logger, } from "@tsed/common";
-import { Service } from "@tsed/di";
-import { IPedidoServiceGateway } from "../ports/IPedidoServiceGateway";
-
+import { Inject, Logger } from "@tsed/common";
+import { Injectable, ProviderScope, ProviderType } from "@tsed/di";
+import { IPagamentoExternoServiceGateway, IPagamentoRepositoryGateway, IPedidoServiceGateway } from "../ports";
 import { PedidoNotFoundException } from "../exceptions/PedidoNotFoundException";
-import { PedidoServiceHttpGateway } from "../../../../pagamento/adapter/driven/http/PedidoServiceHttpGateway";
-import { PagamentoMockExternalServiceHttpGateway } from "../../../../pagamento/adapter/driven/http/PagamentoMockServiceHttpGateway";
-import { IPagamentoExternoServiceGateway } from "../ports/IPagamentoExternoServiceGateway";
-import { PagamentoMySqlRepositoryGateway } from "../../../adapter/driven/repositories/PagamentoMySqlRepositoryGateway";
-import { IPagamentoRepositoryGateway } from "../ports/IPagamentoRepositoryGateway";
-import { StatusPedidoEnumMapper } from "../../../../pedido/core/domain/StatusPedidoEnumMapper";
+import { StatusPedidoEnumMapper } from "../../../../pedido";
 import { IConfirmarPagamentoUseCase } from "./IConfirmarPagamentoUseCase";
 
-@Service()
+@Injectable({
+    type: ProviderType.SERVICE,
+    scope: ProviderScope.REQUEST,
+    provide: IConfirmarPagamentoUseCase
+})
 export class ConfirmarPagamentoUseCase implements IConfirmarPagamentoUseCase {
 
     constructor(
         @Inject() private logger: Logger,
-        @Inject(PedidoServiceHttpGateway) private pedidoServiceGateway: IPedidoServiceGateway,
-        @Inject(PagamentoMockExternalServiceHttpGateway) private pagamentoExternoServiceGateway: IPagamentoExternoServiceGateway,
-        @Inject(PagamentoMySqlRepositoryGateway) private pagamentoRepositoryGateway: IPagamentoRepositoryGateway,
+        @Inject(IPedidoServiceGateway) private pedidoServiceGateway: IPedidoServiceGateway,
+        @Inject(IPagamentoExternoServiceGateway) private pagamentoExternoServiceGateway: IPagamentoExternoServiceGateway,
+        @Inject(IPagamentoRepositoryGateway) private pagamentoRepositoryGateway: IPagamentoRepositoryGateway,
 
     ) { }
 
@@ -31,7 +29,7 @@ export class ConfirmarPagamentoUseCase implements IConfirmarPagamentoUseCase {
 
         pedido.setStatus(StatusPedidoEnumMapper.numberParaEnum(status));
 
-        this.pedidoServiceGateway.alterarStatus(pedido);
+        await this.pedidoServiceGateway.alterarStatus(pedido);
 
         this.logger.trace("End");
     }

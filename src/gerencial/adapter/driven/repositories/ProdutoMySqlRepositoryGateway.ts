@@ -1,4 +1,4 @@
-import { Inject, Service } from "@tsed/di";
+import { Inject, Injectable, ProviderScope, ProviderType } from "@tsed/di";
 import { IProdutoRepositoryGateway } from "../../../core/application/ports";
 import { CategoriaEnum, Produto } from "../../../core/domain";
 import { Optional } from "typescript-optional";
@@ -8,7 +8,11 @@ import { Logger } from "@tsed/common";
 import { Equal } from "typeorm";
 import { ProdutoEntity } from "./entities";
 
-@Service()
+@Injectable({
+    type: ProviderType.SERVICE,
+    scope: ProviderScope.REQUEST,
+    provide: IProdutoRepositoryGateway
+})
 export class ProdutoMySqlRepositoryGateway implements IProdutoRepositoryGateway {
     @Inject()
     logger: Logger;

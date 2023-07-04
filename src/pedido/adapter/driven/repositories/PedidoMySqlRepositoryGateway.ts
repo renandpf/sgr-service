@@ -1,7 +1,7 @@
-import { Inject, Service } from "@tsed/di";
+import { Inject, Injectable, ProviderScope, ProviderType } from "@tsed/di";
 import { Logger } from "@tsed/common";
-import { IPedidoRepositoryGateway } from "../../../../pedido/core/application/ports/IPedidoRepositoryGateway";
-import { Pedido } from "../../../../pedido/core/domain/Pedido";
+import { IPedidoRepositoryGateway } from "../../../core/application";
+import { Pedido, StatusPedido, StatusPedidoEnumMapper } from "../../../core/domain";
 import { ErrorToAccessDatabaseException } from "../../../../common/exception/ErrorToAccessDatabaseException";
 import { Optional } from "typescript-optional";
 import {
@@ -10,10 +10,12 @@ import {
     PEDIDO_DATABASE_REPOSITORY
 } from "../../../../config/database/repository/repository-register.provider";
 import { PedidoEntity } from "./entities";
-import { StatusPedido } from "../../../core/domain/StatusPedido";
-import { StatusPedidoEnumMapper } from "../../../core/domain/StatusPedidoEnumMapper";
 
-@Service()
+@Injectable({
+    type: ProviderType.SERVICE,
+    scope: ProviderScope.REQUEST,
+    provide: IPedidoRepositoryGateway
+})
 export class PedidoMySqlRepositoryGateway implements IPedidoRepositoryGateway {
 
     @Inject()

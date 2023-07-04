@@ -1,10 +1,7 @@
 import { BodyParams, Inject, Logger } from "@tsed/common";
 import { Post, Returns } from "@tsed/schema";
 import { Controller } from "@tsed/di";
-import { EfetuarPagamentoUseCase } from "../../../../pagamento/core/application/usecases/EfetuarPagamentoUseCase";
-import { ConfirmarPagamentoUseCase } from "../../../../pagamento/core/application/usecases/ConfirmarPagamentoUseCase";
-import { IEfetuarPagamentoUseCase } from "../../../../pagamento/core/application/usecases/IEfetuarPagamentoUseCase";
-import { IConfirmarPagamentoUseCase } from "../../../../pagamento/core/application/usecases/IConfirmarPagamentoUseCase";
+import { IConfirmarPagamentoUseCase, IEfetuarPagamentoUseCase } from "../../../core/application";
 
 import { PagamentoJson } from "./json/PagamentoJson";
 import { ConfirmacaoPagamentoJson } from "./json/ConfirmacaoPagamentoJson";
@@ -13,8 +10,8 @@ import { ConfirmacaoPagamentoJson } from "./json/ConfirmacaoPagamentoJson";
 export class PagamentoController {
 
     constructor(
-        @Inject(EfetuarPagamentoUseCase) private efetuarPagamentoUseCase: IEfetuarPagamentoUseCase,
-        @Inject(ConfirmarPagamentoUseCase) private confirmarPagamentoUseCase: IConfirmarPagamentoUseCase,
+        @Inject(IEfetuarPagamentoUseCase) private efetuarPagamentoUseCase: IEfetuarPagamentoUseCase,
+        @Inject(IConfirmarPagamentoUseCase) private confirmarPagamentoUseCase: IConfirmarPagamentoUseCase,
         @Inject() private logger: Logger) {
     }
 
