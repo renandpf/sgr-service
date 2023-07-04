@@ -10,14 +10,14 @@ import { AlterarClienteParamsDto } from "../../../core/dto/cliente/flows/Alterar
 import { AlterarClienteReturnDto } from "../../../core/dto/cliente/flows/AlterarClienteReturnDto";
 import { CriarClienteParamsDto } from "../../../core/dto/cliente/flows/CriarClienteParamsDto";
 import { CriarClienteReturnDto } from "../../../core/dto/cliente/flows/CriarClienteReturnDto";
-import { ClienteDto } from "src/gerencial/core/dto/cliente/ClienteDto";
+import { ClienteDto } from "../../../../gerencial/core/dto/cliente/ClienteDto";
 
 @Injectable({
     type: ProviderType.SERVICE,
     scope: ProviderScope.REQUEST,
     provide: IClienteRepositoryGateway
 })
-export class ClienteMySqlRepositoryGateway implements IClienteRepositoryGateway{
+export class ClienteMySqlRepositoryGateway implements IClienteRepositoryGateway {
     @Inject()
     logger: Logger;
 

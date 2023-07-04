@@ -1,7 +1,6 @@
 import { Controller } from "@tsed/di";
 import { Delete, Get, Post, Put, Returns } from "@tsed/schema";
 import { BodyParams, Inject, PathParams } from "@tsed/common";
-import { CategoriaEnum } from "../../../../core/domain";
 import {
   IAlterarProdutoUseCase,
   ICriarProdutoUseCase,
@@ -22,7 +21,7 @@ export class ProdutoController {
   }
   @Get("/categorias/:categoria/produtos")
   @Returns(200, Array<ProdutoJson>)
-  async obterPorCategoria(@PathParams("categoria") categoria: CategoriaEnum): Promise<ProdutoJson[]> {
+  async obterPorCategoria(@PathParams("categoria") categoria: string): Promise<ProdutoJson[]> {
     console.log(categoria);
     const produtos = await this.obterProdutoUseCase.obterPorCategoria(categoria);
     return produtos.map(p => new ProdutoJson(p));

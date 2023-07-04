@@ -36,11 +36,11 @@ export class ProdutoMySqlRepositoryGateway implements IProdutoRepositoryGateway 
     async obterPorId(id: number): Promise<Optional<Produto>> {
         try {
             this.logger.trace("Start id={}", id)
-            const produtoEntity = await this.produtoRepository.findOneBy({id: Equal(id)});
+            const produtoEntity = await this.produtoRepository.findOneBy({ id: Equal(id) });
 
 
             let produtoOp: Optional<Produto> = Optional.empty();
-            if(produtoEntity !== null){
+            if (produtoEntity !== null) {
                 produtoOp = Optional.of(produtoEntity.getDomain());
             }
 
@@ -56,8 +56,8 @@ export class ProdutoMySqlRepositoryGateway implements IProdutoRepositoryGateway 
     async obterPorCategoria(categoria: CategoriaEnum): Promise<Produto[]> {
         try {
             this.logger.trace("Start categoria={}", categoria)
-            const position = (CategoriaEnum as never)[categoria] + 1;
-            const produtosEntities = await this.produtoRepository.findBy({categoriaId: Equal(position)});
+            //const position = (CategoriaEnum as never)[categoria] + 1;
+            const produtosEntities = await this.produtoRepository.findBy({ categoriaId: Equal(categoria) });
             const produtos = produtosEntities.map(pe => pe.getDomain());
 
             this.logger.trace("End produtos={}", produtos)

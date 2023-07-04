@@ -13,7 +13,7 @@ describe("Testes de ObterProduto", () => {
   beforeEach(PlatformTest.create);
   afterEach(PlatformTest.reset);
 
-  
+
   it("deve obter um produto pelo id", async () => {
     const anyProductId: number = anyNumber.build();
     const produtoExpectedOp = Optional.of(anyProduto.build());
@@ -42,7 +42,7 @@ describe("Testes de ObterProduto", () => {
       //console.log(e);
       expect(e.code).toEqual("sgr.produtoNotFound");
     }
-    
+
     //FIXME: essa é maneira correta de testar
     // const t = () => {
     //   throw obterProdutoUseCase.obterPorId(anyProductId);
@@ -63,7 +63,7 @@ describe("Testes de ObterProduto", () => {
 
     const obterProdutoUseCase = new ObterProdutoUseCase(mockedProdutoRepositoryGateway, mockedLogger);
 
-    const produtosFound = await obterProdutoUseCase.obterPorCategoria(anyCategoria);
+    const produtosFound = await obterProdutoUseCase.obterPorCategoria("BEBIDA");
 
     expect(produtosExistents).toEqual(produtosFound);
   });
