@@ -1,7 +1,8 @@
-import { Maximum, MaxLength, Property, Required } from "@tsed/schema";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Cliente } from "../../../../core/domain/Cliente";
 import { PedidoEntity } from "../../../../../pedido/adapter/driven/repositories/entities/PedidoEntity";
+import { ClienteDto } from "../../../../core/dto/cliente/ClienteDto";
+import { Deprecated } from "@tsed/schema";
 
 @Entity("Cliente")
 export class ClienteEntity {
@@ -32,7 +33,7 @@ export class ClienteEntity {
     @OneToMany(() => PedidoEntity, (pedido) => pedido.cliente)
     pedidos?: PedidoEntity[];
 
-    constructor(cliente?: Cliente){
+    constructor(cliente?: ClienteDto){
         if(cliente){
             if(cliente.id){
                 this.id = cliente.id;
@@ -45,7 +46,15 @@ export class ClienteEntity {
         }
     }
 
-    public getDomain(): Cliente{
-        return new Cliente(this.id, this.nome, this.cpf, this.email, undefined, undefined);
+    public getClientDto(): ClienteDto {
+        return new ClienteDto(this.id, this.nome, this.cpf, this.email);
     }
+
+    //FIXME: deve ser removido. Usar getClientDto()
+    @Deprecated()
+    public getDomain(): Cliente {
+        return new Cliente(this.id, this.nome, this.cpf, this.email);
+    }
+
+
 }

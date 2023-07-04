@@ -24,7 +24,7 @@ export class ClienteJson {
     @Property()
     public readonly email?: string;
     
-    public constructor(cliente: Cliente){
+    public constructor(cliente: ClienteDto){
         this.id = cliente.id;
         this.nome = cliente.nome;
         this.cpf = cliente.cpf;

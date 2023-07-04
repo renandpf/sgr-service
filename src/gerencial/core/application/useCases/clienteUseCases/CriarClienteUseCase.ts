@@ -3,7 +3,6 @@ import { IClienteRepositoryGateway } from "../../ports";
 import { Cliente } from "../../../domain/Cliente";
 import { Service, Logger } from "@tsed/common";
 import { ClienteMySqlRepositoryGateway } from "../../../../adapter";
-import { Optional } from "typescript-optional";
 import { ClienteExistenteException } from "../../exception/ClienteExistenteException";
 import { ICriarClienteUseCase } from "./ICriarClienteUseCase";
 import { CriarClienteParamsDto } from "../../../dto/cliente/flows/CriarClienteParamsDto";
@@ -24,16 +23,17 @@ export class CriarClienteUseCase implements ICriarClienteUseCase {
 
         clienteReq.validar();
 
-        const clienteOp: Optional<Cliente> = await this.clienteRepositoryGateway.obterPorCpf(<string>clienteReq.cpf);
+        const clienteOp = await this.clienteRepositoryGateway.obterPorCpf(<string>clienteReq.cpf);
 
         if (!clienteOp.isEmpty()) {
+            this.logger.warn("Cliente já existe no sistema.")
             throw new ClienteExistenteException();
         }
 
-        const cliente = await this.clienteRepositoryGateway.criar(clienteReq);
+        const returnDto = await this.clienteRepositoryGateway.criar(dto);
 
-        //this.logger.trace("End returnDto={}", returnDto);
-        return new CriarClienteReturnDto(cliente.id as number);
+        this.logger.trace("End returnDto={}", returnDto);
+        return returnDto;
     }
 
     private mapDtoToDomain(dto: ClienteDto): Cliente {

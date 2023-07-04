@@ -1,9 +1,7 @@
-import { Cliente } from "../../../domain/Cliente";
+import { ClienteDto } from "../../../dto/cliente/ClienteDto";
 
 export interface IObterClienteUseCase {
-
-    obterPorId(id: number): Promise<Cliente>;
-    obterPorCpf(cpf: string): Promise<Cliente>;
-    obterPorEmail(email: string): Promise<Cliente>;
-
+    obterPorId(id: number): Promise<ClienteDto>;
+    obterPorCpf(cpf: string): Promise<ClienteDto>;
+    obterPorEmail(email: string): Promise<ClienteDto>;
 }
