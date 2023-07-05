@@ -3,7 +3,7 @@ import { Logger } from "@tsed/common";
 import { ErrorToAccessDatabaseException } from "../../../../common/exception/ErrorToAccessDatabaseException";
 import { PAGAMENTO_DATABASE_REPOSITORY } from "../../../../config/database/repository/repository-register.provider";
 import { IPagamentoRepositoryGateway } from "../../../../pagamento/core/application/ports/IPagamentoRepositoryGateway";
-import { Pagamento } from "../../../../pagamento/core/domain/Pagamento";
+import { PagamentoDto } from "../../../../pagamento/core/dto/PagamentoDto";
 import { PagamentoEntity } from "./entities/PagamentoEntity";
 
 @Injectable({
@@ -18,11 +18,11 @@ export class PagamentoMySqlRepositoryGateway implements IPagamentoRepositoryGate
     @Inject(PAGAMENTO_DATABASE_REPOSITORY)
     protected pagamentoRepository: PAGAMENTO_DATABASE_REPOSITORY;
 
-    async criar(pagamento: Pagamento): Promise<number | undefined> {
+    async criar(pagamentoDto: PagamentoDto): Promise<number | undefined> {
         try {
-            this.logger.trace("Start pagamento={}", pagamento);
+            this.logger.trace("Start pagamento={}", pagamentoDto);
 
-            const pagamentoEntityCreated = await this.pagamentoRepository.save(PagamentoEntity.getInstancia(pagamento));
+            const pagamentoEntityCreated = await this.pagamentoRepository.save(PagamentoEntity.getInstancia(pagamentoDto));
             const pagamentoEntityCreatedId = pagamentoEntityCreated.id;
 
             this.logger.trace("End pagamentoEntityCreatedId={}", pagamentoEntityCreatedId);

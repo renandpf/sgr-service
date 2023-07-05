@@ -1,3 +1,3 @@
 export class EfetuarPagamentoReturnDto {
-    constructor(readonly idPagamento: number){}
+    constructor(readonly pagamentoId: number){}
 }

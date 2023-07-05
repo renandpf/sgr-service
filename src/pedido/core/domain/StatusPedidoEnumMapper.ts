@@ -1,7 +1,8 @@
 import { Exception } from "@tsed/exceptions";
 import { StatusPedido } from "./StatusPedido";
 
-export class StatusPedidoEnumMapper{
+export class StatusPedidoEnumMapper {
+  
   static numberParaEnum(codigo?: number): StatusPedido{
     switch (codigo){
       case 0:
@@ -23,6 +24,11 @@ export class StatusPedidoEnumMapper{
     }
   }
 
+  static numberParaString(codigo?: number): string {
+    const enumStatus = StatusPedidoEnumMapper.numberParaEnum(codigo);
+    return StatusPedidoEnumMapper.enumParaString(enumStatus);
+  }
+  
   static stringParaEnum(opcao?: string): StatusPedido{
     switch (opcao){
       case "AGUARDANDO_CONFIRMACAO_PAGAMENTO":

@@ -1,6 +1,6 @@
 export class PedidoDto {
     constructor(
-        public id: number,
-        public statusId: number){
+        public readonly id: number,
+        public readonly statusId: number){
         }
 }

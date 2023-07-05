@@ -5,6 +5,7 @@ import { IConfirmarPagamentoUseCase, IEfetuarPagamentoUseCase } from "../../../c
 
 import { PagamentoJson } from "./json/PagamentoJson";
 import { ConfirmacaoPagamentoJson } from "./json/ConfirmacaoPagamentoJson";
+import { EfetuarPagamentoParamDto } from "src/pagamento/core/dto/flows/EfetuarPagamentoParamDto";
 
 @Controller("")
 export class PagamentoController {
@@ -19,7 +20,8 @@ export class PagamentoController {
     @Returns(200)
     async efetuar(@BodyParams() pagamentoJson: PagamentoJson): Promise<string | undefined> {
         this.logger.info("Start pagamentoJson={}", pagamentoJson);
-        const pagamentoId = await this.efetuarPagamentoUseCase.efetuar(pagamentoJson.getDomain());
+        const returnDto = await this.efetuarPagamentoUseCase.efetuar(new EfetuarPagamentoParamDto(pagamentoJson.getDto()));
+        const pagamentoId = returnDto.pagamentoId;
         this.logger.trace("End pagamentoId={}", pagamentoId);
         return `${pagamentoId}`;
     }

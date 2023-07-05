@@ -3,10 +3,11 @@ import { Inject, Injectable, ProviderScope, ProviderType } from "@tsed/di";
 import { Optional } from "typescript-optional";
 import axios from "axios";
 import { IPedidoServiceGateway } from "../../../../pagamento/core/application/ports/IPedidoServiceGateway";
-import { Pedido, StatusPedido, StatusPedidoEnumMapper } from "../../../../pedido";
+import { StatusPedido, StatusPedidoEnumMapper } from "../../../../pedido";
 import {
   ErrorToAccessPedidoServiceException
 } from "../../../../pagamento/core/application/exceptions/ErrorToAccessPedidoServiceException";
+import { PedidoDto } from "src/pagamento/core/dto/PedidoDto";
 
 @Injectable({
   type: ProviderType.SERVICE,
@@ -18,11 +19,11 @@ export class PedidoServiceHttpGateway implements IPedidoServiceGateway {
   private logger: Logger;
   private readonly clientServiceUrlBase: string = "http://localhost:8083";//FIXME: usar arquivo properties
 
-  async obterPorId(id: number): Promise<Optional<Pedido>> {
+  async obterPorId(id: number): Promise<Optional<PedidoDto>> {
     try {
       this.logger.trace("Start id={}", id);
 
-      const pedidoOp: Optional<Pedido> = await this.callGetByIdService(id);
+      const pedidoOp: Optional<PedidoDto> = await this.callGetByIdService(id);
 
       this.logger.trace("End pedidoOp={}", pedidoOp);
       return pedidoOp;
@@ -32,7 +33,7 @@ export class PedidoServiceHttpGateway implements IPedidoServiceGateway {
     }
   }
 
-  async alterarStatus(pedido: Pedido): Promise<void> {
+  async alterarStatus(pedido: PedidoDto): Promise<void> {
     try {
       this.logger.trace("Start pedido={}", pedido);
 
@@ -46,7 +47,7 @@ export class PedidoServiceHttpGateway implements IPedidoServiceGateway {
 
   }
 
-  async obterPorIdentificadorPagamento(identificadorPagamento: string): Promise<Optional<Pedido>> {
+  async obterPorIdentificadorPagamento(identificadorPagamento: string): Promise<Optional<PedidoDto>> {
     try {
       this.logger.trace("Start identificadorPagamento={}", identificadorPagamento);
 
@@ -61,7 +62,7 @@ export class PedidoServiceHttpGateway implements IPedidoServiceGateway {
     }
   }
 
-  private async callObterPedidoByIndentificadorPagamentoService(identificadorPagamento: string): Promise<Optional<Pedido>> {
+  private async callObterPedidoByIndentificadorPagamentoService(identificadorPagamento: string): Promise<Optional<PedidoDto>> {
     try {
 
       //TODO: implementar
@@ -86,7 +87,7 @@ export class PedidoServiceHttpGateway implements IPedidoServiceGateway {
   }
 
 
-  private async callChangeStatusService(pedido: Pedido): Promise<void> {
+  private async callChangeStatusService(pedido: PedidoDto): Promise<void> {
     try {
 
       const config = {
@@ -94,7 +95,7 @@ export class PedidoServiceHttpGateway implements IPedidoServiceGateway {
       };
 
       const body = {
-        status: StatusPedidoEnumMapper.enumParaString(pedido.getStatus()),
+        status: StatusPedidoEnumMapper.numberParaString(pedido.statusId),
       };
 
       this.logger.info("Try connect pedidoService. config={}, method=patch, body={}", config, body);
@@ -110,7 +111,7 @@ export class PedidoServiceHttpGateway implements IPedidoServiceGateway {
   }
 
 
-  private async callGetByIdService(id: number): Promise<Optional<Pedido>> {
+  private async callGetByIdService(id: number): Promise<Optional<PedidoDto>> {
     try {
 
       const config = {
@@ -132,7 +133,7 @@ export class PedidoServiceHttpGateway implements IPedidoServiceGateway {
     }
   }
 
-  private processSucessResponse(response: any): Optional<Pedido> {
+  private processSucessResponse(response: any): Optional<PedidoDto> {
     if (response.status === 200) {
       if (response.request.method === 'GET') {
         return this.getPedidoFromResponse(response);
@@ -149,7 +150,7 @@ export class PedidoServiceHttpGateway implements IPedidoServiceGateway {
     }
   }
 
-  private processErrorResponse(error: any): Optional<Pedido> {
+  private processErrorResponse(error: any): Optional<PedidoDto> {
     if (error.response.status === 404 && error.response.data.code === "sgr.pedidoNotFound") {
       this.logger.warn("Pedido não encontrado");
       return Optional.empty();
@@ -160,10 +161,10 @@ export class PedidoServiceHttpGateway implements IPedidoServiceGateway {
   }
 
 
-  private getPedidoFromResponse(response: any): Optional<Pedido> {
+  private getPedidoFromResponse(response: any): Optional<PedidoDto> {
     const id = response.data.id;
     const status = StatusPedido[response.data.status] as unknown as number;
-    const pedido = new Pedido(id, undefined, undefined, status);
+    const pedido = new PedidoDto(id, status);
 
     return Optional.of(pedido);
   }

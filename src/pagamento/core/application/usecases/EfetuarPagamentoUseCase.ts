@@ -70,7 +70,7 @@ export class EfetuarPagamentoUseCase implements IEfetuarPagamentoUseCase {
 
     private validaCamposObrigatorios(pagamentoDto: PagamentoDto) {
         const mensagens = [];
-        if (pagamentoDto.getPedido() === undefined || pagamentoDto.id === undefined) {
+        if (pagamentoDto.getPedido() === undefined) {
             mensagens.push("Identificador do pedido (pedido id)");
         }
 

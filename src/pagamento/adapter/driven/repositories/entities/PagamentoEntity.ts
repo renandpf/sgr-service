@@ -1,4 +1,4 @@
-import { Pagamento } from "../../../../../pagamento/core/domain/Pagamento";
+import { PagamentoDto } from "../../../../../pagamento/core/dto/PagamentoDto";
 import { PedidoEntity } from "../../../../../pedido/adapter/driven/repositories/entities/PedidoEntity";
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
@@ -17,17 +17,11 @@ export class PagamentoEntity {
   @ManyToOne(() => PedidoEntity, (pedido) => pedido.pagamentos, {eager: true})
   pedido?: PedidoEntity;
 
-  // constructor(pagamento?: Pagamento){
-  //   //this.pedido = new PedidoEntity(pagamento?.getPedido());
-  //   this.pedido = {id: pagamento?.id} as PedidoEntity;
-  //   this.codigoPagamento = pagamento?.getIdentificadorPagamentoExterno();
-  // }
-
-  static getInstancia(pagamento: Pagamento): PagamentoEntity {
+  static getInstancia(pagamento: PagamentoDto): PagamentoEntity {
     const pagamentoEntity = new PagamentoEntity();
     pagamentoEntity.id = pagamento.id;
     pagamentoEntity.codigoPagamento = pagamento.getIdentificadorPagamentoExterno();
-    pagamentoEntity.pedido = { id: pagamento.id } as PedidoEntity;
+    pagamentoEntity.pedido = { id: pagamento.getPedido()?.id } as PedidoEntity;
 
     return pagamentoEntity;
   }

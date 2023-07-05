@@ -2,8 +2,9 @@ import { Inject, Logger } from "@tsed/common";
 import { Injectable, ProviderScope, ProviderType } from "@tsed/di";
 import { IPagamentoExternoServiceGateway, IPagamentoRepositoryGateway, IPedidoServiceGateway } from "../ports";
 import { PedidoNotFoundException } from "../exceptions/PedidoNotFoundException";
-import { StatusPedidoEnumMapper } from "../../../../pedido";
+import { Pedido } from "../../../../pedido";
 import { IConfirmarPagamentoUseCase } from "./IConfirmarPagamentoUseCase";
+import { PedidoDto } from "../../dto/PedidoDto";
 
 @Injectable({
     type: ProviderType.SERVICE,
@@ -23,13 +24,15 @@ export class ConfirmarPagamentoUseCase implements IConfirmarPagamentoUseCase {
     async confirmar(identificadorPagamento: string, statusPagamento: string): Promise<void> {
         this.logger.trace("Start identificadorPagamento={}, statusPagamento={}", identificadorPagamento, statusPagamento);
 
+        const pedidoDto = await this.obtemPedidoPorPagamentoId(identificadorPagamento);
+        
         const status = this.pagamentoExternoServiceGateway.mapStatus(statusPagamento);
+        const pedido = Pedido.getInstancia(pedidoDto.id, pedidoDto.statusId);
+        pedido.setStatus(status);
 
-        const pedido = await this.obtemPedidoPorPagamentoId(identificadorPagamento);
+        const pedidoDtoStatusPago = new PedidoDto(pedido.id as number, pedido.getStatus());
 
-        pedido.setStatus(StatusPedidoEnumMapper.numberParaEnum(status));
-
-        await this.pedidoServiceGateway.alterarStatus(pedido);
+        await this.pedidoServiceGateway.alterarStatus(pedidoDtoStatusPago);
 
         this.logger.trace("End");
     }

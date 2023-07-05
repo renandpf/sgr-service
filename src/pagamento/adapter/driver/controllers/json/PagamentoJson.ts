@@ -1,16 +1,15 @@
-import { Pagamento } from "../../../../../pagamento/core/domain/Pagamento";
 import { CartaoCreditoJson } from "./CartaoCreditoJson";
-import { CartaoCredito } from "../../../../../pagamento/core/domain/CartaoCredito";
-import { Pedido } from "../../../../../pedido/core/domain/Pedido";
+import { PagamentoDto } from "../../../../core/dto/PagamentoDto";
+import { PedidoDto } from "../../../../core/dto/PedidoDto";
+import { CartaoCreditoDto } from "../../../../core/dto/CartaoCreditoDto";
 
 export class PagamentoJson {
     readonly pedidoId: number;
     readonly cartoesCreditos: CartaoCreditoJson[];
 
-    getDomain(): Pagamento {
-        const cartoesCredito = this.cartoesCreditos.map(cc => new CartaoCredito(cc.numero, cc.cvv, cc.nome, cc.cpf, cc.valor));
-        const pedido = new Pedido(this.pedidoId);
-        return new Pagamento(undefined, pedido, cartoesCredito);
+    getDto(): PagamentoDto {
+        const cartoesCredito = this.cartoesCreditos.map(cc => new CartaoCreditoDto(cc.numero, cc.cvv, cc.nome, cc.cpf, cc.valor));
+        const pedido = new PedidoDto(this.pedidoId, undefined as unknown as number);
+        return new PagamentoDto(undefined, pedido, cartoesCredito);
     }
-
 }
