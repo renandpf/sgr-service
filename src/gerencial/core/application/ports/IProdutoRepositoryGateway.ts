@@ -10,5 +10,4 @@ export interface IProdutoRepositoryGateway {
     criar(produto: ProdutoDto): Promise<number>;
     alterar(produto: ProdutoDto): Promise<void>;
     excluir(produtoId: number): Promise<void>;
-    existePedidoByProdutoId(produtoId: number): Promise<boolean>;
 }

@@ -3,11 +3,12 @@ import { IProdutoRepositoryGateway } from "../../../core/application/ports";
 import { CategoriaEnum } from "../../../core/domain";
 import { Optional } from "typescript-optional";
 import { ErrorToAccessDatabaseException } from "../../../../common/exception/ErrorToAccessDatabaseException";
-import { PRODUTO_DATABASE_REPOSITORY } from "../../../../config/database/repository/repository-register.provider";
+import { ITEM_DATABASE_REPOSITORY, PRODUTO_DATABASE_REPOSITORY } from "../../../../config/database/repository/repository-register.provider";
 import { Logger } from "@tsed/common";
 import { Equal } from "typeorm";
 import { ProdutoEntity } from "./entities";
 import { ProdutoDto } from "src/gerencial/core/dto/produto/ProdutoDto";
+import { ExclusaoProdutoAssociadoPedidoException } from "src/gerencial/core/application/exception/ExclusaoProdutoAssociadoPedidoException";
 
 @Injectable({
     type: ProviderType.SERVICE,
@@ -21,6 +22,10 @@ export class ProdutoMySqlRepositoryGateway implements IProdutoRepositoryGateway 
     @Inject(PRODUTO_DATABASE_REPOSITORY)
     protected produtoRepository: PRODUTO_DATABASE_REPOSITORY;
 
+    @Inject(ITEM_DATABASE_REPOSITORY)
+    protected itemRepository: ITEM_DATABASE_REPOSITORY;
+
+
     async excluir(id: number): Promise<void> {
         try {
             this.logger.trace("Start id={}", id)
@@ -29,6 +34,11 @@ export class ProdutoMySqlRepositoryGateway implements IProdutoRepositoryGateway 
             this.logger.trace("End")
         }
         catch (e) {
+            //TODO: este if deve ser removido assim que o usecase de exclusão verificar a associação de pedido x produto
+            if(e.code === 'ER_ROW_IS_REFERENCED_2'){
+                throw new ExclusaoProdutoAssociadoPedidoException();
+            }
+
             this.logger.error(e);
             throw new ErrorToAccessDatabaseException();
         }
@@ -93,13 +103,5 @@ export class ProdutoMySqlRepositoryGateway implements IProdutoRepositoryGateway 
             throw new ErrorToAccessDatabaseException();
         }
 
-    }
-
-    async existePedidoByProdutoId(produtoId: number): Promise<boolean> {
-        this.logger.trace("Start produtoId={}", produtoId)
-        this.logger.warn("**** method not implemented! ****")
-        const existsPedido = false;
-        this.logger.trace("End existsPedido={}", existsPedido)
-        return existsPedido;
     }
 }

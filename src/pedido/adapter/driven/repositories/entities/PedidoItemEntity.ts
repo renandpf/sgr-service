@@ -25,6 +25,8 @@ export class PedidoItemEntity {
   })
   valorTotal: number;
 
+  produtoId: number;
+
   @ManyToOne(() => ProdutoEntity, { nullable: false })
   produto: ProdutoEntity;
 

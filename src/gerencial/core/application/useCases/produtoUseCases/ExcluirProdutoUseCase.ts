@@ -1,6 +1,5 @@
 import { Inject, Logger } from "@tsed/common";
 import { IProdutoRepositoryGateway } from "../../ports/IProdutoRepositoryGateway";
-import { ExclusaoProdutoAssociadoPedidoException } from "../../exception/ExclusaoProdutoAssociadoPedidoException";
 import { IExcluirProdutoUseCase } from "./IExcluirProdutoUseCase";
 import { Injectable, ProviderScope, ProviderType } from "@tsed/di";
 
@@ -17,12 +16,18 @@ export class ExcluirProdutoUseCase implements IExcluirProdutoUseCase {
 
     public async excluir(id: number): Promise<void> {
         this.logger.trace("Start id={}", id);
-        const existePedido = await this.produtoRepositoryGateway.existePedidoByProdutoId(id);
-        if(existePedido){
-            this.logger.warn("Product is associated with at least 1 order");
-            throw new ExclusaoProdutoAssociadoPedidoException();
-        }
+        await this.verificaSeProdutoEstaAssociadoItem(id);
         await this.produtoRepositoryGateway.excluir(id);
         this.logger.trace("End");
+    }
+
+    //TODO: este método deveria chamar o service de Pedido
+    private async verificaSeProdutoEstaAssociadoItem(id: number) {
+        this.logger.trace(id);
+        // const existePedido = await this.produtoRepositoryGateway.existePedidoByProdutoId(id);
+        // if (existePedido) {
+        //     this.logger.warn("Product is associated with at least 1 order");
+        //     throw new ExclusaoProdutoAssociadoPedidoException();
+        // }
     }
 }
