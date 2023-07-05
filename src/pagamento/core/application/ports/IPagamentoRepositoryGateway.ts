@@ -1,7 +1,7 @@
-import { Pagamento } from "../../domain/Pagamento";
+import { PagamentoDto } from "../../dto/PagamentoDto";
 
 export const IPagamentoRepositoryGateway: unique symbol = Symbol("IPagamentoRepositoryGateway");
 
 export interface IPagamentoRepositoryGateway {
-    criar(pagamento: Pagamento): Promise<number | undefined>;
+    criar(dto: PagamentoDto): Promise<number | undefined>;
 }

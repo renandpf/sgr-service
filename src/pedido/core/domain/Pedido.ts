@@ -86,6 +86,13 @@ export class Pedido {
     ) {
     }
 
+    static getInstancia(id: number, status: StatusPedido): Pedido {
+        const pedido = new Pedido();
+        pedido._id = id;
+        pedido._status = status;
+        return pedido;
+    }
+
     temCliente(): boolean {
         return this._cliente !== undefined;
     }

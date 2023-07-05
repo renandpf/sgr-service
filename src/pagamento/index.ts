@@ -11,3 +11,8 @@ export * from "./core/application/index";
 export * from "./core/domain/CartaoCredito";
 export * from "./core/domain/Pagamento";
 export * from "./core/domain/SistemaExterno";
+export * from "./core/dto/CartaoCreditoDto";
+export * from "./core/dto/PagamentoDto";
+export * from "./core/dto/PedidoDto";
+export * from "./core/dto/flows/EfetuarPagamentoParamDto";
+export * from "./core/dto/flows/EfetuarPagamentoReturnDto";

@@ -1,7 +1,8 @@
-import { Pagamento } from "../../domain/Pagamento";
+import { EfetuarPagamentoParamDto } from "../../dto/flows/EfetuarPagamentoParamDto";
+import { EfetuarPagamentoReturnDto } from "../../dto/flows/EfetuarPagamentoReturnDto";
 
 export const IEfetuarPagamentoUseCase: unique symbol = Symbol("IEfetuarPagamentoUseCase");
 
 export interface IEfetuarPagamentoUseCase {
-    efetuar(pagamento: Pagamento): Promise<number | undefined>;
+    efetuar(dto: EfetuarPagamentoParamDto): Promise<EfetuarPagamentoReturnDto>;
 }

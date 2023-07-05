@@ -1,8 +1,8 @@
-import { CartaoCredito } from "../../../../pagamento/core/domain/CartaoCredito";
+import { CartaoCreditoDto } from "src/pagamento/core/dto/CartaoCreditoDto";
 
 export class RequestPagamentoDto {
     //TODO: definir campos
-    constructor(readonly cartoesCredito?: CartaoCredito[]) {
+    constructor(readonly cartoesCredito?: CartaoCreditoDto[]) {
 
     }
 }

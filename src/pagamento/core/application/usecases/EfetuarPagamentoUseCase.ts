@@ -1,6 +1,5 @@
 import { Inject, Logger } from "@tsed/common";
 import { Injectable, ProviderScope, ProviderType } from "@tsed/di";
-import { Pagamento } from "../../domain/Pagamento";
 import { IPagamentoExternoServiceGateway, IPagamentoRepositoryGateway, IPedidoServiceGateway } from "../ports";
 import { PedidoNotFoundException } from "../exceptions/PedidoNotFoundException";
 import { Pedido, StatusPedido } from "../../../../pedido";
@@ -10,6 +9,10 @@ import { PedidoServiceHttpGateway } from "../../../adapter/driven/http/PedidoSer
 import { PagamentoMockExternalServiceHttpGateway } from "../../../adapter/driven/http/PagamentoMockServiceHttpGateway";
 import { PagamentoMySqlRepositoryGateway } from "../../../adapter/driven/repositories/PagamentoMySqlRepositoryGateway";
 import { RequestPagamentoDto } from "../../../../pedido/core/application/dto/RequestPagamentoDto";
+import { EfetuarPagamentoParamDto } from "../../dto/flows/EfetuarPagamentoParamDto";
+import { EfetuarPagamentoReturnDto } from "../../dto/flows/EfetuarPagamentoReturnDto";
+import { PagamentoDto } from "../../dto/PagamentoDto";
+import { PedidoDto } from "../../dto/PedidoDto";
 
 @Injectable({
     type: ProviderType.SERVICE,
@@ -26,29 +29,31 @@ export class EfetuarPagamentoUseCase implements IEfetuarPagamentoUseCase {
 
     ) { }
 
-    async efetuar(pagamento: Pagamento): Promise<number | undefined> {
-        this.logger.trace("Start pagamento={}", pagamento);
+    async efetuar(dto: EfetuarPagamentoParamDto): Promise<EfetuarPagamentoReturnDto> {
+        this.logger.trace("Start dto={}", dto);
 
-        pagamento.validaCamposObrigatorios();
+        this.validaCamposObrigatorios(dto.pagamento);
 
-        const pedido = await this.obtemPedidoVerificandoSeEleExiste(pagamento);
+        const pedidoDto = await this.obtemPedidoVerificandoSeEleExiste(dto.pagamento);
+        
+        const pedido = Pedido.getInstancia(pedidoDto.id, pedidoDto.statusId);
         pedido.setStatus(StatusPedido.AGUARDANDO_CONFIRMACAO_PAGAMENTO);
 
-        const responsePagamentoDto = await this.pagamentoExternoServiceGateway.enviarPagamento(new RequestPagamentoDto(pagamento.cartoesCredito));
-        pagamento.setIdentificadorPagamentoExterno(responsePagamentoDto.identificadorPagamento);
-
-        pagamento.setPedido(pedido);
+        const responsePagamentoDto = await this.pagamentoExternoServiceGateway.enviarPagamento(new RequestPagamentoDto(dto.pagamento.cartoesCredito));
+        dto.pagamento.setIdentificadorPagamentoExterno(responsePagamentoDto.identificadorPagamento);
+        dto.setPedido(pedidoDto);
 
         //TODO: deve ocorrer rollback em caso de falha no passo de alterarStatus do serviço
-        const idPagamento = await this.pagamentoRepositoryGateway.criar(pagamento);
+        const idPagamento = await this.pagamentoRepositoryGateway.criar(dto.pagamento);
 
-        await this.pedidoServiceGateway.alterarStatus(pedido);
+        await this.pedidoServiceGateway.alterarStatus(pedidoDto);
 
-        this.logger.trace("End idPagamento={}", idPagamento);
-        return idPagamento;
+        const returnDto = new EfetuarPagamentoReturnDto(idPagamento as number);
+        this.logger.trace("End returnDto={}", returnDto);
+        return returnDto;
     }
 
-    private async obtemPedidoVerificandoSeEleExiste(pagamento: Pagamento): Promise<Pedido> {
+    private async obtemPedidoVerificandoSeEleExiste(pagamento: PagamentoDto): Promise<PedidoDto> {
         const pedidoId = pagamento.getPedido()?.id;
         if (pedidoId !== undefined) {
             const pedidoOp = await this.pedidoServiceGateway.obterPorId(pedidoId);
@@ -62,4 +67,20 @@ export class EfetuarPagamentoUseCase implements IEfetuarPagamentoUseCase {
 
         throw new CamposObrigatoriosNaoPreechidoException("Identificador do pedido (id)");
     }
+
+    private validaCamposObrigatorios(pagamentoDto: PagamentoDto) {
+        const mensagens = [];
+        if (pagamentoDto.getPedido() === undefined || pagamentoDto.id === undefined) {
+            mensagens.push("Identificador do pedido (pedido id)");
+        }
+
+        if (pagamentoDto.cartoesCredito === undefined || pagamentoDto.cartoesCredito.length === 0) {
+            mensagens.push("Meio de pagamento não informado");
+        }
+
+        if (mensagens.length > 0) {
+            throw new CamposObrigatoriosNaoPreechidoException(mensagens.join(","));
+        }
+    }
+
 }
