@@ -7,8 +7,8 @@ import { ITEM_DATABASE_REPOSITORY, PRODUTO_DATABASE_REPOSITORY } from "../../../
 import { Logger } from "@tsed/common";
 import { Equal } from "typeorm";
 import { ProdutoEntity } from "./entities";
-import { ProdutoDto } from "src/gerencial/core/dto/produto/ProdutoDto";
-import { ExclusaoProdutoAssociadoPedidoException } from "src/gerencial/core/application/exception/ExclusaoProdutoAssociadoPedidoException";
+import { ProdutoDto } from "../../../../gerencial/core/dto/produto/ProdutoDto";
+import { ExclusaoProdutoAssociadoPedidoException } from "../../../core/application/exception/ExclusaoProdutoAssociadoPedidoException";
 
 @Injectable({
     type: ProviderType.SERVICE,

@@ -9,7 +9,7 @@ import {
 } from "../../../../core/application";
 import { ProdutoJson } from "./json/ProdutoJson";
 import { AlterarProdutoParamsDto } from "../../../../core/dto/produto/flows/AlterarProdutoParamsDto";
-import { CriarProdutoParamsDto } from "src/gerencial/core/dto/produto/flows/CriarProdutoParamsDto";
+import { CriarProdutoParamsDto } from "../../../../core/dto/produto/flows/CriarProdutoParamsDto";
 
 @Controller("")
 export class ProdutoController {

@@ -1,6 +1,6 @@
 import { Inject, Logger } from "@tsed/common";
 import { Injectable, ProviderScope, ProviderType } from "@tsed/di";
-import { IPagamentoExternoServiceGateway, IPagamentoRepositoryGateway, IPedidoServiceGateway } from "../ports";
+import { IPagamentoExternoServiceGateway, IPedidoServiceGateway } from "../ports";
 import { PedidoNotFoundException } from "../exceptions/PedidoNotFoundException";
 import { Pedido } from "../../../../pedido";
 import { IConfirmarPagamentoUseCase } from "./IConfirmarPagamentoUseCase";
@@ -17,8 +17,6 @@ export class ConfirmarPagamentoUseCase implements IConfirmarPagamentoUseCase {
         @Inject() private logger: Logger,
         @Inject(IPedidoServiceGateway) private pedidoServiceGateway: IPedidoServiceGateway,
         @Inject(IPagamentoExternoServiceGateway) private pagamentoExternoServiceGateway: IPagamentoExternoServiceGateway,
-        @Inject(IPagamentoRepositoryGateway) private pagamentoRepositoryGateway: IPagamentoRepositoryGateway,
-
     ) { }
 
     async confirmar(identificadorPagamento: string, statusPagamento: string): Promise<void> {

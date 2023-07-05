@@ -5,7 +5,7 @@ import { IConfirmarPagamentoUseCase, IEfetuarPagamentoUseCase } from "../../../c
 
 import { PagamentoJson } from "./json/PagamentoJson";
 import { ConfirmacaoPagamentoJson } from "./json/ConfirmacaoPagamentoJson";
-import { EfetuarPagamentoParamDto } from "src/pagamento/core/dto/flows/EfetuarPagamentoParamDto";
+import { EfetuarPagamentoParamDto } from "../../../core/dto/flows/EfetuarPagamentoParamDto";
 
 @Controller("")
 export class PagamentoController {

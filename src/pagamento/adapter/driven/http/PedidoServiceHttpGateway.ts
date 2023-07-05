@@ -7,7 +7,7 @@ import { StatusPedido, StatusPedidoEnumMapper } from "../../../../pedido";
 import {
   ErrorToAccessPedidoServiceException
 } from "../../../../pagamento/core/application/exceptions/ErrorToAccessPedidoServiceException";
-import { PedidoDto } from "src/pagamento/core/dto/PedidoDto";
+import { PedidoDto } from "../../../core/dto/PedidoDto";
 
 @Injectable({
   type: ProviderType.SERVICE,

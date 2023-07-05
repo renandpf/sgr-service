@@ -2,8 +2,8 @@ import { Inject, Logger } from "@tsed/common";
 import { IProdutoRepositoryGateway } from "../../ports/IProdutoRepositoryGateway";
 import { IAlterarProdutoUseCase } from "./IAlterarProdutoUseCase";
 import { Injectable, ProviderScope, ProviderType } from "@tsed/di";
-import { AlterarProdutoParamsDto } from "src/gerencial/core/dto/produto/flows/AlterarProdutoParamsDto";
-import { AlterarProdutoReturnDto } from "src/gerencial/core/dto/produto/flows/AlterarProdutoReturnDto";
+import { AlterarProdutoParamsDto } from "../../../dto/produto/flows/AlterarProdutoParamsDto";
+import { AlterarProdutoReturnDto } from "../../../dto/produto/flows/AlterarProdutoReturnDto";
 
 @Injectable({
     type: ProviderType.SERVICE,

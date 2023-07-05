@@ -1,5 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
-import { ProdutoDto } from "src/gerencial/core/dto/produto/ProdutoDto";
+import { ProdutoDto } from "../../../../core/dto/produto/ProdutoDto";
 
 @Entity("Produto")
 export class ProdutoEntity {
