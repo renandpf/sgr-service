@@ -7,11 +7,11 @@
 ## Para executar o projeto siga os passos a seguir:
 
 ```
-# comando para criar e iniciar os containers(aplicação e banco de dados). O comando -d executa os containers em segundo plano
-docker compose build
+# comando para construir ou reconstruir serviços
+docker-compose build
 
 # comando para criar e iniciar os containers(aplicação e banco de dados). O comando -d executa os containers em segundo plano
-docker compose up -d
+docker-compose up -d
 
 # Obs: é necessário ter o docker e docker-compose previamente instalado
 ```

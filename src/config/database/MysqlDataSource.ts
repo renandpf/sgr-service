@@ -6,16 +6,16 @@ import { ItemEntity, PedidoEntity } from "../../pedido/adapter/driven/repositori
 import { PagamentoEntity } from "../../pagamento/adapter/driven/repositories/entities/PagamentoEntity";
 
 export const MYSQL_DATA_SOURCE = Symbol.for("MySqlDataSource");
+const db_port: number | undefined = parseInt(process.env.DB_PORT || "3306");
 export const MysqlDataSource = new DataSource({
   // name: "default",  if you come from v0.2.x
   type: "mysql",
   entities: [ProdutoEntity, ClienteEntity, PedidoEntity, ItemEntity, PagamentoEntity], // add this to discover typeorm model
-  host: "localhost",
-  //host: "mysql", // Usar esse host para conectar as aplicação em container ao banco em container
-  port: 3306,
-  username: "root",
-  password: "senha",
-  database: "sgr_database",
+  host: process.env.HOST || "localhost", // Usar esse host para conectar as aplicação em container ao banco em container
+  port: db_port,
+  username: process.env.USERNAME || "root",
+  password: process.env.PASSWORD || "senha",
+  database: process.env.DATABASE || "sgr_database",
   synchronize: true,
 });
 
