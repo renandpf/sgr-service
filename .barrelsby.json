@@ -1,5 +1,8 @@
 {
-  "directory": ["./src/controllers/rest","./src/controllers/pages"],
+  "directory": [
+    "./src/gerencial", 
+    "./src/pedido",
+    "./src/pagamento"],
   "exclude": [
     "__mock__",
     "__mocks__",

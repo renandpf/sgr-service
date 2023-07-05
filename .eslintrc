@@ -1,14 +1,14 @@
 {
   "parser": "@typescript-eslint/parser",
   "extends": [
-    "prettier",
     "plugin:@typescript-eslint/recommended"
   ],
   "plugins": ["@typescript-eslint"],
   "parserOptions": {
     "ecmaVersion": 2018,
     "sourceType": "module",
-    "project": "./tsconfig.json"
+//    "project": "./tsconfig.json",
+    "tsconfigRootDir": "./"
   },
   "env": {
    "node": true,

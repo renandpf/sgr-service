@@ -14,7 +14,7 @@
 ##                                                                           ##
 ###############################################################################
 ###############################################################################
-ARG NODE_VERSION=16.13.1
+ARG NODE_VERSION=16.15.0
 
 FROM node:${NODE_VERSION}-alpine as build
 WORKDIR /opt
@@ -38,13 +38,13 @@ RUN npm install -g pm2
 
 COPY --from=build /opt .
 
-RUN yarn install --pure-lockfile --production
+RUN yarn install
 
 COPY ./views ./views
 COPY processes.config.js .
 
-EXPOSE 8081
-ENV PORT 8081
+EXPOSE 8083
+ENV PORT 8083
 ENV NODE_ENV production
 
-CMD ["pm2-runtime", "start", "processes.config.js", "--env", "production"]
+CMD ["npm", "start"]

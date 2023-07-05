@@ -1,6 +1,7 @@
 version: '3.5'
 services:
   server:
+    container_name: sgr-api
     build:
       context: .
       dockerfile: ./Dockerfile
@@ -8,15 +9,56 @@ services:
         - http_proxy
         - https_proxy
         - no_proxy
+    # image: gabrasgp/sgr-service:1.0.0
     image: sgr-service/server:latest
     ports:
-      - '8081:8081'
-  mysql:
-    image: mysql:8.0.28-oracle
-    ports:
-      - '3306:3306'
+      - "8083:8083"
+    networks:
+      - sgr_network
     environment:
-      MYSQL_ROOT_PASSWORD: admin
-      MYSQL_USER: test
-      MYSQL_PASSWORD: test
-      MYSQL_DATABASE: test
+      DB_HOST: mysql
+      DB_USERNAME: root
+      DB_PASSWORD: senha
+      DB_PORT: 3306
+      DB_SCHEMA: sgr_database
+    depends_on:
+      mysql:
+        condition: service_healthy
+    healthcheck:
+      interval: 10s
+      retries: 5
+      start_period: 5s
+      timeout: 10s
+    restart: always
+    expose:
+      - "8083"
+  mysql:
+    container_name: mysql
+    image: mysql:8.0.33
+    ports:
+      - "3306:3306"
+    expose:
+      - "3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: senha
+      MYSQL_DATABASE: sgr_database
+      MYSQL_TCP_PORT: 3306
+    networks:
+      - sgr_network
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'mysqladmin',
+          'ping',
+          '-h',
+          'mysql',
+          '--user=root',
+          '--password=senha'
+        ]
+      interval: 3s
+      timeout: 3s
+      retries: 5
+networks:
+  sgr_network:
+    driver: bridge
