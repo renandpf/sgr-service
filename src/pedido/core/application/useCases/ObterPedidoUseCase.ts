@@ -2,8 +2,9 @@ import { Inject, Logger } from "@tsed/common";
 import { Pedido, StatusPedidoEnumMapper } from "../../domain";
 import { IPedidoRepositoryGateway } from "../ports";
 import { PedidoNotFoundException } from "../exceptions/PedidoNotFoundException";
-import { IObterPedidoUseCase } from "./IObterPedidoUseCase";
+import { IObterPedidoUseCase } from "../ports/IObterPedidoUseCase";
 import { Injectable, ProviderScope, ProviderType } from "@tsed/di";
+import { PedidoConsultaDto, PedidoEmAndamentoDto } from "../../dtos";
 
 @Injectable({
     type: ProviderType.SERVICE,
@@ -16,7 +17,7 @@ export class ObterPedidoUseCase implements IObterPedidoUseCase {
         @Inject(IPedidoRepositoryGateway) private pedidoRepositoryGateway: IPedidoRepositoryGateway,
         @Inject() private logger: Logger) { }
 
-    async obterPorId(id: number): Promise<Pedido> {
+    async obterPorId(id: number): Promise<PedidoConsultaDto> {
         this.logger.trace("Start id={}", id);
 
         const pedidoOp = await this.pedidoRepositoryGateway.obterPorId(id);
@@ -27,10 +28,10 @@ export class ObterPedidoUseCase implements IObterPedidoUseCase {
 
         const pedido = pedidoOp.get();
         this.logger.trace("End pedido={}", pedido);
-        return pedido;
+        return PedidoConsultaDto.getInstance(pedido);
     }
 
-    async obterEmAndamento(): Promise<Pedido[]> {
+    async obterEmAndamento(): Promise<PedidoEmAndamentoDto[]> {
         this.logger.trace("Start em andamento");
 
         const pedidoOp = await this.pedidoRepositoryGateway.obterEmAndamento();
@@ -39,19 +40,20 @@ export class ObterPedidoUseCase implements IObterPedidoUseCase {
             throw new PedidoNotFoundException();
         }
 
-        const pedido = pedidoOp.get();
+        const pedidos = pedidoOp.get();
+
         this.logger.trace("End em andamento");
-        return pedido;
+        return pedidos.map(pe => new PedidoEmAndamentoDto(Pedido.getInstance(pe)));
     }
 
-    async obterPorStatusAndIdentificadorPagamento(status: string, identificadorPagamento: string): Promise<Pedido[]> {
+    async obterPorStatusAndIdentificadorPagamento(status: string, identificadorPagamento: string): Promise<PedidoConsultaDto[]> {
         this.logger.trace("Start status={}, identificadorPagamento={}", status, identificadorPagamento);
         const pedidos = await this.pedidoRepositoryGateway.obterPorStatusAndIdentificadorPagamento(StatusPedidoEnumMapper.stringParaEnum(status), identificadorPagamento);
         this.logger.trace("End pedidos={}", pedidos);
-        return pedidos;
+        return pedidos.map(p => PedidoConsultaDto.getInstance(p));
     }
 
-    async obterPorIdentificadorPagamento(identificadorPagamento: string): Promise<Pedido> {
+    async obterPorIdentificadorPagamento(identificadorPagamento: string): Promise<PedidoConsultaDto> {
         this.logger.trace("Start identificadorPagamento={}", identificadorPagamento);
         const pedidoOp = await this.pedidoRepositoryGateway.obterPorIdentificadorPagamento(identificadorPagamento);
 
@@ -62,7 +64,7 @@ export class ObterPedidoUseCase implements IObterPedidoUseCase {
 
         const pedido = pedidoOp.get();
         this.logger.trace("End pedido={}", pedido);
-        return pedido;
+        return PedidoConsultaDto.getInstance(pedido);
     }
 
 }

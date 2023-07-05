@@ -1,9 +1,9 @@
 import { ClienteEntity } from "../../../../../gerencial/adapter/driven/repositories/entities";
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { ItemEntity } from "./ItemEntity";
-import { Pedido } from "../../../../../pedido/core/domain/Pedido";
+import { PedidoItemEntity } from "./PedidoItemEntity";
 import { StatusPedidoEnumMapper } from "../../../../core/domain/StatusPedidoEnumMapper";
 import { PagamentoEntity } from "../../../../../pagamento/adapter/driven/repositories/entities/PagamentoEntity";
+import { PedidoDto } from "../../../../core/dtos/PedidoDto";
 
 @Entity("Pedido")
 export class PedidoEntity {
@@ -31,42 +31,46 @@ export class PedidoEntity {
   observaco?: string;
 
   @ManyToOne(() => ClienteEntity, (cliente) => cliente.pedidos, { nullable: true })
+  //@JoinColumn()
   cliente?: ClienteEntity;
 
-  @OneToMany(() => ItemEntity, (item) => item.pedido)
-  itens?: ItemEntity[];
+  @OneToMany(() => PedidoItemEntity, (item) => item.pedido)
+  //@JoinTable()
+  itens?: PedidoItemEntity[];
 
   @OneToMany(() => PagamentoEntity, (pagamento) => pagamento.pedido)
   pagamentos?: PagamentoEntity[];
 
-  constructor(pedido?: Pedido) {
-    this.id = pedido?.id;
-    this.observaco = pedido?.observacao;
-    this.dataCadastro = pedido?.dataCadastro as never;
-    this.dataConclusao = pedido?.dataConclusao;
-    this.itens = pedido?.itens?.map(i => new ItemEntity(i, this));
-    const status = pedido?.status;
-    if (status !== undefined) {
-      this.statusId = StatusPedidoEnumMapper.enumParaNumber(status);
-    }
+  constructor(pedidoDto?: PedidoDto) {
+    if(pedidoDto){
+      this.id = pedidoDto.id;
+      this.observaco = pedidoDto.observacao;
+      this.dataCadastro = pedidoDto.dataCadastro as never;
+      this.dataConclusao = pedidoDto.dataConclusao;
+      this.itens = pedidoDto.itens?.map(i => new PedidoItemEntity(i, this));
+      const status = pedidoDto.status;
+      if (status !== undefined) {
+        this.statusId = StatusPedidoEnumMapper.enumParaNumber(status);
+      }
 
-    if (pedido?.temCliente()) {
-      this.cliente = new ClienteEntity(pedido?.cliente);
+      if (pedidoDto?.cliente) {
+        this.cliente = new ClienteEntity(pedidoDto?.cliente);
+      }
     }
   }
 
-  public getDomain(): Pedido {
+  public getDto(): PedidoDto {
 
-    const itens = this.itens?.map(i => i.getDomain());
+    const itens = this.itens?.map(i => i.getDto());
 
-    return new Pedido(
-      this.id,
-      this.cliente?.getDomain(),
-      this.observaco,
+    return new PedidoDto(
       StatusPedidoEnumMapper.numberParaEnum(this.statusId),
       this.dataCadastro,
-      this.dataConclusao,
       itens,
+      this.observaco,
+      this.cliente?.getClientDto(),
+      this.dataConclusao,
+      this.id
       // TODO adicionar pagamento
     );
   }

@@ -2,7 +2,7 @@ import { Inject, Injectable, ProviderScope, ProviderType } from "@tsed/di";
 import { IClienteRepositoryGateway } from "../../ports";
 import { Logger } from "@tsed/common";
 import { ClienteNaoEncontradoException } from "../../exception/ClienteNaoEncontradoException";
-import { IAlterarClienteUseCase } from "./IAlterarClienteUseCase";
+import { IAlterarClienteUseCase } from "../../ports/IAlterarClienteUseCase";
 import { AlterarClienteParamsDto } from "../../../dto/cliente/flows/AlterarClienteParamsDto";
 import { AlterarClienteReturnDto } from "../../../dto/cliente/flows/AlterarClienteReturnDto";
 import { Cliente } from "../../../domain/Cliente";

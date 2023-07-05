@@ -3,7 +3,7 @@ import { MysqlDataSource } from "../MysqlDataSource";
 import { ProdutoEntity } from "../../../gerencial/adapter/driven/repositories/entities/ProdutoEntity";
 import { PedidoEntity } from "../../../pedido/adapter/driven/repositories/entities/PedidoEntity";
 import { ClienteEntity } from "../../../gerencial/adapter/driven/repositories/entities/ClienteEntity";
-import { ItemEntity } from "../../../pedido/adapter/driven/repositories/entities/ItemEntity";
+import { PedidoItemEntity } from "../../../pedido/adapter/driven/repositories/entities/PedidoItemEntity";
 import { PagamentoEntity } from "../../../pagamento/adapter/driven/repositories/entities/PagamentoEntity";
 
 export const ProdutoDatabaseRepository = MysqlDataSource.getRepository(ProdutoEntity);
@@ -30,7 +30,7 @@ registerProvider({
   useValue: PedidoDatabaseRepository
 });
 
-export const ItemDatabaseRepository = MysqlDataSource.getRepository(ItemEntity);
+export const ItemDatabaseRepository = MysqlDataSource.getRepository(PedidoItemEntity);
 export const ITEM_DATABASE_REPOSITORY = Symbol.for("ItemDatabaseRepository");
 export type ITEM_DATABASE_REPOSITORY = typeof ItemDatabaseRepository;
 registerProvider({

@@ -1,5 +1,5 @@
 export * from './Pedido';
-export * from './Item';
+export * from './PedidoItem';
 export * from './StatusPedido';
 export * from './StatusPedidoEnumMapper';
 export * from './Usuario';

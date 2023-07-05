@@ -1,8 +1,8 @@
-import { Pedido, StatusPedido, StatusPedidoEnumMapper } from "../../../../core/domain";
+import { Pedido, StatusPedido, StatusPedidoEnumMapper } from "../domain";
 import { Description, Enum, Example, Property } from "@tsed/schema";
 import { OnSerialize } from "@tsed/json-mapper";
 
-export class PedidoEmAndamentoJson {
+export class PedidoEmAndamentoDto {
     @Description("Identificador")
     @Example("123456")
     @Property()

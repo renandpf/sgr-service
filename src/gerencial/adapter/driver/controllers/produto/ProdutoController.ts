@@ -41,7 +41,7 @@ export class ProdutoController {
   @Returns(201).Description("ID do produto criado")
   async criar(@BodyParams() produtoJson: ProdutoJson): Promise<string> {
     this.logger.trace("Start produtoJson={}", produtoJson);
-    const returnDto = await this.criarProdutoUseCase.criar(new CriarProdutoParamsDto(produtoJson.getProdutoDto(undefined)));
+    const returnDto = await this.criarProdutoUseCase.criar(new CriarProdutoParamsDto(produtoJson.getProdutoDto(null)));
     this.logger.trace("End id={}", returnDto.id);
     return `${returnDto.id}`;
   }

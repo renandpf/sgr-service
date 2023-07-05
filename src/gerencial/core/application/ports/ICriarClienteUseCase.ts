@@ -1,5 +1,5 @@
-import { CriarClienteParamsDto } from "../../../dto/cliente/flows/CriarClienteParamsDto";
-import { CriarClienteReturnDto } from "../../../dto/cliente/flows/CriarClienteReturnDto";
+import { CriarClienteParamsDto } from "../../dto/cliente/flows/CriarClienteParamsDto";
+import { CriarClienteReturnDto } from "../../dto/cliente/flows/CriarClienteReturnDto";
 
 export const ICriarClienteUseCase: unique symbol = Symbol("ICriarClienteUseCase");
 

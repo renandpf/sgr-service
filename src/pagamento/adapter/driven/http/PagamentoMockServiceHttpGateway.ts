@@ -7,8 +7,8 @@ import {
     IPagamentoExternoServiceGateway
 } from "../../../../pagamento/core/application/ports/IPagamentoExternoServiceGateway";
 import { StatusPedido } from "../../../../pedido";
-import { RequestPagamentoDto } from "../../../../pedido/core/application/dto/RequestPagamentoDto";
-import { ResponsePagamentoDto } from "../../../../pedido/core/application/dto/ResponsePagamentoDto";
+import { RequestPagamentoDto } from "../../../../pedido/core/dtos/RequestPagamentoDto";
+import { ResponsePagamentoDto } from "../../../../pedido/core/dtos/ResponsePagamentoDto";
 
 @Injectable({
     type: ProviderType.SERVICE,

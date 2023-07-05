@@ -1,2 +1,2 @@
-export * from './json';
+export * from '../../../core/dtos';
 export * from './PedidoController';

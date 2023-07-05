@@ -1,8 +1,9 @@
-import { Item, Pedido, StatusPedido, StatusPedidoEnumMapper } from "../../../../core/domain";
+import { PedidoItem, Pedido, StatusPedido, StatusPedidoEnumMapper } from "../domain";
 import { CollectionOf, Description, Enum, Example, Property } from "@tsed/schema";
 import { OnSerialize } from "@tsed/json-mapper";
+import { PedidoDto, PedidoItemDto } from "./PedidoDto";
 
-export class PedidoItemConsultaJson {
+export class PedidoItemConsultaDto {
     @Description("Identificador")
     @Example("123456")
     @Property()
@@ -29,7 +30,7 @@ export class PedidoItemConsultaJson {
     public produtoId?: number
 }
 
-export class PedidoConsultaJson {
+export class PedidoConsultaDto {
     @Description("Identificador")
     @Example("123456")
     @Property()
@@ -47,25 +48,25 @@ export class PedidoConsultaJson {
 
     @Description("Categoria")
     @Example("RECEBIDO")
-    @Enum("AGUARDANDO_CONFIRMACAO_PAGAMENTO", "PAGO", "RECEBIDO", "EM_PREPARACAO", "PRONTO", "FINALIZADO", "PAGAMENTO_INVALIDO")
+    @Enum("RECEBIDO", "AGUARDANDO_CONFIRMACAO_PAGAMENTO", "PAGO", "EM_PREPARACAO", "PRONTO", "FINALIZADO", "PAGAMENTO_INVALIDO")
     @OnSerialize((c: StatusPedido) => StatusPedidoEnumMapper.enumParaString(c))
     public readonly status?: StatusPedido;
 
     @Description("Itens do Pedido")
-    @CollectionOf(PedidoItemConsultaJson)
-    public readonly itens: PedidoItemConsultaJson[];
+    @CollectionOf(PedidoItemConsultaDto)
+    public readonly itens: PedidoItemConsultaDto[];
 
-    static getInstance(pedido: Pedido): PedidoConsultaJson {
+    static getInstance(pedido: PedidoDto): PedidoConsultaDto {
         return {
             id: pedido.id,
             observacao: pedido.observacao,
             clienteId: pedido.cliente?.id,
             status: pedido.status,
-            itens: pedido.itens?.map(i => PedidoConsultaJson.getItemInstance(i))
-        } as PedidoConsultaJson;
+            itens: pedido.itens?.map(i => PedidoConsultaDto.getItemInstance(i))
+        } as PedidoConsultaDto;
     }
 
-    private static getItemInstance(item: Item): PedidoItemConsultaJson {
+    private static getItemInstance(item: PedidoItemDto): PedidoItemConsultaDto {
         return {
             id: item.id,
             produtoId: item.produto?.id,

@@ -1,7 +1,7 @@
 import { Inject, Injectable, ProviderScope, ProviderType } from "@tsed/di";
 import { Logger } from "@tsed/common";
 import { IPedidoRepositoryGateway } from "../../../core/application";
-import { Pedido, StatusPedido, StatusPedidoEnumMapper } from "../../../core/domain";
+import { StatusPedido, StatusPedidoEnumMapper } from "../../../core/domain";
 import { ErrorToAccessDatabaseException } from "../../../../common/exception/ErrorToAccessDatabaseException";
 import { Optional } from "typescript-optional";
 import {
@@ -10,6 +10,7 @@ import {
     PEDIDO_DATABASE_REPOSITORY
 } from "../../../../config/database/repository/repository-register.provider";
 import { PedidoEntity } from "./entities";
+import { PedidoDto } from "../../../core/dtos/PedidoDto";
 
 @Injectable({
     type: ProviderType.SERVICE,
@@ -30,7 +31,7 @@ export class PedidoMySqlRepositoryGateway implements IPedidoRepositoryGateway {
     @Inject(ITEM_DATABASE_REPOSITORY)
     protected pedidoItemRepository: ITEM_DATABASE_REPOSITORY;
 
-    async criar(pedido: Pedido): Promise<number | undefined> {
+    async criar(pedido: PedidoDto): Promise<number | undefined> {
         try {
             this.logger.trace("Start pedido={}", pedido);
             //TODO adicionar controle de transação
@@ -57,11 +58,13 @@ export class PedidoMySqlRepositoryGateway implements IPedidoRepositoryGateway {
 
     }
 
-    async atualizarStatus(pedido: Pedido): Promise<void> {
+    async atualizarStatus(pedido: PedidoDto): Promise<void> {
         try {
             this.logger.trace("Start pedido={}", pedido);
             const pedidoId = pedido.id as number;
-            await this.pedidoRepository.update(pedidoId, { statusId: StatusPedidoEnumMapper.enumParaNumber(pedido.status) });
+            await this.pedidoRepository.update(pedidoId, {
+                statusId: StatusPedidoEnumMapper.enumParaNumber(pedido.status)
+            });
             this.logger.trace("End");
         }
         catch (e) {
@@ -70,19 +73,20 @@ export class PedidoMySqlRepositoryGateway implements IPedidoRepositoryGateway {
         }
     }
 
-    async obterPorId(pedidoId: number): Promise<Optional<Pedido>> {
+    async obterPorId(pedidoId: number): Promise<Optional<PedidoDto>> {
         try {
             this.logger.trace("Start id={}", pedidoId);
-            const pedidoEntity = await this.pedidoRepository.findOne({
-                where: {
-                    id: pedidoId
-                },
-                relations: {
-                    cliente: true,
-                    itens: true,
-                },
-            });
-            return Optional.ofNullable(pedidoEntity?.getDomain());
+            const pedidoEntity = await this.pedidoRepository
+              .createQueryBuilder("ped")
+              .where("ped.Id = :id", {
+                  id: pedidoId
+              })
+              .leftJoinAndSelect('ped.cliente', 'cli')
+              .leftJoinAndSelect('ped.itens', 'item')
+              .leftJoinAndSelect('item.produto', 'prod')
+              .leftJoinAndSelect('item.pedido', 'peditem')
+              .getOne();
+            return Optional.ofNullable(pedidoEntity?.getDto());
         }
         catch (e) {
             this.logger.error(e);
@@ -90,23 +94,23 @@ export class PedidoMySqlRepositoryGateway implements IPedidoRepositoryGateway {
         }
     }
 
-    async obterEmAndamento(): Promise<Optional<Pedido[]>> {
+    async obterEmAndamento(): Promise<Optional<PedidoDto[]>> {
         try {
             this.logger.trace("Start em amdamento");
-            const pedidos: Pedido[] = [];
+            const pedidos: PedidoDto[] = [];
 
             const pedidoEntity = await this.pedidoRepository
                 .createQueryBuilder("ped")
                 .where("ped.statusId in(:...status)", {
                     status: [
-                        StatusPedidoEnumMapper.enumParaNumber(StatusPedido.RECEBIDO),
+                        StatusPedidoEnumMapper.enumParaNumber(StatusPedido.PAGO),
                         StatusPedidoEnumMapper.enumParaNumber(StatusPedido.EM_PREPARACAO)
                     ]
                 })
                 .getMany();
 
             pedidoEntity.forEach(pe => {
-                pedidos.push(pe.getDomain());
+                pedidos.push(pe.getDto());
             });
 
             return Optional.of(pedidos);
@@ -117,7 +121,7 @@ export class PedidoMySqlRepositoryGateway implements IPedidoRepositoryGateway {
         }
     }
 
-    async obterPorIdentificadorPagamento(identificadorPagamento: string): Promise<Optional<Pedido>> {
+    async obterPorIdentificadorPagamento(identificadorPagamento: string): Promise<Optional<PedidoDto>> {
         try {
             this.logger.trace("Start identificadorPagamento={}", identificadorPagamento);
 
@@ -125,10 +129,10 @@ export class PedidoMySqlRepositoryGateway implements IPedidoRepositoryGateway {
                 codigoPagamento: identificadorPagamento                
             });
 
-            let pedidoOp: Optional<Pedido> = Optional.empty();
+            let pedidoOp: Optional<PedidoDto> = Optional.empty();
             if(pagamento !== null && pagamento.pedido !== undefined){
                 const pedidoEntity = pagamento.pedido;
-                pedidoOp = Optional.of(pedidoEntity.getDomain());
+                pedidoOp = Optional.of(pedidoEntity.getDto());
             }
 
             this.logger.trace("End pedidoOp={}", pedidoOp)
@@ -140,10 +144,10 @@ export class PedidoMySqlRepositoryGateway implements IPedidoRepositoryGateway {
         }
     }
 
-    async obterPorStatusAndIdentificadorPagamento(status: StatusPedido, identificadorPagamento: string): Promise<Pedido[]> {
+    async obterPorStatusAndIdentificadorPagamento(status: StatusPedido, identificadorPagamento: string): Promise<PedidoDto[]> {
         try {
             this.logger.trace("Start status={}, identificadorPagamento={}", status, identificadorPagamento);
-            const pedidos: Pedido[] = [];
+            const pedidos: PedidoDto[] = [];
             
             //TODO: implementar filtro de "identificadorPagamento"
 
@@ -154,7 +158,7 @@ export class PedidoMySqlRepositoryGateway implements IPedidoRepositoryGateway {
                 }).getMany();
 
             pedidoEntity.forEach(pe => {
-                pedidos.push(pe.getDomain());
+                pedidos.push(pe.getDto());
             })
 
 

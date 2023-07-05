@@ -1,7 +1,7 @@
 import { Description, Enum, Example } from "@tsed/schema";
-import { StatusPedido } from "../../../../core/domain";
+import { StatusPedido } from "../domain";
 
-export class PedidoStatusJson {
+export class PedidoStatusDto {
 
     @Description("Categoria")
     @Example("PAGO")

@@ -49,12 +49,4 @@ export class ClienteEntity {
     public getClientDto(): ClienteDto {
         return new ClienteDto(this.id, this.nome, this.cpf, this.email);
     }
-
-    //FIXME: deve ser removido. Usar getClientDto()
-    @Deprecated()
-    public getDomain(): Cliente {
-        return new Cliente(this.id, this.nome, this.cpf, this.email);
-    }
-
-
 }

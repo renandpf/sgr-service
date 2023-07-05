@@ -1,10 +1,11 @@
 import { Inject, Logger } from "@tsed/common";
-import { Pedido, StatusPedido } from "../../domain";
+import { Pedido, PedidoItem, StatusPedido } from "../../domain";
 import { IPedidoRepositoryGateway } from "../ports";
 import { ProdutoNotFoundException } from "../exceptions/ProdutoNotFoundException";
-import { ICriarPedidoUseCase } from "./ICriarPedidoUseCase";
+import { ICriarPedidoUseCase } from "../ports/ICriarPedidoUseCase";
 import { Injectable, ProviderScope, ProviderType } from "@tsed/di";
-import { IObterClienteUseCase, IObterProdutoUseCase } from "../../../../gerencial";
+import { Cliente, IObterClienteUseCase, IObterProdutoUseCase, Produto } from "../../../../gerencial";
+import { PedidoCadastroDto, PedidoConsultaDto } from "../../dtos";
 
 @Injectable({
   type: ProviderType.SERVICE,
@@ -19,20 +20,24 @@ export class CriarPedidoUseCase implements ICriarPedidoUseCase {
     @Inject(IObterClienteUseCase) private obterClienteUseCase: IObterClienteUseCase,
     @Inject() private logger: Logger) { }
 
-  async criar(pedido: Pedido): Promise<Pedido> {
-    this.logger.trace("Start pedido={}", pedido);
+  async criar(pedidoDto: PedidoCadastroDto): Promise<PedidoConsultaDto> {
+    this.logger.trace("Start pedido={}", pedidoDto);
 
-    pedido.dataCadastro = new Date(Date.now());
+    //TODO adicionar mapper
+    const pedido = this.dtoToDomain(pedidoDto);
+
     await this.verificaRemoveClienteInexistente(pedido);
     await this.verificaExistenciaProduto(pedido);
 
+    pedido.dataCadastro = new Date(Date.now());
     pedido.setStatus(StatusPedido.RECEBIDO);
-    const id = await this.pedidoRepositoryGateway.criar(pedido);
+
+    const id = await this.pedidoRepositoryGateway.criar(pedido.toPedidoDto());
     if (id !== undefined) {
       pedido.id = id;
     }
     this.logger.trace("End id={}", id);
-    return pedido;
+    return PedidoConsultaDto.getInstance(pedido.toPedidoDto());
   }
 
   private async verificaRemoveClienteInexistente(pedido: Pedido) {
@@ -68,5 +73,20 @@ export class CriarPedidoUseCase implements ICriarPedidoUseCase {
       item.valorUnitario = produtoOp.valor as never;
     }
 
+  }
+
+  private dtoToDomain(pedidoDto: PedidoCadastroDto): Pedido{
+    let cliente = undefined;
+    if (pedidoDto.clienteId) {
+      cliente = new Cliente(pedidoDto.clienteId);
+    }
+
+    const pedido = new Pedido(undefined, cliente, pedidoDto.observacao);
+
+    pedido.itens = pedidoDto.itens.map(i => {
+      return new PedidoItem(undefined, pedido, new Produto(i.produtoId), i.quantidade);
+    });
+
+    return pedido;
   }
 }

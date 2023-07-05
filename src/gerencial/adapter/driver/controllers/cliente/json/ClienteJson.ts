@@ -1,12 +1,11 @@
 import { ClienteDto } from "../../../../../core/dto/cliente/ClienteDto";
-import { Cliente } from "../../../../../core/domain";
 import { Description, Example, Property, Required } from "@tsed/schema";
 
 export class ClienteJson {
     @Description("Identificador")
     @Example("123456")
     @Property()
-    public readonly id?: number;
+    public id?: number;
 
     @Description("Nome do cliente")
     @Example("Cliente teste")

@@ -1,6 +1,6 @@
 import { StatusPedido } from "../../../../pedido";
-import { RequestPagamentoDto } from "../../../../pedido/core/application/dto/RequestPagamentoDto";
-import { ResponsePagamentoDto } from "../../../../pedido/core/application/dto/ResponsePagamentoDto";
+import { RequestPagamentoDto } from "../../../../pedido/core/dtos/RequestPagamentoDto";
+import { ResponsePagamentoDto } from "../../../../pedido/core/dtos/ResponsePagamentoDto";
 
 export const IPagamentoExternoServiceGateway: unique symbol = Symbol("IPagamentoExternoServiceGateway");
 

@@ -8,7 +8,7 @@ import { IEfetuarPagamentoUseCase } from "./IEfetuarPagamentoUseCase";
 import { PedidoServiceHttpGateway } from "../../../adapter/driven/http/PedidoServiceHttpGateway";
 import { PagamentoMockExternalServiceHttpGateway } from "../../../adapter/driven/http/PagamentoMockServiceHttpGateway";
 import { PagamentoMySqlRepositoryGateway } from "../../../adapter/driven/repositories/PagamentoMySqlRepositoryGateway";
-import { RequestPagamentoDto } from "../../../../pedido/core/application/dto/RequestPagamentoDto";
+import { RequestPagamentoDto } from "../../../../pedido/core/dtos/RequestPagamentoDto";
 import { EfetuarPagamentoParamDto } from "../../dto/flows/EfetuarPagamentoParamDto";
 import { EfetuarPagamentoReturnDto } from "../../dto/flows/EfetuarPagamentoReturnDto";
 import { PagamentoDto } from "../../dto/PagamentoDto";

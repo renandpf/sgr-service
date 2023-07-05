@@ -3,7 +3,7 @@ import { IClienteRepositoryGateway } from "../../ports";
 import { Cliente } from "../../../domain/Cliente";
 import { Logger } from "@tsed/common";
 import { ClienteExistenteException } from "../../exception/ClienteExistenteException";
-import { ICriarClienteUseCase } from "./ICriarClienteUseCase";
+import { ICriarClienteUseCase } from "../../ports/ICriarClienteUseCase";
 import { CriarClienteParamsDto } from "../../../dto/cliente/flows/CriarClienteParamsDto";
 import { CriarClienteReturnDto } from "../../../dto/cliente/flows/CriarClienteReturnDto";
 import { ClienteDto } from "../../../dto/cliente/ClienteDto";

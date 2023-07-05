@@ -1,4 +1,4 @@
-import { ClienteDto } from "../../../dto/cliente/ClienteDto";
+import { ClienteDto } from "../../dto/cliente/ClienteDto";
 
 export const IObterClienteUseCase: unique symbol = Symbol("IObterClienteUseCase");
 

@@ -3,8 +3,9 @@ import { Pedido, StatusPedido } from "../../domain";
 import { IPedidoRepositoryGateway } from "../ports";
 import { Optional } from "typescript-optional";
 import { PedidoNotFoundException } from "../exceptions/PedidoNotFoundException";
-import { IAtualizarStatusPedidoUseCase } from "./IAtualizarStatusPedidoUseCase";
+import { IAtualizarStatusPedidoUseCase } from "../ports/IAtualizarStatusPedidoUseCase";
 import { Injectable, ProviderScope, ProviderType } from "@tsed/di";
+import { PedidoDto } from "../../dtos/PedidoDto";
 
 @Injectable({
     type: ProviderType.SERVICE,
@@ -18,15 +19,15 @@ export class AtualizarStatusPedidoUseCase implements IAtualizarStatusPedidoUseCa
 
     async atualizarStatus(pedidoId: number, status: StatusPedido): Promise<void> {
         this.logger.trace("Start id={}", pedidoId);
-        const pedido: Optional<Pedido> = await this.pedidoRepositoryGateway.obterPorId(pedidoId);
-        if (pedido.isEmpty()) {
+        const pedidoOp: Optional<PedidoDto> = await this.pedidoRepositoryGateway.obterPorId(pedidoId);
+        if (pedidoOp.isEmpty()) {
             this.logger.warn("Pedido id={} não encontrado", pedidoId);
             throw new PedidoNotFoundException();
         }
-        const pedidoEncontrado = pedido.get();
-
-        pedidoEncontrado.setStatus(status);
-        await this.pedidoRepositoryGateway.atualizarStatus(pedidoEncontrado);
+        const pedidoDto = pedidoOp.get();
+        const pedido = Pedido.getInstance(pedidoDto);
+        pedido.setStatus(status);
+        await this.pedidoRepositoryGateway.atualizarStatus(pedido.toPedidoDto());
         this.logger.trace("End");
     }
 }

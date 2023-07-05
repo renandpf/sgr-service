@@ -1,4 +1,4 @@
-import { IClienteRepositoryGateway } from "../../../core/application/ports";
+import { IClienteRepositoryGateway } from "../../../core/application";
 import { Logger } from "@tsed/common";
 import { Inject, Injectable, ProviderScope, ProviderType } from "@tsed/di";
 import { In } from "typeorm";
@@ -10,7 +10,7 @@ import { AlterarClienteParamsDto } from "../../../core/dto/cliente/flows/Alterar
 import { AlterarClienteReturnDto } from "../../../core/dto/cliente/flows/AlterarClienteReturnDto";
 import { CriarClienteParamsDto } from "../../../core/dto/cliente/flows/CriarClienteParamsDto";
 import { CriarClienteReturnDto } from "../../../core/dto/cliente/flows/CriarClienteReturnDto";
-import { ClienteDto } from "../../../../gerencial/core/dto/cliente/ClienteDto";
+import { ClienteDto } from "../../../core/dto/cliente/ClienteDto";
 
 @Injectable({
     type: ProviderType.SERVICE,

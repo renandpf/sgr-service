@@ -1,5 +1,5 @@
-import { AlterarClienteParamsDto } from "../../../dto/cliente/flows/AlterarClienteParamsDto";
-import { AlterarClienteReturnDto } from "../../../dto/cliente/flows/AlterarClienteReturnDto";
+import { AlterarClienteParamsDto } from "../../dto/cliente/flows/AlterarClienteParamsDto";
+import { AlterarClienteReturnDto } from "../../dto/cliente/flows/AlterarClienteReturnDto";
 
 export const IAlterarClienteUseCase: unique symbol = Symbol("IAlterarClienteUseCase");
 

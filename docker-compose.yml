@@ -16,11 +16,11 @@ services:
     networks:
       - sgr_network
     environment:
-      HOST: mysql
-      USERNAME: root
-      PASSWORD: senha
+      DB_HOST: mysql
+      DB_USERNAME: root
+      DB_PASSWORD: senha
       DB_PORT: 3306
-      DATABASE: sgr_database
+      DB_SCHEMA: sgr_database
     depends_on:
       mysql:
         condition: service_healthy

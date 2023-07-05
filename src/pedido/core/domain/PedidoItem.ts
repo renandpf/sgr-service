@@ -1,7 +1,9 @@
 import { Produto } from "../../../gerencial/core/domain/Produto";
 import { Pedido } from "./Pedido";
+import { PedidoDto, PedidoItemDto } from "../dtos/PedidoDto";
+import { ProdutoDto } from "../../../gerencial";
 
-export class Item {
+export class PedidoItem {
     get id(): number | undefined{
         return this._id;
     }
@@ -55,4 +57,25 @@ export class Item {
         public _quantidade?: number,
         public _valorUnitario?: number,
     ){}
+
+    public toPeditoItemDto(): PedidoItemDto{
+        return new PedidoItemDto(
+          new ProdutoDto(this._produto?.id),
+          this._quantidade || 0,
+          this._valorUnitario || 0,
+          this.valorTotal,
+          this._pedido?.id,
+          this._id
+        );
+    }
+
+    static getInstance(itemDto: PedidoItemDto): PedidoItem{
+        return new PedidoItem(
+          itemDto.id,
+          new Pedido(itemDto.pedidoId),
+          new Produto(itemDto.produto.id),
+          itemDto.quantidade,
+          itemDto.valorUnitario
+        );
+    }
 }

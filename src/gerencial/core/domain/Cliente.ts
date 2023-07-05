@@ -1,5 +1,6 @@
 import { Usuario, Pedido } from "../../../pedido";
 import { ClienteValidacaoException } from "../application/exception/ClienteValidacaoException";
+import { ClienteDto } from "../dto/cliente/ClienteDto";
 
 export class Cliente {
     constructor(
@@ -19,5 +20,14 @@ export class Cliente {
         if (!this.cpf) {
             throw new ClienteValidacaoException("CPF é obrigatório");
         }
+    }
+
+    toClienteDto(): ClienteDto{
+        return new ClienteDto(
+          this.id,
+          this.nome,
+          this.cpf,
+          this.email
+        );
     }
 }

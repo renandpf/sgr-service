@@ -1,8 +1,11 @@
-import { Cliente } from "../../../gerencial/core/domain/Cliente";
-import { Item } from "./Item";
+import { Cliente, Produto } from "../../../gerencial";
+import { PedidoItem } from "./PedidoItem";
 import { StatusPedido } from "./StatusPedido";
-import { Pagamento } from "../../../pagamento/core/domain/Pagamento";
-import { AlteracaoStatusPedidoException } from "../../../gerencial/core/application/exception/AlteracaoStatusPagoPedidoException";
+import { Pagamento } from "../../../pagamento";
+import {
+    AlteracaoStatusPedidoException
+} from "../../../gerencial/core/application/exception/AlteracaoStatusPagoPedidoException";
+import { PedidoDto } from "../dtos/PedidoDto";
 
 export class Pedido {
     get dataCadastro(): Date | undefined {
@@ -58,11 +61,11 @@ export class Pedido {
         this._status = value;
     }
 
-    get itens(): Item[] | undefined {
+    get itens(): PedidoItem[] | undefined {
         return this._itens;
     }
 
-    set itens(value: Item[]) {
+    set itens(value: PedidoItem[] | undefined) {
         this._itens = value;
     }
 
@@ -81,7 +84,7 @@ export class Pedido {
         private _status?: StatusPedido,
         private _dataCadastro?: Date,
         private _dataConclusao?: Date,
-        private _itens?: Item[],
+        private _itens?: PedidoItem[],
         private _pagamentos?: Pagamento[],
     ) {
     }
@@ -164,5 +167,49 @@ export class Pedido {
 
     removerCliente() {
         this._cliente = undefined;
+    }
+
+    public toPedidoDto(): PedidoDto{
+
+        const itens = this.itens?.map( i => i.toPeditoItemDto()) || [];
+
+        return new PedidoDto(
+          this.status as never,
+          this.dataCadastro as never,
+          itens,
+          this.observacao,
+          this.cliente?.toClienteDto(),
+          this.dataConclusao,
+          this.id
+        );
+    }
+
+    static getInstance(pedidoDto: PedidoDto): Pedido{
+
+        let cliente = undefined;
+        if (pedidoDto.cliente) {
+            cliente = new Cliente(pedidoDto.cliente.id);
+        }
+
+        const pedido = new Pedido(
+          pedidoDto.id,
+          cliente,
+          pedidoDto.observacao,
+          pedidoDto.status,
+          pedidoDto.dataCadastro,
+          pedidoDto.dataConclusao
+        );
+
+        pedido.itens = pedidoDto.itens?.map(i => {
+            return new PedidoItem(
+              i.id,
+              pedido,
+              new Produto(i.produto.id),
+              i.quantidade,
+              i.valorUnitario
+            );
+        });
+
+        return pedido;
     }
 }

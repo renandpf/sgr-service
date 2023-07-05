@@ -1,7 +1,7 @@
 import { Inject, Logger } from "@tsed/common";
 import { IClienteRepositoryGateway } from "../../ports";
 import { ClienteNaoEncontradoException } from "../../exception/ClienteNaoEncontradoException";
-import { IObterClienteUseCase } from "./IObterClienteUseCase";
+import { IObterClienteUseCase } from "../../ports/IObterClienteUseCase";
 import { ClienteDto } from "../../../dto/cliente/ClienteDto";
 import { Optional } from "typescript-optional";
 import { Injectable, ProviderScope, ProviderType } from "@tsed/di";

@@ -1,4 +1,4 @@
-import { CartaoCreditoDto } from "src/pagamento/core/dto/CartaoCreditoDto";
+import { CartaoCreditoDto } from "../../../pagamento";
 
 export class RequestPagamentoDto {
     //TODO: definir campos
