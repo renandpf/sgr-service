@@ -1,4 +1,4 @@
-import { PlatformTest, Logger } from "@tsed/common";
+import { Logger } from "@tsed/common";
 import { mock } from "jest-mock-extended";
 import { IPedidoServiceGateway } from "../../../../../../src/pagamento/core/application/ports/IPedidoServiceGateway";
 import { IPagamentoExternoServiceGateway } from "../../../../../../src/pagamento/core/application/ports/IPagamentoExternoServiceGateway";
