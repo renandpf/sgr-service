@@ -19,7 +19,7 @@ ARG NODE_VERSION=16.15.0
 FROM node:${NODE_VERSION}-alpine as build
 WORKDIR /opt
 
-COPY package.json package-lock.json tsconfig.json tsconfig.compile.json .barrelsby.json ./
+COPY package.json tsconfig.json tsconfig.compile.json .barrelsby.json ./
 
 
 RUN npm install
