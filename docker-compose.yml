@@ -1,7 +1,7 @@
 version: '3.5'
 services:
-  server:
-    container_name: sgr-api
+  app-server:
+    container_name: sgr-service-host
     build:
       context: .
       dockerfile: ./Dockerfile
@@ -9,20 +9,19 @@ services:
         - http_proxy
         - https_proxy
         - no_proxy
-    # image: gabrasgp/sgr-service:1.0.0
-    image: renandpf/sgr-service:1.0.1
+    image: renandpf/sgr-service:1.0.2
     ports:
       - "8083:8083"
     networks:
       - sgr_network
     environment:
-      DB_HOST: mysql
+      DB_HOST: sgr-database-host
       DB_USERNAME: root
       DB_PASSWORD: senha
       DB_PORT: 3306
       DB_SCHEMA: sgr_database
     depends_on:
-      mysql:
+      database-server:
         condition: service_healthy
     healthcheck:
       interval: 10s
@@ -32,8 +31,8 @@ services:
     restart: always
     expose:
       - "8083"
-  mysql:
-    container_name: mysql
+  database-server:
+    container_name: sgr-database-host
     image: mysql:8.0.33
     ports:
       - "3306:3306"
@@ -52,7 +51,7 @@ services:
           'mysqladmin',
           'ping',
           '-h',
-          'mysql',
+          'sgr-database-host',
           '--user=root',
           '--password=senha'
         ]
